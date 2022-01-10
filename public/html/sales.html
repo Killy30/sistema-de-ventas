@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="../css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <title>Ventas</title>
+    <style>
+        .active{
+            display: flex;
+        }
+        .inactive{
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light mb-5">
+        <div class="container">
+            <h1>Roscar Events</h1>
+            <div class="collapse navbar-collapse justify-content-end" >
+                <div class="navbar-nav">
+                    <a class="nav-link" href="/">Inicio</a>
+                    <a class="nav-link" href="/productos">Productos</a>
+                    <a class="nav-link" href="/ventas">Ventas</a>
+                    
+                </div>
+            </div>
+        </div>
+    </nav>
+    
+    <div class="container">
+        <h1>Ventas</h1>
+
+        <div class="navbar navbar-dark bg-primary">
+            <div class="container-fluid">
+                <form class="d-flex">
+                    <select class="form-select" id="typeSearch">
+                        <option value="day">Dia</option>
+                        <option value="week">Semana</option>
+                        <option value="month">Mes</option>
+                    </select>
+                    <div class="ms-5">
+                        <div class="inactive" id="day">
+                            <input class="form-control me-2" type="date" id="input_day" placeholder="Search" aria-label="Search">
+                            <button class="btn btn-outline-light" id="btn_day" type="button">Buscar</button>
+                        </div>
+                        <div class="inactive" id="week">
+                            <input class="form-control me-2" type="week" id="input_week" placeholder="Search" aria-label="Search">
+                            <button class="btn btn-outline-light" id="btn_week" type="button">Buscar</button>
+                        </div>
+                        <div class="inactive" id="month">
+                            <input class="form-control me-2" type="month" id="input_month" placeholder="Search" aria-label="Search">
+                            <button class="btn btn-outline-light" id="btn_month" type="button">Buscar</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <table class="table table-striped">
+            <thead>
+                <tr class="bg-dark text-white">
+                    <th class="text-white" scope="col">#</th>
+                    <th scope="col">Codigo</th>
+                    <th scope="col">Productos</th>
+                    <th scope="col">Fecha</th>
+                    <th scope="col">Total</th>
+                    <th scope="col">Accion</th>
+                </tr>
+            </thead>
+            <tbody id="tbody"></tbody>
+        </table>
+
+    </div>
+
+    <script src="../js/sales.js"></script>
+</body>
+</html>

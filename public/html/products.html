@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="../css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <script src="../js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <title>Productos</title>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light mb-5">
+        <div class="container">
+            <h1>Roscar Events</h1>
+            <div class="collapse navbar-collapse justify-content-end" >
+                <div class="navbar-nav">
+                    <a class="nav-link" href="/">Inicio</a>
+                    <a class="nav-link" href="/productos">Productos</a>
+                    <a class="nav-link" href="/ventas">Ventas</a>
+                    
+                </div>
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+        <h1 class="mb-3">Productos</h1>
+
+        <button type="button" class="btn btn-primary mb-5" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">
+            Crear nuevo producto
+        </button>
+
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Nuevo Producto</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form >
+                            <div class="mb-3">
+                                <label for="recipient-name" class="col-form-label">Codigo:</label>
+                                <input type="number" class="form-control" required id="idcode" name="idcode">
+                            </div>
+                            <div class="mb-3">
+                                <label for="recipient-name" class="col-form-label">Nombre:</label>
+                                <input type="text" class="form-control" required id="name" name="name">
+                            </div>
+                            <div class="mb-3">
+                                <label for="recipient-name" class="col-form-label">Precio:</label>
+                                <input type="number" step="any" class="form-control" required id="price" name="price">
+                            </div>
+                            <div class="mb-3">
+                                <label for="recipient-name" class="col-form-label">Categoria:</label>
+                                <input type="text" class="form-control" id="category" name="category">
+                            </div>
+                            <div class="mb-3">
+                                <label for="message-text" class="col-form-label">Descripcion:</label>
+                                <textarea class="form-control" id="description" name="description"></textarea>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" id="createP" class="btn btn-primary">Crear</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+            aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="staticBackdropLabel">Actualizar producto</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form >
+                            <div class="mb-3">
+                                <label for="recipient-name" class="col-form-label">Codigo:</label>
+                                <input type="number" class="form-control" required id="idcode_update" name="idcode">
+                            </div>
+                            <div class="mb-3">
+                                <label for="recipient-name" class="col-form-label">Nombre:</label>
+                                <input type="text" class="form-control" required id="name_update" name="name">
+                            </div>
+                            <div class="mb-3">
+                                <label for="recipient-name" class="col-form-label">Precio:</label>
+                                <input type="number" class="form-control" required id="price_update" name="price">
+                            </div>
+                            <div class="mb-3">
+                                <label for="recipient-name" class="col-form-label">Categoria:</label>
+                                <input type="text" class="form-control" id="category_update" name="category">
+                            </div>
+                            <div class="mb-3">
+                                <label for="message-text" class="col-form-label">Descripcion:</label>
+                                <textarea class="form-control" id="description_update" name="description"></textarea>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-primary" id="btn_update">Modificar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <table class="table">
+            <thead>
+                <tr class="bg-dark text-white">
+                    <th scope="col">Codigo</th>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Precio</th>
+                    <th scope="col">Descripcion</th>
+                    <th scope="col">Categoria</th>
+                    <th scope="col">Accion</th>
+                </tr>
+            </thead>
+            <tbody id="tbody"></tbody>
+        </table>
+    </div>
+
+
+    
+
+    <script src="../js/products.js"></script>
+</body>
+</html>
