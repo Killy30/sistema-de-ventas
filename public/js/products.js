@@ -20,7 +20,7 @@ const showAllProducts = async() =>{
                 <td>${product.price}</td>
                 <td>${product.description}</td>
                 <td>${product.category}</td>
-                <td>
+                <td class="text-end">
                     <button type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop" data-id="${product._id}" class="btn btn-primary mr-2 edit">
                         Editar
                     </button>
@@ -96,13 +96,17 @@ const updateProduct = async(e) =>{
         return element.idcode == idcode
     })
 
+    if(idcode.trim() === '' || name.trim() === "" || price.trim() === ""){
+        alert('Por favor llenar los campos requeridos')
+        return false
+    }
+
     if(pro.length == 0){
         let req = await fetch('/update-product', {
             method: 'POST',
             body:JSON.stringify(data),
             headers: {
                 'Content-Type': 'application/json'
-                // 'Content-Type': 'application/x-www-form-urlencoded',
             }
         })
         let res = await req.json()
@@ -115,7 +119,6 @@ const updateProduct = async(e) =>{
             body:JSON.stringify(data),
             headers: {
                 'Content-Type': 'application/json'
-                // 'Content-Type': 'application/x-www-form-urlencoded',
             }
         })
         let res = await req.json()

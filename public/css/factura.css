@@ -1,0 +1,85 @@
+p{
+    margin: 0;
+}
+.box_fac{
+    display: flex;
+    justify-content: center;
+    width: 220px;
+    padding-top: 40px;
+    padding-bottom: 40px;
+    page-break-after: avoid;
+}
+.titulo{
+    font-size: 23px;
+    text-align: center;
+    align-content: center;
+    margin-top: 30px;
+    width: 100%;
+}
+.card_address p{
+    text-align: center;
+    align-content: center;
+    margin-bottom: 10px;
+}
+.card_code{
+    display: flex;
+}
+.card_code p{
+    width: 50%;
+}
+.card_date{
+    display: flex;
+    justify-content: space-between;
+}
+
+table, td, th{
+    border: none;
+}
+
+thead{
+    /* border-bottom: 2px dashed rgb(20, 19, 19); */
+    /* border-top: 2px dashed rgba(20, 19, 19); */
+}
+th, td.v_1{
+    width: 70%;
+}
+th, td.v_2{
+    width: 30%;
+    word-break: break-all;
+}
+.v_1{
+    text-align: start;
+    align-content: flex-start
+}
+.v_2{
+    text-align: end;
+    align-content: flex-end
+}
+
+.card_total{
+    display: flex;
+    font-weight: bold;
+    /* border-bottom: 2px dashed rgb(20, 19, 19); */
+}
+.card_total p{
+    width: 50%;
+}
+
+.card_msg{
+    margin-bottom: 50px;
+
+}
+.card_msg p{
+    text-align: center;
+    align-content: center;
+}
+span{
+    display: flex !important;
+}
+
+
+@media print {
+    .hide_f{
+        display: none !important;
+    }
+}

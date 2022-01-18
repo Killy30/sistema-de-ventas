@@ -50,6 +50,7 @@ showListSales()
 const getCodeProduct = async() =>{
     let code = document.getElementById('codigo')
     
+    if(code.value.trim() == "") return false
     try {        
         let req = await fetch(`/get-product-by-code/${code.value.trim()}`)
         let res = await req.json()

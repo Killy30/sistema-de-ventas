@@ -5,6 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="../css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <script src="../js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <script src="../js/chart.js"></script>
     <title>Ventas</title>
     <style>
         .active{
@@ -12,6 +14,13 @@
         }
         .inactive{
             display: none;
+        }
+        .modal-dialog{
+            max-width: 1000px;
+        }
+        canvas{
+            width: 100%;
+            height: 100%;
         }
     </style>
 </head>
@@ -31,14 +40,15 @@
     </nav>
     
     <div class="container">
+        
         <h1>Ventas</h1>
 
         <div class="navbar navbar-dark bg-primary">
             <div class="container-fluid">
                 <form class="d-flex">
                     <select class="form-select" id="typeSearch">
+                        <option value="all">Todos</option>
                         <option value="day">Dia</option>
-                        <option value="week">Semana</option>
                         <option value="month">Mes</option>
                     </select>
                     <div class="ms-5">
@@ -46,16 +56,14 @@
                             <input class="form-control me-2" type="date" id="input_day" placeholder="Search" aria-label="Search">
                             <button class="btn btn-outline-light" id="btn_day" type="button">Buscar</button>
                         </div>
-                        <div class="inactive" id="week">
-                            <input class="form-control me-2" type="week" id="input_week" placeholder="Search" aria-label="Search">
-                            <button class="btn btn-outline-light" id="btn_week" type="button">Buscar</button>
-                        </div>
                         <div class="inactive" id="month">
                             <input class="form-control me-2" type="month" id="input_month" placeholder="Search" aria-label="Search">
                             <button class="btn btn-outline-light" id="btn_month" type="button">Buscar</button>
                         </div>
                     </div>
                 </form>
+                <!-- <div class="" id="card"></div> -->
+                <button type="button" id="btn_xcz" class="btn btn-outline-light"  data-bs-toggle="modal" data-bs-target="#exampleModal"data-bs-whatever="@getbootstrap">Analisis de ventas</button>
             </div>
         </div>
 
@@ -67,14 +75,42 @@
                     <th scope="col">Productos</th>
                     <th scope="col">Fecha</th>
                     <th scope="col">Total</th>
-                    <th scope="col">Accion</th>
+                    <th scope="col" class="text-center">Accion</th>
                 </tr>
             </thead>
             <tbody id="tbody"></tbody>
         </table>
-
+        
+        <!-- Modal -->        
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Analisis de ventas</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body d-flex justify-content-between">
+                        <div class="card p-3" style="width: 33%; height: 500px;">
+                            <p class="fs-5 text-center">Total ingresado</p>
+                            <p class="text-center fw-bold text-success fs-1 m-0" id="totalBox"></p>
+                            <p class="m-0 fs-8 text-center">Pesos</p>
+                        </div>
+                        <div class="card p-3" style="height: 500px; width: 65%; ">
+                            <p class="fs-5 text-center m-0">Productos mas vendidos</p>
+                            <div  style="width: 450px; height: 450px; margin: auto;">
+                                <canvas  id="productsGrafict"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script src="../js/sales.js"></script>
+    
 </body>
 </html>
