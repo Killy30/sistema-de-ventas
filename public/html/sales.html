@@ -7,6 +7,7 @@
     <link href="../css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <script src="../js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
     <script src="../js/chart.js"></script>
+    <link rel="stylesheet" href="../css/loader.css">
     <title>Ventas</title>
     <style>
         .active{
@@ -17,6 +18,13 @@
         }
         .modal-dialog{
             max-width: 1000px;
+        }
+        .not_found{
+            text-align: center;
+            font-size: 30px;
+            position: absolute;
+            top: 350px;
+            left: 40%;
         }
         canvas{
             width: 100%;
@@ -50,6 +58,7 @@
                         <option value="all">Todos</option>
                         <option value="day">Dia</option>
                         <option value="month">Mes</option>
+                        <option value="code">Codigo</option>
                     </select>
                     <div class="ms-5">
                         <div class="inactive" id="day">
@@ -59,6 +68,10 @@
                         <div class="inactive" id="month">
                             <input class="form-control me-2" type="month" id="input_month" placeholder="Search" aria-label="Search">
                             <button class="btn btn-outline-light" id="btn_month" type="button">Buscar</button>
+                        </div>
+                        <div class="inactive" id="code">
+                            <input class="form-control me-2" type="text" style="width: 230px;" id="input_code" placeholder="Search" aria-label="Search">
+                            <button class="btn btn-outline-light" id="btn_code" type="button">Buscar</button>
                         </div>
                     </div>
                 </form>

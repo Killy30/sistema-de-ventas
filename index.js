@@ -2,7 +2,7 @@ const express = require('express')
 const path = require('path')
 const Product = require('./models/products')
 const Sale = require('./models/sales')
-
+const yesId = require('./yesId')
 
 const app = express()
 
@@ -114,12 +114,12 @@ app.post('/new-sale', async(req, res) =>{
     let data = req.body
 
     const sales = await Sale.find()
+
     function getCode() {
-        let code =  Math.round(Math.random()*3000000);
-        if(sales.some(sale => sale.code === code)){
+        if(sales.some(sale => sale.code === yesId(10))){
             return getCode()
         }
-        return code
+        return yesId(10)
     }    
 
     const newSale = new Sale()

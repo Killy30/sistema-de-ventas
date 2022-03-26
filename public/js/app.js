@@ -56,7 +56,7 @@ const getCodeProduct = async() =>{
         let res = await req.json()
 
         if(res.status == false){
-            errorMessage(res.msg, 'err_color')
+            errorMessage(res.msg, 'alert alert-danger')
             showProducts()
         }else{
             listProducts.push(res.product)
@@ -103,7 +103,7 @@ const todalValue = () =>{
 
 const errorMessage = (err,color) =>{
     const cardError = document.getElementById('msg_err')
-    cardError.innerHTML = `<p class="card_error ${color}">${err}</p>`
+    cardError.innerHTML = `<div class="${color} p-2 mb-3" role="alert"> ${err}</div>`
     setTimeout(() =>{
         cardError.innerHTML = ''
     },5000)
@@ -117,17 +117,17 @@ const pagoEfectivo = async(e) =>{
     //
     if(totalPrice == 0){
         let error = 'Por favor agregue productos antes de realizar la compra...'
-        return errorMessage(error,'err_color')
+        return errorMessage(error,'alert alert-danger')
     }
     //
     if(pago.length == 0){
         let error = 'Por favor agregue el pago efectivo que dio el cliente para cobrar...'
-        return errorMessage(error,'err_color')
+        return errorMessage(error,'alert alert-danger')
     }
     //
     if(pago < totalPrice){
         let error = 'Saldo insuficiente para hacer esa compra...'
-        return errorMessage(error,'err_color')
+        return errorMessage(error,'alert alert-danger')
     }
 
     let cambioValue = pago - totalPrice
@@ -158,7 +158,7 @@ const pagoEfectivo = async(e) =>{
         const factura = document.getElementById('factura')
         factura.classList.remove('inactive')
         factura.href = `/factura/${res.id}`
-        errorMessage(res.msg,'success_color')
+        errorMessage(res.msg,'alert alert-success')
 
     } catch (error) {
         console.log(error);

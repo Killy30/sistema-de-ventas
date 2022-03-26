@@ -13,18 +13,32 @@ const getAllProducts = async() =>{
     let res = await req.json()
     return res
 }
+const loader = () =>{
+    return `<div class="loader">Loading...</div>`
+}
 
 const getData = async() =>{
-    let allSales = await getAllSales()
-    let sales = allSales.sales
-    salesAnalysis = sales
-    showListSales(sales)
+    try {
+        tbody.innerHTML = `${loader()}`
+        let allSales = await getAllSales()
+        let sales = allSales.sales
+        salesAnalysis = sales
+        showListSales(sales)
+        
+    } catch (error) {
+        console.log(error);
+    }
+    
 }
 getData()
 
 const showListSales = async(sales) =>{
 
     tbody.innerHTML = ""
+
+    if(sales.length == 0){
+        return tbody.innerHTML = '<p class="not_found">Elementos no encontrados...</p>'
+    }
     
     for(var i = sales.length - 1; i >= 0; i--){
         let time = new Date(sales[i].date)
@@ -180,20 +194,29 @@ const typeSearch = document.getElementById('typeSearch')
 const btn_day = document.getElementById('btn_day')
 const btn_week = document.getElementById('btn_week')
 const btn_month = document.getElementById('btn_month')
+const btn_code = document.getElementById('btn_code')
 
 const selectType = (data)=>{
     if(data === 'day'){
         document.getElementById('day').style.display = 'flex'
         document.getElementById('month').style.display = 'none'
+        document.getElementById('code').style.display = 'none'
     }else if(data === 'month'){
         document.getElementById('day').style.display = 'none'
         document.getElementById('month').style.display = 'flex'
+        document.getElementById('code').style.display = 'none'
     }else if(data === 'all'){
         document.getElementById('day').style.display = 'none'
         document.getElementById('month').style.display = 'none'
+        document.getElementById('code').style.display = 'none'
         getData()
+    }else if(data === 'code'){
+        document.getElementById('day').style.display = 'none'
+        document.getElementById('month').style.display = 'none'
+        document.getElementById('code').style.display = 'flex'
     }
 }
+
 selectType(typeSearch.value)
 
 
@@ -201,43 +224,96 @@ selectType(typeSearch.value)
 const getDateToSearch = async(e) =>{
     const dayDate = document.getElementById('input_day').value
 
-    let allSales = await getAllSales()
+    try {
+        if(dayDate.trim() === ''){
+            return alert('Debes colocar el dia de las ventas')
+        }
 
-    const sales_day = allSales.sales.filter( sale => {
-        let date = new Date(sale.date)
-        let fulldate = `${date.getFullYear()}-${(date.getMonth()+1) > 9?(date.getMonth()+1):`${0}${(date.getMonth()+1)}`}-${date.getDate() > 9?date.getDate():`${0}${date.getDate()}`}`
-        return fulldate ==  dayDate
-    })
+        tbody.innerHTML = `${loader()}`
 
-    let total = sales_day.reduce((acc, t) => acc = acc + t.totalPrice ,0)
+        let allSales = await getAllSales()
 
-    showListSales(sales_day)
-    salesAnalysis = sales_day
+        const sales_day = allSales.sales.filter( sale => {
+            let date = new Date(sale.date)
+            let fulldate = `${date.getFullYear()}-${(date.getMonth()+1) > 9?(date.getMonth()+1):`${0}${(date.getMonth()+1)}`}-${date.getDate() > 9?date.getDate():`${0}${date.getDate()}`}`
+            return fulldate ==  dayDate
+        })
+
+        let total = sales_day.reduce((acc, t) => acc = acc + t.totalPrice ,0)
+
+        showListSales(sales_day)
+        salesAnalysis = sales_day
+        
+    } catch (error) {
+        console.log(error);
+    }
+    
 }
 
 
 //
 const getMonthToSearch = async(e) =>{
     const month = document.getElementById('input_month').value
-    let allSales = await getAllSales()
 
-    let sales_month = allSales.sales.filter(sale =>{
-        let date = new Date(sale.date)
-        let fulldate = `${date.getFullYear()}-${(date.getMonth()+1)>9?(date.getMonth()+1):`${0}${(date.getMonth()+1)}`}`
-        return fulldate == month
-    })
+    try {
+        if(month.trim() === ''){
+            return alert('Debes colocar el mes de las ventas')
+        }
 
-    let total = sales_month.reduce((acc, t) => acc = acc + t.totalPrice ,0)
+        tbody.innerHTML = `${loader()}`
 
-    showListSales(sales_month)
-    // getTotalValue(month, total)
-    salesAnalysis = sales_month
+        let allSales = await getAllSales()
+
+        let sales_month = allSales.sales.filter(sale =>{
+            let date = new Date(sale.date)
+            let fulldate = `${date.getFullYear()}-${(date.getMonth()+1)>9?(date.getMonth()+1):`${0}${(date.getMonth()+1)}`}`
+            return fulldate == month
+        })
+    
+        let total = sales_month.reduce((acc, t) => acc = acc + t.totalPrice ,0)
+    
+        showListSales(sales_month)
+        
+        salesAnalysis = sales_month
+        
+    } catch (error) {
+        console.log(error);
+    }
 }
+
+// 
+const getCodeToSearch = async(e) => {
+    const code_id = document.getElementById('input_code').value
+    
+    try {
+        if(code_id.trim() === ''){
+            return alert('Debes colocar el codigo de la venta')
+        }
+
+        tbody.innerHTML = `${loader()}`
+
+        let allSales = await getAllSales()
+    
+        let sale_code = allSales.sales.filter(sale => {
+            return sale.code == code_id
+        })
+        
+        showListSales(sale_code)
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+
+// 
+
+
 
 const btn_xcz = document.getElementById('btn_xcz')
 
 btn_day.addEventListener('click', getDateToSearch)
 btn_month.addEventListener('click', getMonthToSearch)
+btn_code.addEventListener('click', getCodeToSearch)
 
 btn_xcz.addEventListener('click', e => {
 
