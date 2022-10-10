@@ -1,0 +1,14 @@
+
+#container{
+    padding-top: 50px;
+}
+
+
+.card_table_body{
+    height: calc(100% - 203px);
+}
+
+#btn_open_form{
+    display: flex;
+    align-items: center;
+}

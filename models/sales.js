@@ -6,7 +6,9 @@ const salesSchema = new Schema({
     totalPrice: {type:Number},
     pay: {type:Number},
     cambio: {type:Number},
-    date: {type: Date, default:Date.now}
+    date: {type: Date, default:Date.now},
+    user: { type: Schema.Types.ObjectId, ref: 'User'},
+    cashier: { type: Schema.Types.ObjectId, ref: 'cashier'},
 })
 
 module.exports = model('sale', salesSchema)

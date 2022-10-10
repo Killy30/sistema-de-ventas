@@ -1,51 +1,101 @@
 const showListProduct = document.getElementById('showListProduct')
 const tbody = document.getElementById('tbody')
+const listCashiers = document.getElementById('listCashiers')
+const card_fooder_t = document.querySelector('.card_table_fooder')
 
+import errorMessage from "./errorMSG.js"
+import loader from "./loader.js"
 
 let listProducts = []
 
-const getDateNow = ()=>{
-    const date_box = document.getElementById('date')
-    let date = new Date(Date.now())
-    date_box.innerHTML = `<p class="fs-1">
-        ${fecha(date.getTime())} ${date.getDate()}/${date.getFullYear()}
-    </p>`
+const getSales = async() =>{
+    try {
+        tbody.innerHTML = `${loader()}`
+        let req = await fetch('/get-sales')
+        let res = await req.json()
+        return res
+    } catch (error) {
+        console.log(error);
+    }
 }
-getDateNow()
 
+const getUser = async() =>{
+    try {
+        let req = await fetch('/get-user')
+        let res = await req.json()
+        return res
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+
+const showStoreName = async() =>{
+    let user = await getUser()
+    let show_name = document.getElementById('show_s_n')
+
+    if(user.data.storeName !== undefined){
+        show_name.innerText = `${user.data.storeName}`
+    }
+}
+showStoreName()
 
 const showListSales = async() =>{
-    let req = await fetch('/get-sales')
-    let res = await req.json()
-    let sales = res.sales_today
+    let sale = await getSales()
+    let sales = sale.sales_today
 
+    tbody.innerHTML = ""
+
+    if(sales.length == 0){
+        return noElement()
+    }
     for(var i = sales.length - 1; i >= 0; i--){
         let time = new Date(sales[i].date)
         tbody.innerHTML += `
-            <tr>
+            <tr class="text-white">
                 <td>${i+1}</td>
                 <td>${sales[i].code}</td>
                 <td>${sales[i].products.length}</td>
-                <td class="d-flex">
-                    <p style="margin-right: 5px;">
-                        ${fecha(time.getTime())} ${time.getDate()}/${time.getFullYear()}
-                    </p> 
+                <td>
                     <p>
-                        ${time.getHours()}:${time.getMinutes()}
-                    </p>
+                        ${fecha(time.getTime())} ${time.getDate()}/${time.getFullYear()} ${time.getHours()}:${time.getMinutes()}
+                    </p> 
+                    
                 </td>
                 <td>${sales[i].totalPrice}</td>
-                <td>
-                    <a href="/factura/${sales[i]._id}" data-id="${sales[i]._id}" class="btn btn-primary">
+                <td class="">
+                    <a href="/factura/${sales[i]._id}" data-id="${sales[i]._id}" class="btn">
                         Ver detalle
                     </a>
                 </td>
             </tr>
         `
     }
-
+    card_fooder_t.innerHTML = `<p class="tftext">Ventas: ${sales.length}</p>` 
 }
 showListSales()
+
+const showListCashiers_select = async() =>{
+    const user = await getUser()
+
+    let cashiers = user.data.cashiers
+
+    listCashiers.innerHTML = "<option value='no_data'>Cajero/a</option>"
+    cashiers.forEach(cashier =>{
+        listCashiers.innerHTML += `
+        <option data-code="${cashier.id_code}" data-act="${cashier.active}" id="selectOption" value="${cashier._id}">
+            ${cashier.name} ${cashier.lastName}
+        </option>`
+    })
+    for(let i = 0; i < listCashiers.options.length; i++){
+        let active = listCashiers.options[i].getAttribute('data-act')
+        if(active === 'true'){
+            listCashiers.options[i].selected = true;
+        }
+    }
+} 
+showListCashiers_select()
+
 
 const getCodeProduct = async() =>{
     let code = document.getElementById('codigo')
@@ -93,21 +143,11 @@ const showProducts = () =>{
     todalValue()
 }
 
-
-
 const todalValue = () =>{
     let totalPrice = listProducts.reduce((acc, p) => acc = acc + p.price ,0)
     let total = document.getElementById('total')
     total.innerText = totalPrice.toFixed(2)
 }
-
-const errorMessage = (err,color) =>{
-    const cardError = document.getElementById('msg_err')
-    cardError.innerHTML = `<div class="${color} p-2 mb-3" role="alert"> ${err}</div>`
-    setTimeout(() =>{
-        cardError.innerHTML = ''
-    },5000)
-} 
 
 const pagoEfectivo = async(e) =>{
     const cambio = document.getElementById('cambio')
@@ -146,8 +186,7 @@ const pagoEfectivo = async(e) =>{
             body: JSON.stringify(data),
             headers: {
                 'Content-Type': 'application/json'
-                // 'Content-Type': 'application/x-www-form-urlencoded',
-              }
+            }
         })
         let res = await req.json()
   
@@ -155,11 +194,12 @@ const pagoEfectivo = async(e) =>{
         document.getElementById('add').disabled = true
         document.getElementById('finich').disabled = true
         document.getElementById('cancel').disabled = true
+        document.getElementById('cerrar').disabled = false
         const factura = document.getElementById('factura')
         factura.classList.remove('inactive')
         factura.href = `/factura/${res.id}`
         errorMessage(res.msg,'alert alert-success')
-
+        showListSales()
     } catch (error) {
         console.log(error);
     }
@@ -179,7 +219,33 @@ const cancelSele = () =>{
     listProducts.splice(0, listProducts.length)
     showListProduct.innerHTML = ''
     document.getElementById('total').innerText = '0.00'
-    console.log(listProducts);
+    document.getElementById('codigo').value = ''
+}
+
+const openSele = () => { 
+    if(document.getElementById('pago').value === ''){
+        document.getElementById('cerrar').disabled = true
+    }
+    setTimeout(() =>{
+        document.getElementById('codigo').focus()
+    },500)
+}
+
+const closeSales = () =>{
+    listProducts.splice(0, listProducts.length)
+    showListProduct.innerHTML = ''
+    document.getElementById('total').innerText = '0.00'
+    document.getElementById('cambio').innerText = '0.00'
+    document.getElementById('codigo').value = ''
+    document.getElementById('pago').value = ''
+
+    document.getElementById('add').disabled = false
+    document.getElementById('finich').disabled = false
+    document.getElementById('cancel').disabled = false
+    document.getElementById('factura').classList.add('inactive')
+    document.getElementById('mode_code').options[0].selected = true;
+
+    // showListSales()
 }
 
 
@@ -202,7 +268,106 @@ function fecha(date){
     return month[d.getMonth()];
 }
 
-
 document.getElementById('cancel').addEventListener('click', cancelSele)
-document.getElementById('add').addEventListener('click', getCodeProduct)
+document.getElementById('btn_open_sele').addEventListener('click', openSele)
 document.getElementById('finich').addEventListener('click', pagoEfectivo)
+document.getElementById('add').addEventListener('click', getCodeProduct)
+document.getElementById('cerrar').addEventListener('click', closeSales)
+
+let change_status = null
+
+document.getElementById('mode_code').addEventListener('change', (e) =>{
+    change_status = e.target.value
+    if(e.target.value === 'manual'){
+        document.getElementById('add').style.display = 'flex'
+    }else{
+        document.getElementById('add').style.display = 'none'
+    }
+})
+
+document.getElementById('codigo').addEventListener('input', e =>{
+    if(change_status === null || change_status === 'automatico'){
+        getCodeProduct()
+    }
+})
+
+document.getElementById('codigo').addEventListener('keydown', e =>{
+    let key = event.which || event.keyCode;
+    if(key === 13){
+        if(document.getElementById('pago').value === ''){
+            getCodeProduct()
+        }else{
+            let error = 'Cerrar esta venta para poder crear otra...'
+            return errorMessage(error,'alert alert-danger')
+        }
+    }
+})
+
+const modalBoxLog = document.querySelector('#modalBoxLog')
+const codeToLog = document.querySelector('#codeToLog')
+
+let dataCasheir;
+
+listCashiers.addEventListener('change', async(e) =>{
+    let data = {id:e.target.value}
+    let code = e.target.options[e.target.selectedIndex].dataset.code
+
+    dataCasheir = {data, code}
+
+    if(data.id !== 'no_data'){
+        modalBoxLog.style.display = "block"
+    }else{
+        changeCasheir(data)
+    }
+})
+
+codeToLog.addEventListener('click', e =>{
+    e.preventDefault()
+    let code = document.getElementById('code')
+
+    if(code.value.trim() == "") return false
+    
+    if(dataCasheir.code == code.value){
+        changeCasheir(dataCasheir.data)
+        code.value = ''
+        modalBoxLog.style.display = "none"
+        document.getElementById('error_code').innerText = ""
+    }else{
+        document.getElementById('error_code').innerText = `El codigo ${code.value} es incorrecto`
+        code.value = ''
+    }
+
+})
+
+modalBoxLog.addEventListener('click', e =>{
+    if(e.target.classList.contains('close_modal') ){
+        e.preventDefault()
+        modalBoxLog.style.display = "none"
+        document.getElementById('error_code').innerText = ""
+        showListCashiers_select()
+    } 
+})
+
+const changeCasheir = async(data) =>{
+    try {
+        let req = await fetch('user-active', {
+            method:'POST',
+            body:JSON.stringify(data),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        let res = await req.json()
+        showListCashiers_select()
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+
+
+
+
+
+
+

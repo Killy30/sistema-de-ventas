@@ -4,54 +4,20 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="../css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-    <script src="../js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-    <script src="../js/chart.js"></script>
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../css/loader.css">
+    <link rel="stylesheet" href="../css/sales.css">
+    <link rel="stylesheet" href="../css/table.css">
     <title>Ventas</title>
-    <style>
-        .active{
-            display: flex;
-        }
-        .inactive{
-            display: none;
-        }
-        .modal-dialog{
-            max-width: 1000px;
-        }
-        .not_found{
-            text-align: center;
-            font-size: 30px;
-            position: absolute;
-            top: 350px;
-            left: 40%;
-        }
-        canvas{
-            width: 100%;
-            height: 100%;
-        }
-    </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light mb-5">
-        <div class="container">
-            <h1>Roscar Events</h1>
-            <div class="collapse navbar-collapse justify-content-end" >
-                <div class="navbar-nav">
-                    <a class="nav-link" href="/">Inicio</a>
-                    <a class="nav-link" href="/productos">Productos</a>
-                    <a class="nav-link" href="/ventas">Ventas</a>
-                    
-                </div>
-            </div>
-        </div>
-    </nav>
+    <%-include ("./header")%>
     
-    <div class="container">
+    <div class="container pt-5" id="container">
         
         <h1>Ventas</h1>
 
-        <div class="navbar navbar-dark bg-primary">
+        <div class="navbar navbar-dark mbg">
             <div class="container-fluid">
                 <form class="d-flex">
                     <select class="form-select" id="typeSearch">
@@ -76,24 +42,27 @@
                     </div>
                 </form>
                 <!-- <div class="" id="card"></div> -->
-                <button type="button" id="btn_xcz" class="btn btn-outline-light"  data-bs-toggle="modal" data-bs-target="#exampleModal"data-bs-whatever="@getbootstrap">Analisis de ventas</button>
+                <!-- <button type="button" id="btn_xcz" class="btn btn-outline-light"  data-bs-toggle="modal" data-bs-target="#exampleModal"data-bs-whatever="@getbootstrap">Analisis de ventas</button> -->
             </div>
         </div>
 
-        <table class="table table-striped">
-            <thead>
-                <tr class="bg-dark text-white">
-                    <th class="text-white" scope="col">#</th>
-                    <th scope="col">Codigo</th>
-                    <th scope="col">Productos</th>
-                    <th scope="col">Fecha</th>
-                    <th scope="col">Total</th>
-                    <th scope="col" class="text-center">Accion</th>
-                </tr>
-            </thead>
-            <tbody id="tbody"></tbody>
-        </table>
-        
+        <div class="card_table_body">
+            <table>
+                <thead>
+                    <tr class=" trbg">
+                        <th scope="col">#</th>
+                        <th scope="col">Codigo</th>
+                        <th scope="col">Productos</th>
+                        <th scope="col">Fecha</th>
+                        <th scope="col">Total</th>
+                        <th scope="col">Accion</th>
+                    </tr>
+                </thead>
+                <tbody id="tbody"></tbody>
+            </table>
+        </div>
+        <div class="card_table_fooder"></div>
+
         <!-- Modal -->        
         <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
@@ -103,10 +72,13 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body d-flex justify-content-between">
-                        <div class="card p-3" style="width: 33%; height: 500px;">
-                            <p class="fs-5 text-center">Total ingresado</p>
-                            <p class="text-center fw-bold text-success fs-1 m-0" id="totalBox"></p>
-                            <p class="m-0 fs-8 text-center">Pesos</p>
+                        <div class="card p-2" style="width: 33%; height: 500px;">
+                            <div class="card" style="height: 29%; margin-bottom: 1%;">
+                                <p class="fs-5 text-center">Total ingresado</p>
+                                <p class="text-center fw-bold text-success fs-1 m-0" id="totalBox"></p>
+                                <p class="m-0 fs-8 text-center">Pesos</p>
+                            </div>
+                            <div class="card p-2" id="listProductInfo" style="height: 70%; overflow-y: auto;"></div>
                         </div>
                         <div class="card p-3" style="height: 500px; width: 65%; ">
                             <p class="fs-5 text-center m-0">Productos mas vendidos</p>
@@ -123,7 +95,10 @@
         </div>
     </div>
 
-    <script src="../js/sales.js"></script>
+    
+    <script src="../js/bootstrap.bundle.min.js" ></script>
+    <script src="../js/chart.js"></script>
+    <script type="module" src="../js/sales.js"></script>
     
 </body>
 </html>

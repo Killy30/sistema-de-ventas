@@ -5,7 +5,8 @@ const productsSchema = new Schema({
     price: {type:Number},
     idcode: {type:Number},
     description: {type:String},
-    category: {type:String}
+    category: {type:String},
+    user: { type: Schema.Types.ObjectId, ref: 'User'},
 })
 
 module.exports = model('product', productsSchema)

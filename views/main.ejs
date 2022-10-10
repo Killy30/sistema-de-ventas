@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="../css/bootstrap.min.css" rel="stylesheet" >
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/table.css">
+    <link rel="stylesheet" href="../css/modall.css">
+    <title>Inicio</title>
+</head>
+<body>
+    <%-include ("./header")%>
+
+    <div class="modalBoxLog" id="modalBoxLog" style="display: none;">
+        <div class="card" style="width: 400px; margin: auto; ">
+            <div class="modal-header">
+                <p>Codigo del cajero/a</p>
+                <button type="button" class="btn close_modal">
+                    <span class="material-symbols-outlined close_modal">close</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p class="text-danger" id="error_code"></p>
+                <form action="">
+                    <div class="input-groupe">
+                        <input type="text" name="" class="form-control" id="code" placeholder="Introduce tu codigo">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="codeToLog" >Entrar</button>
+            </div>
+        </div>
+    </div>
+    
+
+    <div class="container" id="container">
+        <!-- Modal -->
+        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-1000">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="staticBackdropLabel">Nueva compra</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="" id="msg_err"></div>
+                        <div class="d-flex justify-content-md-between mb-3 form-groupe">
+                            <div class="input-group">
+                                <select id="mode_code" style="width: 150px;" >
+                                    <option value="automatico">Automatico</option>
+                                    <option value="manual">Manual</option>
+                                </select>
+                                <!-- <label for="codigo" class="col-form-label">Codigo:</label> -->
+                                <input type="number" class="form-control" style="width: 100px; margin-left: 10px;" id="codigo">
+                            </div>
+                            <button type="button" id="add" style="display:none;" class="btn btn-primary ms-3">Agregar</button>
+                            <a href="" id="factura" class="btn btn-primary inactive" style="margin-left: 200px;">Factura</a>
+                        </div>
+                        <div class="w-100" style="height: 500px;" id="list_product">
+                            <table class="table table_xzs">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Codigo</th>
+                                        <th scope="col">Nombre</th>
+                                        <th scope="col">Precio</th>
+                                        <th scope="col">Descripcion</th>
+                                        <th scope="col">Categoria</th>
+                                        <th scope="col">Accion</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="showListProduct"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="footer_data">
+                            <div class="mr-5 d-flex">
+                                <p class="fs-2" style="font-weight: bolder; margin: 0;">Total = </p>
+                                <p class="fs-2" style="width: 130px; font-weight: bolder; margin: 0 10px 0 10px;" id="total">0.00</p>
+                            </div>
+                            <div class="d-flex align-items-center fs-5">
+                                <label for="codigo" class="col-form-label fs-3" style="font-weight: bolder;">Pago:</label>
+                                <input type="number" class="form-control ml-3" style="width: 130px; height: 40px; margin-left: 10px;" id="pago">
+                            </div>
+                            <div class="mr-5 d-flex">
+                                <p class="fs-2" style="font-weight: bolder; margin: 0;">Cambio: </p>
+                                <p class="fs-2" style="width: 130px; font-weight: bolder; margin: 0 10px 0 10px;" id="cambio">0.00</p>
+                            </div>
+                        </div>
+                        <div class="footer_btn">
+                            <button type="button" class="btn btn-secondary" id="cancel" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="button" class="btn btn-primary" id="finich" >Finalizar</button>
+                            <button type="button" class="btn btn-danger" id="cerrar" data-bs-dismiss="modal">Cerrar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-between t_b">
+            <div class="sales">
+                <p class="fs-1 m-0">Nuevas ventas</p>
+            </div>
+            <div class="name_s">
+                <p class="fs-1 m-0" id="show_s_n"></p>
+            </div>
+        </div>
+
+        <div class="navbar navbar-dark mbg" >
+            <div class="container-fluid">
+                <select name="" id="listCashiers">
+                    <option value="no_data">Cajero/a</option>
+                </select>
+
+                <div>
+                    <button type="button" id="btn_open_sele" class="btn btn-outline-light" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                        <span class="material-symbols-outlined">add</span>
+                        Nueva venta
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card_table_body">
+            <table>
+                <thead>
+                    <tr class=" trbg">
+                        <th scope="col">#</th>
+                        <th scope="col">Codigo</th>
+                        <th scope="col">Productos</th>
+                        <th scope="col">Fecha</th>
+                        <th scope="col">Total</th>
+                        <th scope="col" class="">Accion</th>
+                    </tr>
+                </thead>
+                <tbody id="tbody"></tbody> 
+            </table>
+        </div>
+        <div class="card_table_fooder"></div>
+    </div>
+
+    <script type="module" src="../js/app.js"></script>
+    <script src="../js/bootstrap.bundle.min.js" ></script>
+</body>
+</html>

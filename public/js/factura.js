@@ -11,16 +11,28 @@ const getSale = async() =>{
     return res
 }
 
+const getUser = async() =>{
+    try {
+        let req = await fetch('/get-user')
+        let res = await req.json()
+        return res
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 const showInfo = async()=>{
 
     let sale = await getSale()
     let venta = sale.sale
+    let user = await getUser()
+
 
     let time = new Date(venta.date)
 
     fbody.innerHTML = `<div>
         <br>
-        <p class="titulo fs-1 fw-bold text-primary">Roscar Events</p>
+        <p class="titulo fs-1 fw-bold text-primary">${user.data.storeName}</p>
         <div class="card_address">
             <p>Santo dominsgo Este, Las americas Calle 2do #120</p>
         </div>

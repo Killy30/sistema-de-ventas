@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/config.css">
+    <title>Configuracion</title>
+</head>
+<body>
+    <%-include ("./header")%>
+    <div class="container pt-5">
+        <h2>Configuracion</h2>
+    
+        <div class="box_one">
+            <div class="titles_config">
+                <p class="fs-5 text-primary">Equipo de ventas (usuarios)</p>
+            </div>
+            <div class="form_list">
+                <form action="" id="" class="row">
+                    <div class="col">
+                        <input type="text" class="form-control" name="" placeholder="Nombre" id="name">
+                    </div>
+                    <div class="col">
+                        <input type="text" class="form-control" name="" placeholder="Apellido" id="lastName">
+                    </div>
+                    <div class="col">
+                        <input type="text" class="form-control" name="" placeholder="Cedula/Pasaporte" id="id_document">
+                    </div>
+
+                    <!-- <select name="" id="">
+                        <option value="">Cargo</option>
+                        <option value="">Cajero/a</option>
+    
+                    </select> -->
+                    <div class="col-md-1">
+                        <button type="button" class="btn btn-primary" id="btn_add_user">Add</button>
+                    </div>
+                </form>
+                <table class="table">
+                    <thead>
+                      <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Apellido</th>
+                        <th scope="col">Codigo</th>
+                        <th scope="col">Doc indentidad</th>
+                        <th scope="col">Accion</th>
+                      </tr>
+                    </thead>
+                    <tbody class="showListCashiers"></tbody>
+                </table>
+                <!-- <div class=""></div> -->
+            </div>
+        </div>
+
+        <div class="box_one">
+            <div class="titles_config">
+                <p class="fs-5 text-primary">Informacion de su negocio</p>
+            </div>
+            <div class="form_list">
+                <p class="fs-2" id="show_s_n"></p>
+                <form action="" class="row d-flex mb-4">
+                    <div class="input-groupe col-sm-10 mb-3">
+                        <input type="text" id="store_name" class="form-control" placeholder="Coloque aqui el nombre de su negocio">
+                    </div>
+                    <div class="input-groupe col-sm-10 mb-3">
+                        <input type="text" id="store_address" class="form-control" placeholder="Coloque aqui la direccion de su negocio">
+                    </div>
+                    <div class="input-groupe col-sm-2 ">
+                        <button type="button" id="btn_storeName" class="btn btn-primary">Enviar</button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+        
+    </div>
+
+    <script src="../js/config.js"></script>
+</body>
+</html>

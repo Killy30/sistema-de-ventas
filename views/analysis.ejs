@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/analysis.css">
+    <title>Analisis de datos</title>
+</head>
+<body>
+    <%-include ("./header")%>
+
+    <div class="container pt-5">
+        <h2>Analisis de ventas</h2>
+        <div class="cardx1">
+            <div class="box1">
+                <div class="tx">
+                    <p class="px">Ingreso total</p>
+                    <div class="t_i">
+                        <span class="material-symbols-outlined">attach_money</span>
+                        <p id="total" class="total"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="box1">
+                <div class="tx">
+                    <p class="px">Ventas</p>
+                    <p id="ventas" class="csxt"></p>
+                </div>
+            </div>
+            <div class="box1">
+                <div class="tx">
+                    <p class="px">Productos vendidos</p>
+                    <p id="more" class="csxt"></p>
+                </div>
+            </div>
+            <div class="box1">
+                <div class="tx">
+                    <p class="px">Productos no vendidos</p>
+                    <p class="less" id="less"></p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="navbar navbar-dark card_filter">
+            <p class="ps-3 mb-0 fs-5">Filtrar</p>
+            <div class="container-fluid">
+                <form class="d-flex">
+                    <select class="form-select" id="typeSearch">
+                        <option value="all">Todos</option>
+                        <option value="day">Dia</option>
+                        <option value="month">Mes</option>
+                        <!-- <option value="code">Codigo</option> -->
+                    </select>
+                    <div class="ms-5">
+                        <div class="inactive" id="day">
+                            <input class="form-control me-2" type="date" id="input_day" placeholder="Search" aria-label="Search">
+                            <button class="btn btn-primary" id="btn_day" type="button">Buscar</button>
+                        </div>
+                        <div class="inactive" id="month">
+                            <input class="form-control me-2" type="month" id="input_month" placeholder="Search" aria-label="Search">
+                            <button class="btn btn-primary" id="btn_month" type="button">Buscar</button>
+                        </div>
+                        <div class="inactive" id="code">
+                            <input class="form-control me-2" type="datetime-local" style="width: 230px;" id="input_code" placeholder="Search" aria-label="Search">
+                            <button class="btn btn-primary" id="btn_code" type="button">Buscar</button>
+                        </div>
+                    </div>
+                </form>
+                <!-- <div class="" id="card"></div> -->
+                <!-- <button type="button" id="btn_xcz" class="btn btn-outline-dark"  data-bs-toggle="modal" data-bs-target="#exampleModal"data-bs-whatever="@getbootstrap">Analisis de ventas</button> -->
+                <!-- <button class="btn btn-primary">Buscar</button> -->
+            </div>
+
+        </div>
+
+        <div class="box_chart">
+            <!-- <p class="fs-5 text-center m-0">Productos mas vendidos</p> -->
+            <div  style="width: 750px; height: 100%; ">
+                <canvas  id="productsGrafict"></canvas>
+            </div>
+        </div>
+
+        <div class="box_tables">
+            <div class="card_table_s">
+                <p class="fs-5 mb-2">Ventas</p>
+                <table class="table">
+                    <thead class="bg_hbgx">
+                        <tr>
+                            <th scope="col">Codigo</th>
+                            <th scope="col">Productos</th>
+                            <th scope="col">Fecha</th>
+                            <th scope="col">Total</th>
+                            <th scope="col">Accion</th>
+                          </tr>
+                    </thead>
+                    <tbody id="tbodySales"></tbody>
+                </table>
+            </div>
+
+            <div class="card_table_p">
+                <p class="fs-5 mb-2">Productos</p>
+                <table class="table">
+                    <thead class="bg_hbgx">
+                        <tr>
+                            <th scope="col">Nombre</th>
+                            <th scope="col">Codigo</th>
+                            <th scope="col">Precio</th>
+                            <th scope="col">Unidad</th>
+                            <th scope="col">Total</th>
+                          </tr>
+                    </thead>
+                    <tbody id="tbodyProducts"></tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="../js/chart.js"></script>
+    <script type="module" src="../js/analysis.js"></script>
+</body>
+</html>

@@ -1,0 +1,46 @@
+
+#container{
+    padding-top: 50px;
+}
+
+.modal-dialog {
+    max-width: 1000px  !important ;
+    margin: 30px auto;
+
+}
+#list_product{
+    overflow-y: auto;
+}
+.card_error{
+    width: 100%;
+    padding: 10px;
+}
+.err_color{
+    background-color: rgba(255, 23, 23, 0.692);
+}
+.success_color{
+    background-color: rgba(50, 255, 23, 0.692);
+}
+.inactive{
+    pointer-events: none;
+}
+
+#listCashiers{
+    height: 40px;
+}
+
+#btn_open_sele{
+    display: flex;
+    align-items: center;
+}
+
+.card_table_body{
+    height: calc(100% - 203px);
+}
+
+.footer_data{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+

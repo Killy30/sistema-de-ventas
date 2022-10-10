@@ -1,4 +1,7 @@
 const tbody = document.getElementById('tbody')
+import loader from "./loader.js"
+import fecha from './month_es.js'
+
 let salesAnalysis;
 let productsAnalysis = []
 
@@ -13,22 +16,18 @@ const getAllProducts = async() =>{
     let res = await req.json()
     return res
 }
-const loader = () =>{
-    return `<div class="loader">Loading...</div>`
-}
 
 const getData = async() =>{
     try {
         tbody.innerHTML = `${loader()}`
         let allSales = await getAllSales()
         let sales = allSales.sales
+
         salesAnalysis = sales
         showListSales(sales)
-        
     } catch (error) {
         console.log(error);
     }
-    
 }
 getData()
 
@@ -37,7 +36,7 @@ const showListSales = async(sales) =>{
     tbody.innerHTML = ""
 
     if(sales.length == 0){
-        return tbody.innerHTML = '<p class="not_found">Elementos no encontrados...</p>'
+        return noElement()
     }
     
     for(var i = sales.length - 1; i >= 0; i--){
@@ -47,13 +46,8 @@ const showListSales = async(sales) =>{
                 <td>${i+1}</td>
                 <td>${sales[i].code}</td>
                 <td>${sales[i].products.length}</td>
-                <td class="d-flex">
-                    <p style="margin-right: 5px;">
-                        ${fecha(time.getTime())} ${time.getDate()}/${time.getFullYear()}
-                    </p> 
-                    <p>
-                        ${time.getHours()}:${time.getMinutes()}
-                    </p>
+                <td> 
+                    ${fecha(time.getTime())} ${time.getDate()}/${time.getFullYear()} ${time.getHours()}:${time.getMinutes()}   
                 </td>
                 <td>${sales[i].totalPrice}</td>
                 <td class="text-end">
@@ -69,33 +63,64 @@ const showListSales = async(sales) =>{
 const getAnalysis = async()=>{
     
     let total = salesAnalysis.reduce((acc, t) => acc = acc + t.totalPrice ,0)
-
     productsAnalysis.splice(0, productsAnalysis.length)
+    
     
     salesAnalysis.forEach( sale => {
         productsAnalysis.push(...sale.products)
     })
+    // console.log(productsAnalysis);
 
-    var repetidos = {};
-    var repete = []
+    var repete_object = {};
+    var repete_array = []
 
     productsAnalysis.forEach(product =>{
-        repetidos[product] = (repetidos[product] || 0) + 1;
+        repete_object[product] = (repete_object[product] || 0) + 1;
     });
 
-    Object.entries(repetidos).forEach(([key, value]) => {
+    Object.entries(repete_object).forEach(([key, value]) => {
         let obt = {}
         obt[key] = value
-        repete.push(obt)
+        repete_array.push(obt)
     });
 
-    let maxValue = repete.sort((a, b) => Object.values(b) - Object.values(a))
+    // console.log(repete_object);
+    console.log(repete_array);
+
+    let maxValue = repete_array.sort((a, b) => Object.values(b) - Object.values(a))
 
     let data = await getAllProducts()
 
+    console.log(data);
+    // console.log(maxValue[0]);
+    // console.log(Object.keys(maxValue[0])); sales system and business management
+
+    //get all the products that have been sold with his names and his prices
+    let products_info = [];
+    repete_array.forEach(product_obj =>{
+        let key = Object.keys(product_obj)
+        let value = Object.values(product_obj)
+      
+        let theProduct = data.my_products.find(product => product._id == key[0])
+        console.log(theProduct);
+        let p = {
+            name: theProduct.name,
+            price: theProduct.price,
+            soldUnits: value[0],
+            soldTotal: (parseInt(value[0]) * theProduct.price).toFixed(2)
+        }
+        products_info.push(p)
+    })
+
+    console.log(products_info);
+
     if(productsAnalysis.length > 1){
-        let maxProduct1 = data.products.find(product => product._id == Object.keys(maxValue[0]) || 0)
-        let maxProduct2 = data.products.find(product => product._id == Object.keys(maxValue[1]) || 0)
+        let firstID = Object.keys(maxValue[0]) || 0
+        let secondID = Object.keys(maxValue[1] || {}) || 0
+        
+        let maxProduct1 = data.my_products.find(product => product._id == firstID) || {};
+        let maxProduct2 = data.my_products.find(product => product._id == secondID) || {};
+        
 
         let objProducts = {
             maxProduct1: maxProduct1 || 'No product', 
@@ -104,7 +129,7 @@ const getAnalysis = async()=>{
             maxValue2: Object.values(maxValue[1]) || 0, 
             total: total || 0
         }
-        getGrafict(objProducts)
+        getGrafict(objProducts, products_info)
 
 
     }else if(productsAnalysis.length == 1){
@@ -117,7 +142,7 @@ const getAnalysis = async()=>{
             maxValue2: 0, 
             total: total || 0
         }
-        getGrafict(objProducts)
+        getGrafict(objProducts, products_info)
 
     }else if(productsAnalysis.length == 0){
 
@@ -128,14 +153,14 @@ const getAnalysis = async()=>{
             maxValue2: 0, 
             total: 0
         }
-        getGrafict(objProducts)
-
+        getGrafict(objProducts, products_info)
     }
 }
 
+
 //grafica
 let chart;
-const getGrafict = async(objProducts) =>{
+const getGrafict = async(objProducts, products_info) =>{
     const allSales = await getAllSales()
     const productsGrafict = document.getElementById('productsGrafict').getContext('2d')
     
@@ -143,8 +168,19 @@ const getGrafict = async(objProducts) =>{
         chart.destroy();
     }
     const totalBox = document.getElementById('totalBox')
+    const listProductInfo = document.getElementById('listProductInfo')
+
 
     totalBox.innerText = objProducts.total.toFixed(2)
+
+    products_info.forEach(product => {
+        listProductInfo.innerHTML += `<div class="card mb-1 p-2">
+            <p>Nombre: ${product.name}</p>
+            <p>Precio: ${product.price}</p>
+            <p>Unidad vendida: ${product.soldUnits}</p>
+            <p>Total de venta: ${product.soldTotal}</p>
+        </div>`
+    })
 
     const productLabels = [objProducts.maxProduct1.name, objProducts.maxProduct2.name];
 
@@ -169,26 +205,6 @@ const getGrafict = async(objProducts) =>{
     chart = new Chart(productsGrafict, config);
 }
 
-
-
-function fecha(date){
-    var d = new Date(date);
-
-    var month = new Array();
-    month[0] = "Enero";
-    month[1] = "Febrero";
-    month[2] = "Marzo";
-    month[3] = "Abril";
-    month[4] = "Mayo";
-    month[5] = "Junio";
-    month[6] = "Julio";
-    month[7] = "Agosto";
-    month[8] = "Septiembre";
-    month[9] = "Octubre";
-    month[10] = "Noviembre";
-    month[11] = "Diciembre";
-    return month[d.getMonth()];
-}
 
 const typeSearch = document.getElementById('typeSearch')
 const btn_day = document.getElementById('btn_day')
@@ -304,10 +320,7 @@ const getCodeToSearch = async(e) => {
     }
 }
 
-
 // 
-
-
 
 const btn_xcz = document.getElementById('btn_xcz')
 
@@ -315,19 +328,7 @@ btn_day.addEventListener('click', getDateToSearch)
 btn_month.addEventListener('click', getMonthToSearch)
 btn_code.addEventListener('click', getCodeToSearch)
 
-btn_xcz.addEventListener('click', e => {
 
-    var array = [4,1,2,1,1,3,45,13,42,52,45,25,13,40,13,2,4,4,4,4];
-
-    var repetidos = {};
-
-    array.forEach(function(numero){
-        repetidos[numero] = (repetidos[numero] || 0) + 1;
-        // console.log(repetidos[numero] = (repetidos[numero] || 0) + 1);
-    });
-
-    getAnalysis()
-})
 
 typeSearch.addEventListener('change', e =>{
     selectType(typeSearch.value)
