@@ -47,3 +47,4 @@ function yesId(x){
 }
 
 module.exports = yesId
+// export default yesId

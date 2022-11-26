@@ -18,8 +18,6 @@ const showMyTeam = async() =>{
     let data = await getUser()
     let cashiers = data.data.cashiers
 
-    console.log(cashiers);
-
     showListCashiers.innerHTML = ''
     cashiers.forEach((cashier, i) => {
         showListCashiers.innerHTML += `<tr>
@@ -29,7 +27,14 @@ const showMyTeam = async() =>{
             <td>${cashier.id_code}</td>
             <td>${cashier.id_document}</td>
             <td>
-                <a href="" data-dt="${cashier._id}" class="btn btn-danger delete">Eliminar</a>
+                <a href="" data-id_status="${cashier._id}" class="btn ${cashier.status ? 'text-success' :'text-danger' } status">
+                    ${(cashier.status) ? 'Activo' : 'Inactivo' }
+                </a>
+            </td>
+            <td>
+                <button type="button" data-id_detail="${cashier._id}" class="btn text-primary detail" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    Ver detalle
+                </button>
             </td>
         </tr>`
     });
@@ -41,13 +46,17 @@ const createUser = async() =>{
     const name = document.getElementById('name')
     const lastName = document.getElementById('lastName')
     const id_document = document.getElementById('id_document')
+    const tel = document.getElementById('tel')
+    const email = document.getElementById('email')
 
     if(name.value.trim() == "" && lastName.value.trim() == "") return false
 
     let data = {
         name: name.value,
         lastName: lastName.value, 
-        id_document: id_document.value
+        id_document: id_document.value,
+        tel: tel.value,
+        email: email.value
     }
 
     try {
@@ -59,6 +68,10 @@ const createUser = async() =>{
             }
         })
         let res = await req.json()
+        console.log(res.msg);
+        if(!res.conFirm){
+            return alert(res.msg)
+        }
         showMyTeam()
         name.value = ""
         lastName.value = ""
@@ -68,10 +81,10 @@ const createUser = async() =>{
     }
 }
 
-const deleteUsers = async(id) =>{
+const changeStatus = async(id) =>{
     let data = {id}
     try {
-        let req = await fetch('/delete-cashier',{
+        let req = await fetch('/status-cashier',{
             method: "POST", 
             body: JSON.stringify(data),
             headers: {
@@ -80,6 +93,58 @@ const deleteUsers = async(id) =>{
         })
         let res = await req.json()
         showMyTeam()
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+const box_detail = document.getElementById('show_detail_cashier')
+const showCashierDetail = async(id)=>{
+
+    box_detail.innerHTML = ''
+
+    try {
+        let req = await fetch(`/cashier-detail/${id}`)
+        let res = await req.json()
+
+        console.log(res);
+        const cashier = res.cashier
+
+        box_detail.innerHTML = `<div>
+            <div class="card_info">
+                <div><p class="fw-bolder">Nombre</p></div>
+                <div><p>${cashier.name}</p></div>
+            </div>
+            <div class="card_info">
+                <div><p class="fw-bolder">Apellido</p></div>
+                <div><p>${cashier.lastName}</p></div>
+            </div>
+            <div class="card_info">
+                <div><p class="fw-bolder">Codigo</p></div>
+                <div><p>${cashier.id_code}</p></div>
+            </div>
+            <div class="card_info">
+                <div><p class="fw-bolder">Documento</p></div>
+                <div><p>${cashier.id_document}</p></div>
+            </div>
+            <div class="card_info">
+                <div><p class="fw-bolder">Numero</p></div>
+                <div><p>${cashier.tel ? cashier.tel : '-'}</p></div>
+            </div>
+            <div class="card_info">
+                <div><p class="fw-bolder">Correo</p></div>
+                <div><p>${cashier.email ? cashier.email : '-'}</p></div>
+            </div>
+            <div class="card_info">
+                <div><p class="fw-bolder">Ventas</p></div>
+                <div><p>${cashier.sales.length}</p></div>
+            </div>
+            <div class="card_info">
+                <div><p class="fw-bolder">Estado</p></div>
+                <div><p>${cashier.status ? 'Activo' : 'Inactivo'}</p></div>
+            </div>
+        </div>`
+
     } catch (error) {
         console.log(error);
     }
@@ -105,11 +170,11 @@ const storeName = async() =>{
         let res = await req.json()
         
         showStoreName()
-        let error = 'Por favor agregue productos antes de realizar la compra...'
-        errorMessage(error,'alert alert-succes')
+        let msg = 'Los datos se han enviado exitosamente...'
+        errorMessage(msg,'alert alert-success')
         
     } catch (error) {
-        
+        console.log(error);
     }
 }
 
@@ -127,13 +192,19 @@ showStoreName()
 
 document.getElementById('btn_add_user').addEventListener('click', createUser)
 document.getElementById('btn_storeName').addEventListener('click', storeName)
+
 document.querySelector('.form_list').addEventListener('click', e =>{
     
-    if(e.target.classList.contains('delete') ){
+    if(e.target.classList.contains('status')){
         e.preventDefault()
-        if(confirm('Deseas eliminar este usuario?')){
-            let id = e.target.dataset.dt
-            deleteUsers(id)
+        if(confirm('Deseas cambiar el estado de este usuario?')){
+            let id = e.target.dataset.id_status
+            changeStatus(id)
         }
     } 
+    if(e.target.classList.contains('detail')){
+        e.preventDefault()
+        let id = e.target.dataset.id_detail
+        showCashierDetail(id)
+    }
 })

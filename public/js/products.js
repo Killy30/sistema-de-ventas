@@ -2,18 +2,11 @@ const tbody = document.getElementById('tbody')
 const input_search = document.getElementById('input_search')
 const btn_update = document.getElementById('btn_update')
 const createP = document.getElementById('createP')
+const countProducts = document.getElementById('countProducts')
 
 let productsXTV
 
 import loader from "./loader.js"
-
-// document.addEventListener('DOMContentLoaded', e=>{
-//     let h = innerHeight - 65;
-//     document.querySelector('#container').style.height = h+'px'
-
-//     let t = document.querySelector('.card_table_body').offsetHeight - 41
-//     tbody.style.height = t+"px"
-// })
 
 const getAllProducts = async() =>{
     try {
@@ -30,15 +23,15 @@ const getAllProducts = async() =>{
 const showAllProducts = async() =>{
    
     let data = await getAllProducts()
-
+    let the_products = data.my_products
+    countProducts.innerText = 'Productos: '+the_products.length
     productsXTV = data
     
     tbody.innerHTML = ""
-    if(data.my_products.length == 0){
+    if(the_products.length == 0){
         return noElement()
     }
-    let the_products = data.my_products.reverse()
-
+    
     the_products.forEach(product => {
         tbody.innerHTML += `
             <tr>
@@ -47,17 +40,19 @@ const showAllProducts = async() =>{
                 <td>${product.price}</td>
                 <td>${product.description}</td>
                 <td>${product.category}</td>
-                <td class="text-end">
-                    <button type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop" data-id="${product._id}" class="btn btn-primary mr-2 edit">
+                <td >
+                    <button type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop" data-id="${product._id}" class="btn text-primary mr-2 edit">
                         Editar
                     </button>
-                    <button type="button" data-id="${product._id}" class="btn btn-danger delete">
-                        Eliminar
+                    <button type="button" data-id="${product._id}" class="btn ${product.status ? 'text-success' : 'text-danger'} status">
+                        ${product.status ? 'Activado' : 'Desactivado'}
                     </button>
                 </td>
             </tr>
         `
     });
+
+    
 }
 
 showAllProducts()
@@ -82,12 +77,12 @@ const searchProducts = async() =>{
                     <td>${product.price}</td>
                     <td>${product.description}</td>
                     <td>${product.category}</td>
-                    <td class="text-end">
-                        <button type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop" data-id="${product._id}" class="btn btn-primary mr-2 edit">
+                    <td>
+                        <button type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop" data-id="${product._id}" class="btn text-primary mr-2 edit">
                             Editar
                         </button>
-                        <button type="button" data-id="${product._id}" class="btn btn-danger delete">
-                            Eliminar
+                        <button type="button" data-id="${product._id}" class="btn ${product.status ? 'text-success' : 'text-danger'} status">
+                            ${product.status ? 'Activado' : 'Desactivado'}
                         </button>
                     </td>
                 </tr>
@@ -214,7 +209,6 @@ const updateProduct = async(e) =>{
         }
         
         showAllProducts()
-        // window.location.href = 'http://localhost:8080/productos'
 
     }else if(pro.length == 1 && pro.some(item => item._id == _id)){
         try {
@@ -230,7 +224,6 @@ const updateProduct = async(e) =>{
             console.log(error);
         }
         showAllProducts()
-        // window.location.href = 'http://localhost:8080/productos'
     }else{
         alert('Este codigo ya existe en la base de datos, por favor agregue otro codigo');
     }
@@ -248,10 +241,10 @@ table.addEventListener('click', async(e) =>{
     }
 
     //delete product
-    if(e.target.classList.contains('delete')){
+    if(e.target.classList.contains('status')){
         let id = e.target.dataset.id
-        if(confirm('Deseas eliminar este producto')){
-            let req = await fetch(`/delete-product/${id}`)
+        if(confirm('Deseas cambiar el estado de este producto')){
+            let req = await fetch(`/change-status-product/${id}`)
             let res = await req.json()
             showAllProducts()
         }

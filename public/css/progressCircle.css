@@ -1,0 +1,30 @@
+
+
+.progress2{
+    fill: none;
+    stroke: var(--gris);
+    stroke-width: 20;
+}
+.progress{
+    fill: none;
+    stroke-width: 25;
+    stroke: rgb(22, 110, 203);
+    stroke-dasharray: 630;
+    stroke-dashoffset: 630;
+    transform: rotate(-90deg);
+    transform-origin: center;
+    stroke-linecap: round;
+}
+.xp{
+    position: relative;
+    width: 250px;
+    height: 250px;
+}
+.num_progress{
+    position: absolute;
+    /* position: relative; */
+    margin: 0;
+    top: 101px;
+    left: 79.5px;
+    font-weight: bolder;
+}

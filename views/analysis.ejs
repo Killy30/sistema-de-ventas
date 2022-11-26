@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../css/analysis.css">
+    <link rel="stylesheet" href="../css/progressCircle.css">
     <title>Analisis de datos</title>
 </head>
 <body>
@@ -17,28 +18,50 @@
                 <div class="tx">
                     <p class="px">Ingreso total</p>
                     <div class="t_i">
-                        <span class="material-symbols-outlined">attach_money</span>
-                        <p id="total" class="total"></p>
+                        <div class="_icons one">
+                            <span class="material-symbols-outlined">attach_money</span>
+                        </div>
+                        <p id="total" class="csxt"></p>
                     </div>
                 </div>
+                <div class="deco"></div>
             </div>
             <div class="box1">
                 <div class="tx">
-                    <p class="px">Ventas</p>
-                    <p id="ventas" class="csxt"></p>
+                    <p class="px">Cantidad de ventas</p>
+                    <div class="t_i">
+                        <div class="_icons two">
+                            <span class="material-symbols-outlined">sell</span>
+                        </div>
+                        <p id="ventas" class="csxt"></p>
+                    </div>
                 </div>
+                <div class="deco"></div>
             </div>
             <div class="box1">
                 <div class="tx">
                     <p class="px">Productos vendidos</p>
-                    <p id="more" class="csxt"></p>
+                    <div class="t_i">
+                        <div class="_icons three">
+                            <span class="material-symbols-outlined">shopping_cart</span>
+                        </div>
+                        <p id="more" class="csxt"></p>
+                    </div>
                 </div>
+                <div class="deco"></div>
             </div>
             <div class="box1">
                 <div class="tx">
                     <p class="px">Productos no vendidos</p>
-                    <p class="less" id="less"></p>
+                    <div class="t_i">
+                        <div class="_icons four">
+                            <span class="material-symbols-outlined">warning</span>
+                        </div>
+                        <p class="csxt" id="less"></p>
+                    </div>
+                    
                 </div>
+                <div class="des"></div>
             </div>
         </div>
         
@@ -76,32 +99,33 @@
 
         <div class="box_chart">
             <!-- <p class="fs-5 text-center m-0">Productos mas vendidos</p> -->
-            <div  style="width: 750px; height: 100%; ">
+            <div class="card_chart"  style="width: 680px; height: 100%; ">
+                <p class="fs-5 ">Ingresos de ventas al mes</p>
                 <canvas  id="productsGrafict"></canvas>
             </div>
+            <div class="grow"></div>
         </div>
 
         <div class="box_tables">
             <div class="card_table_s">
-                <p class="fs-5 mb-2">Ventas</p>
-                <table class="table">
-                    <thead class="bg_hbgx">
+                <p class="fs-5 mb-2 fw-bolder">Ventas</p>
+                <table class="">
+                    <thead>
                         <tr>
                             <th scope="col">Codigo</th>
                             <th scope="col">Productos</th>
                             <th scope="col">Fecha</th>
                             <th scope="col">Total</th>
-                            <th scope="col">Accion</th>
-                          </tr>
+                        </tr>
                     </thead>
                     <tbody id="tbodySales"></tbody>
                 </table>
             </div>
 
             <div class="card_table_p">
-                <p class="fs-5 mb-2">Productos</p>
-                <table class="table">
-                    <thead class="bg_hbgx">
+                <p class="fs-5 mb-2 fw-bolder">Productos</p>
+                <table class="">
+                    <thead>
                         <tr>
                             <th scope="col">Nombre</th>
                             <th scope="col">Codigo</th>

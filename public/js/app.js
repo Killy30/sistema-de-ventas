@@ -1,12 +1,18 @@
 const showListProduct = document.getElementById('showListProduct')
 const tbody = document.getElementById('tbody')
 const listCashiers = document.getElementById('listCashiers')
-const card_fooder_t = document.querySelector('.card_table_fooder')
+const countSales = document.querySelector('#countSales')
+const modalBoxLog = document.querySelector('#modalBoxLog')
+const codeToLog = document.querySelector('#codeToLog')
 
 import errorMessage from "./errorMSG.js"
 import loader from "./loader.js"
+import fecha from "./month_es.js"
+
 
 let listProducts = []
+let dataCasheir;
+
 
 const getSales = async() =>{
     try {
@@ -43,35 +49,33 @@ showStoreName()
 const showListSales = async() =>{
     let sale = await getSales()
     let sales = sale.sales_today
+    countSales.innerText = `Ventas: ${sales.length}` 
 
     tbody.innerHTML = ""
-
     if(sales.length == 0){
         return noElement()
     }
     for(var i = sales.length - 1; i >= 0; i--){
         let time = new Date(sales[i].date)
         tbody.innerHTML += `
-            <tr class="text-white">
-                <td>${i+1}</td>
+            <tr>
                 <td>${sales[i].code}</td>
                 <td>${sales[i].products.length}</td>
                 <td>
                     <p>
                         ${fecha(time.getTime())} ${time.getDate()}/${time.getFullYear()} ${time.getHours()}:${time.getMinutes()}
                     </p> 
-                    
                 </td>
                 <td>${sales[i].totalPrice}</td>
-                <td class="">
-                    <a href="/factura/${sales[i]._id}" data-id="${sales[i]._id}" class="btn">
+                <td>
+                    <a href="/factura/${sales[i]._id}" data-id="${sales[i]._id}" class="btn text-primary">
                         Ver detalle
                     </a>
                 </td>
             </tr>
         `
     }
-    card_fooder_t.innerHTML = `<p class="tftext">Ventas: ${sales.length}</p>` 
+    
 }
 showListSales()
 
@@ -80,16 +84,19 @@ const showListCashiers_select = async() =>{
 
     let cashiers = user.data.cashiers
 
-    listCashiers.innerHTML = "<option value='no_data'>Cajero/a</option>"
-    cashiers.forEach(cashier =>{
-        listCashiers.innerHTML += `
-        <option data-code="${cashier.id_code}" data-act="${cashier.active}" id="selectOption" value="${cashier._id}">
-            ${cashier.name} ${cashier.lastName}
-        </option>`
+    listCashiers.innerHTML = '<option data-code="404" data-act="-1" data-i="-1" value="null">Cajero/a</option>'
+    cashiers.forEach((cashier, i) =>{
+        if(cashier.status){
+            listCashiers.innerHTML += `
+            <option data-code="${cashier.id_code}" data-act="${cashier.status}" data-i="${i}" id="selectOption" value="${cashier._id}">
+                ${cashier.name} ${cashier.lastName}
+            </option>`
+        }
     })
     for(let i = 0; i < listCashiers.options.length; i++){
-        let active = listCashiers.options[i].getAttribute('data-act')
-        if(active === 'true'){
+        let status = listCashiers.options[i].getAttribute('data-act')
+        let code = listCashiers.options[i].getAttribute('data-code')
+        if(code == localStorage.getItem('code')){
             listCashiers.options[i].selected = true;
         }
     }
@@ -120,7 +127,6 @@ const getCodeProduct = async() =>{
 }
 
 const showProducts = () =>{
-
     showListProduct.innerHTML = ''
     const pt = listProducts.reduce((acc, p) => acc = acc + p.price ,0)
  
@@ -140,6 +146,8 @@ const showProducts = () =>{
             </tr>
         `
     }
+    let x = showListProduct.scrollHeight
+    showListProduct.scrollBy(0, x);
     todalValue()
 }
 
@@ -147,6 +155,13 @@ const todalValue = () =>{
     let totalPrice = listProducts.reduce((acc, p) => acc = acc + p.price ,0)
     let total = document.getElementById('total')
     total.innerText = totalPrice.toFixed(2)
+}
+
+const clean_list_products = (e) =>{
+    e.preventDefault()
+    listProducts.splice(0, listProducts.length)
+    showListProduct.innerHTML = ''
+    document.getElementById('total').innerText = '0.00'
 }
 
 const pagoEfectivo = async(e) =>{
@@ -172,12 +187,16 @@ const pagoEfectivo = async(e) =>{
 
     let cambioValue = pago - totalPrice
     cambio.innerText = cambioValue.toFixed(2)
+    let cashier_id = localStorage.getItem('id')
+
+    console.log(cashier_id);
     
     let data = {
         products:listProducts,
         totalPrice: totalPrice.toFixed(2),
         pago: pago,
-        cambio: cambioValue.toFixed(2)
+        cambio: cambioValue.toFixed(2),
+        cashier_id: cashier_id
     }
 
     try {
@@ -195,7 +214,10 @@ const pagoEfectivo = async(e) =>{
         document.getElementById('finich').disabled = true
         document.getElementById('cancel').disabled = true
         document.getElementById('cerrar').disabled = false
+
+        document.getElementById('clean_list').classList.add('inactive')
         const factura = document.getElementById('factura')
+        
         factura.classList.remove('inactive')
         factura.href = `/factura/${res.id}`
         errorMessage(res.msg,'alert alert-success')
@@ -229,6 +251,7 @@ const openSele = () => {
     setTimeout(() =>{
         document.getElementById('codigo').focus()
     },500)
+    document.getElementById('clean_list').classList.remove('inactive')
 }
 
 const closeSales = () =>{
@@ -249,30 +272,12 @@ const closeSales = () =>{
 }
 
 
-function fecha(date){
-    var d = new Date(date);
-    
-    var month = new Array();
-    month[0] = "Enero";
-    month[1] = "Febrero";
-    month[2] = "Marzo";
-    month[3] = "Abril";
-    month[4] = "Mayo";
-    month[5] = "Junio";
-    month[6] = "Julio";
-    month[7] = "Agosto";
-    month[8] = "Septiembre";
-    month[9] = "Octubre";
-    month[10] = "Noviembre";
-    month[11] = "Diciembre";
-    return month[d.getMonth()];
-}
-
 document.getElementById('cancel').addEventListener('click', cancelSele)
 document.getElementById('btn_open_sele').addEventListener('click', openSele)
 document.getElementById('finich').addEventListener('click', pagoEfectivo)
 document.getElementById('add').addEventListener('click', getCodeProduct)
 document.getElementById('cerrar').addEventListener('click', closeSales)
+document.getElementById('clean_list').addEventListener('click', clean_list_products)
 
 let change_status = null
 
@@ -303,21 +308,22 @@ document.getElementById('codigo').addEventListener('keydown', e =>{
     }
 })
 
-const modalBoxLog = document.querySelector('#modalBoxLog')
-const codeToLog = document.querySelector('#codeToLog')
-
-let dataCasheir;
 
 listCashiers.addEventListener('change', async(e) =>{
-    let data = {id:e.target.value}
+
+    let id = e.target.value
     let code = e.target.options[e.target.selectedIndex].dataset.code
+   
+    dataCasheir = {id, code}
 
-    dataCasheir = {data, code}
-
-    if(data.id !== 'no_data'){
+    if(code !== '404'){
         modalBoxLog.style.display = "block"
     }else{
-        changeCasheir(data)
+        if(confirm('Seguro que quieres salir?')){
+            return changeCasheir(dataCasheir)
+        }else{
+            return showListCashiers_select()
+        }
     }
 })
 
@@ -328,7 +334,7 @@ codeToLog.addEventListener('click', e =>{
     if(code.value.trim() == "") return false
     
     if(dataCasheir.code == code.value){
-        changeCasheir(dataCasheir.data)
+        changeCasheir(dataCasheir)
         code.value = ''
         modalBoxLog.style.display = "none"
         document.getElementById('error_code').innerText = ""
@@ -336,7 +342,6 @@ codeToLog.addEventListener('click', e =>{
         document.getElementById('error_code').innerText = `El codigo ${code.value} es incorrecto`
         code.value = ''
     }
-
 })
 
 modalBoxLog.addEventListener('click', e =>{
@@ -350,15 +355,16 @@ modalBoxLog.addEventListener('click', e =>{
 
 const changeCasheir = async(data) =>{
     try {
-        let req = await fetch('user-active', {
-            method:'POST',
-            body:JSON.stringify(data),
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
-        let res = await req.json()
-        showListCashiers_select()
+        if(data.code === '404'){
+            localStorage.setItem('code', data.code)
+            localStorage.removeItem('id')
+            showListCashiers_select()
+        }else{
+            localStorage.setItem('code', data.code)
+            localStorage.setItem('id', data.id)
+            showListCashiers_select()
+        }
+        
     } catch (error) {
         console.log(error);
     }

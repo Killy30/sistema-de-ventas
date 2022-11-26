@@ -8,8 +8,20 @@
     margin: 30px auto;
 
 }
-#list_product{
+#showListProduct{
+    height: 455px;
+    display: block;
     overflow-y: auto;
+}
+#thead tr{
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}
+#showListProduct tr{
+    display: table;
+    width: 100%;
+    table-layout: fixed;
 }
 .card_error{
     width: 100%;
@@ -32,10 +44,6 @@
 #btn_open_sele{
     display: flex;
     align-items: center;
-}
-
-.card_table_body{
-    height: calc(100% - 203px);
 }
 
 .footer_data{

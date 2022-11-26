@@ -34,7 +34,7 @@ const showInfo = async()=>{
         <br>
         <p class="titulo fs-1 fw-bold text-primary">${user.data.storeName}</p>
         <div class="card_address">
-            <p>Santo dominsgo Este, Las americas Calle 2do #120</p>
+            <p>${user.data.storeAddress}</p>
         </div>
         <div class="card_code d-flex">
             <p class="v_1 me-3">Codigo:</p>
@@ -56,7 +56,7 @@ const showInfo = async()=>{
             <thead>
                 <tr class="bg-dark text-white">
                     <th scope="col" class="v_1">Descripcion</th>
-                    <th scope="col" class="v_2 text-end">Valor</th>
+                    <th scope="col" class="v_2 text-end">precio</th>
                 </tr>
             </thead>
             <tbody>

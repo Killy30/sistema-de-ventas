@@ -7,7 +7,9 @@ const cashierSchema = new Schema({
     id_document: {type: String},
     name: {type: String},
     lastName: {type: String},
-    active: {type: Boolean, default: false},
+    tel: {type: Number},
+    email: {type: String},
+    status: {type: Boolean, default: false},
     sales: [{type: Schema.Types.ObjectId, ref: 'sale'}],
     user: {type: Schema.Types.ObjectId, ref: 'User'}
 })

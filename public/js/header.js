@@ -1,7 +1,6 @@
 
 const navbar_nav = document.querySelector('.navbar_nav')
 
-
 document.addEventListener('DOMContentLoaded', e=>{
     let h = innerHeight - 65;
     document.querySelector('#container').style.height = h+'px'
@@ -21,3 +20,5 @@ document.addEventListener('click', e =>{
 const noElement = () =>{
     return tbody.innerHTML = '<p class="not_found">No hay elementos aun...</p>'
 }
+
+

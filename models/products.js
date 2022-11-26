@@ -6,6 +6,7 @@ const productsSchema = new Schema({
     idcode: {type:Number},
     description: {type:String},
     category: {type:String},
+    status: {type: Boolean, default: true},
     user: { type: Schema.Types.ObjectId, ref: 'User'},
 })
 

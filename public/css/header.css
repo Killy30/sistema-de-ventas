@@ -4,14 +4,20 @@
     --blue_two: #1E4DEB;
     --black_one: #262626;
     --black_two: #303030;
+    --gris: #dcdcdc;
+}
+
+body{
+    background-color: #f1f1f6;
 }
 
 header{
     box-shadow: rgba(33, 35, 38, 0.1) 0px 10px 10px -10px;
     height: 65px;
+    background-color: #fff;
 }
 .logo{
-    width: 120px;
+    width: 150px;
 }
 .logo img{
     width: 100%;

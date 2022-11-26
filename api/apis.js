@@ -3,7 +3,7 @@ const User = require('../models/user')
 const Sale = require('../models/sales')
 const Cashier = require('../models/cashiers')
 const yesId = require('../yesId')
-const { findById } = require('../models/products')
+
 
 module.exports = (app) =>{
 
@@ -41,17 +41,24 @@ module.exports = (app) =>{
         res.json({sale})
     })
     
-    app.get('/delete-product/:id', async(req, res) =>{
+    app.get('/change-status-product/:id', async(req, res) =>{
         let id = req.params.id
-        const user = req.user
-        let product = await Product.findByIdAndDelete({_id:id})
-        let p_id = user.products.indexOf(id)
+        
+        try {
+            let product = await Product.findById({_id: id})
 
-        if(p_id >= 0){
-            user.products.splice(p_id, 1)
-            await user.save()
+            if(product.status){
+                product.status = false
+            }else{
+                product.status = true
+            }
+
+            await product.save()
+            res.json({msg:"El estado del producto fue actualizado"})
+        } catch (error) {
+            console.log(error);
+            res.json({msg:"Un problema ha ocurrido"})
         }
-        res.json({msg:"Producto eliminado"})
     })
     
     app.get('/update-product/:id', async(req, res) =>{
@@ -66,10 +73,10 @@ module.exports = (app) =>{
 
         let user = await User.findById({_id: _user._id}).populate('products')
 
-        let product = user.products.find((product)=> product.idcode == code)
+        let product = user.products.find(product => product.idcode == code)
     
-        if(product == null){
-            return res.json({status: false, msg: `Este codigo ${code} no existe en la base de datos`})
+        if(product == null || product.status == false){
+            return res.json({status: false, msg: `Este producto ${code} no existe en la base de datos o esta desactivado`})
         }else{
             return res.json({product})
         }
@@ -96,7 +103,6 @@ module.exports = (app) =>{
     
     app.post('/update-product', async(req, res) =>{
         let data = req.body
-        const products = await Product.find()
     
         await Product.updateOne({_id: data._id}, {
             $set: {
@@ -113,36 +119,29 @@ module.exports = (app) =>{
     app.post('/new-sale', async(req, res) =>{
         const user = req.user
         let data = req.body
-        const sales = await Sale.find()
+
+        const user_data = await User.findById({_id: user._id}).populate('sales')
     
         function getCode() {
-            if(sales.some(sale => sale.code === yesId(10))){
+            if(user_data.sales.some(sale => sale.code === yesId(10))){
                 return getCode()
             }
             return yesId(10)
-        }    
+        }   
 
-        let cashier_id;
-        const cashiers = await User.findById({_id: user._id}).populate('cashiers')
-        cashiers.cashiers.forEach(async(cashier) =>{
-            if(cashier.active === true){
-                cashier_id = cashier._id
-            }
-        })
-    
         const newSale = new Sale()
         newSale.code = getCode()
         newSale.totalPrice = data.totalPrice
         newSale.pay = data.pago
         newSale.cambio = data.cambio
         newSale.user = user
-    
         data.products.forEach(element => {
             newSale.products.push(element)
         });
 
-        if(cashier_id !== undefined){
-            const cashier = await Cashier.findOne({_id: cashier_id})
+        
+        if(data.cashier_id !== null){
+            const cashier = await Cashier.findOne({_id: data.cashier_id})
             newSale.cashier = cashier
             cashier.sales.push(newSale)
             await cashier.save()
@@ -157,19 +156,23 @@ module.exports = (app) =>{
 
         let data = req.body
         const user = req.user
-        const cashier = await Cashier.find()
+        const user_cashier = await User.findById({_id: user._id}).populate('cashiers')
+
+        
 
         function getCodeId() {
-            if(cashier.some(cashier => cashier.id_code === yesId(6))){
+            if(user_cashier.cashiers.some(cashier => cashier.id_code === yesId(5))){
                 return getCodeId()
             }
-            return yesId(6)
+            return yesId(5)
         }
     
         const newCashier = new Cashier()
         newCashier.name = data.name
         newCashier.lastName = data.lastName
         newCashier.id_document = data.id_document
+        newCashier.tel = data.tel
+        newCashier.email = data.email
         newCashier.id_code = getCodeId()
         newCashier.user = user
         user.cashiers.push(newCashier)
@@ -177,14 +180,28 @@ module.exports = (app) =>{
         await user.save()
         await newCashier.save()
 
-        res.json({msg:'usuario agregado exitosamente'})
+        return res.json({msg:'Cajeros agregado exitosamente', conFirm: true})
+       
+        // return res.json({
+        //     msg:'Se ha completado el limite de cajeros para tu usuario, si deseas agregar mas cajeros por favor contactanos...',
+        //     conFirm: false
+        // })
+        
+
     })
 
-    app.post('/delete-cashier', async(req, res)=>{
+    app.post('/status-cashier', async(req, res)=>{
         let data = req.body
         try {
-            await Cashier.findByIdAndDelete({_id: data.id})
-            return res.json({msg: 'El cajero/a fue eliminado'})
+            let cashier = await Cashier.findById({_id: data.id})
+            if(cashier.status){
+                cashier.status = false
+            }else{
+                cashier.status = true
+            }
+            
+            await cashier.save()
+            return res.json({msg: 'El estado del cajero/a fue actualizado'})
         } catch (error) {
             console.log(error);
             res.json({msg: 'Un problema ha ocurrido'})
@@ -192,22 +209,10 @@ module.exports = (app) =>{
         
     })
 
-    app.post('/user-active', async(req, res) =>{
-        let user = req.user
-        let id = req.body.id
-        const cashiers = await User.findById({_id: user._id}).populate('cashiers')
-        cashiers.cashiers.forEach(async(cashier) =>{
-            if(cashier.active === true){
-                cashier.active = false
-                await cashier.save()
-            }
-        })
-        if(id !== 'no_data'){
-            const cashier = await Cashier.findOne({_id: id})
-            cashier.active = true
-            await cashier.save()
-        }
-        res.json({msg:'good'})
+    app.get('/cashier-detail/:id', async(req, res) =>{
+        let id = req.params.id
+        const cashier = await Cashier.findById({_id: id})
+        res.json({cashier})
     })
 
     app.post('/store-name', async(req, res) =>{

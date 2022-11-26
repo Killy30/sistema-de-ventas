@@ -7,8 +7,36 @@
 }
 
 .titles_config{
-    width: 35%;
+    width: 30%;
 }
 .form_list{
-    width: 65%;
+    width: 70%;
+    padding: 15px;
+    background-color: #fff;
+    margin-bottom: 15px;
+    border-radius: 7px;
+}
+.card_info{
+    width: 100%;
+    border-bottom: 1px solid #ddd;
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+}
+.card_info p{
+    margin: 0;
+}
+.card_info:last-child{
+    border-bottom: 0;
+}
+
+tbody{
+    height: 280px;
+    display: block;
+    overflow-y: auto;
+}
+thead tr, tbody tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
 }

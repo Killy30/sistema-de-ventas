@@ -1,6 +1,5 @@
 const typeSearch = document.getElementById('typeSearch')
 const btn_day = document.getElementById('btn_day')
-const btn_week = document.getElementById('btn_week')
 const btn_month = document.getElementById('btn_month')
 const btn_code = document.getElementById('btn_code')
 
@@ -120,27 +119,38 @@ const getAnalysis = async()=>{
     tableSalesView(salesAnalysis)
 }
 
+const numberFormat = (number) =>{
+    return new Intl.NumberFormat().format(number)
+}
+
 const cardsDataViwe = (data) =>{
-    document.getElementById('total').innerText = `${data.total.toFixed(2)}` 
+    let total_v = numberFormat(data.total)
+    document.getElementById('total').innerText = `${total_v}` 
     document.getElementById('ventas').innerText = `${data.countSales}` 
     document.getElementById('more').innerText = `${data.more}` 
     document.getElementById('less').innerText = `${data.less}` 
 }
 
+
 const tableProductsView = (data) =>{
     const tbodyProducts = document.getElementById('tbodyProducts')
     tbodyProducts.innerHTML = ''
 
-    data.forEach(product =>{
+    let datas = data.sort((a, b) => b.soldUnits - a.soldUnits)
+
+    datas.forEach(product =>{
+        let total = numberFormat(product.soldTotal)
         tbodyProducts.innerHTML += `
             <tr>
                 <td class="nxh">${product.name}</td>
                 <td>${product.code}</td>
                 <td>${product.price}</td>
-                <td class="text-success">${product.soldUnits}</td>
-                <th class="text-success gbdx">
-                    <span class="material-symbols-outlined">attach_money</span>
-                    ${product.soldTotal}
+                <td>${product.soldUnits}</td>
+                <th>
+                    <p class="gbdx">
+                        <span class="material-symbols-outlined">attach_money</span>
+                        ${total}
+                    </p>
                 </th>
             </tr>
         `
@@ -151,19 +161,24 @@ const tableSalesView = (data) =>{
     const tbodySales = document.getElementById('tbodySales')
 
     tbodySales.innerHTML = ''
-    data.forEach(sale =>{
+    let datas = data.slice(0,30).sort((a, b) => b.totalPrice - a.totalPrice)
+    
+    datas.forEach((sale, i) =>{
         let time = new Date(sale.date)
+        let total = numberFormat(sale.totalPrice)
+        console.log(i);
         tbodySales.innerHTML += `
             <tr>
                 <td>${sale.code}</td>
                 <td>${sale.products.length}</td>
                 <td>${time.getDate()}/${time.getMonth()}/${time.getFullYear()} ${time.getHours()}:${time.getMinutes()}</td>
-                <th class="text-success gbdx">
-                    <span class="material-symbols-outlined">attach_money</span>
-                    ${sale.totalPrice}
+                <th>
+                    <p class="gbdx">
+                        $${total}
+                    </p>
                 </th>
-                <td>$</td>
             </tr>
+            ${(i==29)?'<div class="view_more"><a href="/ventas" >Ver mas</a></div>':''}
         `
     })
 }
@@ -213,8 +228,6 @@ const grafictAnalysis = async() =>{
         return d == fmt
     })
 
-    console.log(fecha(fm_v));
-
     let t_cm = cm_data.reduce((acc, t) => acc = acc + t.totalPrice ,0)
     let t_sm = sm_data.reduce((acc, t) => acc = acc + t.totalPrice ,0)
     let t_tm = tm_data.reduce((acc, t) => acc = acc + t.totalPrice ,0)
@@ -224,8 +237,9 @@ const grafictAnalysis = async() =>{
     let labels_data = [fecha(fm_v),fecha(tm_v),fecha(sm_v),fecha(cm_v)]
     let data_value = [t_fm.toFixed(2), t_tm.toFixed(2),t_sm.toFixed(2),t_cm.toFixed(2)]
     // console.log(fecha(p.setMonth(p.getMonth()-1)));
-    console.log(labels_data, data_value);
+
     getGrafict(labels_data, data_value)
+    compare_values(labels_data, data_value)
 }
 grafictAnalysis()
 
@@ -244,12 +258,9 @@ const getGrafict = async(labels_data, data_value) =>{
     const data = {
         labels: labels,
         datasets: [{
-            label: 'Ingreso por ventas al mes',
+            label: 'Ingresos de ventas al mes',
             backgroundColor: [
-                'rgb(235, 99, 112)',
-                'rgb(54, 122, 205)',
-                'rgb(44, 252, 48 )',
-                'rgb(245, 65, 26 )'
+                'rgb(0, 149, 255)',
             ],
             data: data_value,
         }]
@@ -270,6 +281,63 @@ const getGrafict = async(labels_data, data_value) =>{
     chart = new Chart(productsGrafict, config);
 }
 
+const compare_values = (months, values) =>{
+    const grow_box = document.querySelector('.grow')
+
+    let previous_value = values[values.length-3];
+    let current_value = values[values.length-2];
+    let x = 0.00
+
+    if(current_value != 0 && previous_value != 0){
+        x = ((current_value - previous_value) / current_value )*100
+    }
+    //<p class="fs-6" >Meses anterioles</p>
+    //<p class="fs-5 mb-0 w-100">Progreso</p>
+    grow_box.innerHTML = `
+        <div class="card_grow">
+            <div class="w-100">
+                <p class="fs-5 mb-0 fw-bolder">Progreso</p>
+            </div>
+            
+            <div class="w-100 d-flex justify-content-around">
+                <div class="" >
+                    <p class="fs-6 mb-0 text-secondary">${months[months.length-3]}</p>
+                    <p class="fs-5 mb-0 fw-bolder" >$${numberFormat(previous_value)}</p>
+                </div>
+                <div class="">
+                    <p class="fs-6 mb-0 text-secondary">${months[months.length-2]}</p>
+                    <p class="fs-5 mb-0 fw-bolder">$${numberFormat(current_value)}</p>
+                </div>
+            </div>
+            <div class="w-100 d-flex justify-content-center flex-wrap">
+                <div class="xp">
+                    <div class="svg">
+                        <svg width="250px" height="250px">
+                            <circle r="100" cx="125" cy="125" class="progress2"></circle>
+                            <circle r="100" cx="125" cy="125" class="progress" id="progress"></circle>
+                        </svg>
+                    </div>
+                    <p class="num_progress fs-2 ${x.toString().includes('-') ? 'text-danger':'text_green'}">
+                        ${x.toFixed(2)}%
+                    </p>
+                </div>
+            </div>
+        </div>
+    `
+    progressCount(x)
+}
+
+const progressCount = (x) =>{
+    const progress = document.getElementById('progress')
+    let count2 = 630;
+    
+    let v = count2 - (6.3 * x)
+    progress.style.strokeDashoffset = v.toFixed(2)
+
+    if(x.toString().includes('-')){
+        progress.style.stroke = 'rgb(255, 61, 61)'
+    }
+}
 
 // 
 const getDateToSearch = async(e) =>{
