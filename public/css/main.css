@@ -9,7 +9,7 @@
 
 }
 #showListProduct{
-    height: 455px;
+    height: 400px;
     display: block;
     overflow-y: auto;
 }
@@ -41,14 +41,36 @@
     height: 40px;
 }
 
-#btn_open_sele{
-    display: flex;
-    align-items: center;
-}
+
 
 .footer_data{
+    width: 100%;
+    border-bottom: 1px solid #ddd;
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 10px;
+}
+.footer_btn{
     width: 100%;
     display: flex;
     justify-content: space-between;
 }
+
+
+
+@media(max-width: 500px){
+    #container{
+        padding-top: 30px;
+    }
+    .mbg{
+        display: none;
+    }
+    .t_b{
+        padding-left: 10px;
+    }
+    .card_table_body{
+        height: calc(100% - 100px);
+    }
+}
+
 

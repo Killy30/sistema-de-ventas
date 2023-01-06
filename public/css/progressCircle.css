@@ -3,28 +3,64 @@
 .progress2{
     fill: none;
     stroke: var(--gris);
-    stroke-width: 20;
+    stroke-width: 35;
+    r: 130px;
+    cx: 150px;
+    cy: 150px;
 }
 .progress{
     fill: none;
-    stroke-width: 25;
-    stroke: rgb(22, 110, 203);
-    stroke-dasharray: 630;
-    stroke-dashoffset: 630;
+    stroke-width: 40;
+    stroke-dasharray: 819;
+    /* stroke-dashoffset: 819; */
     transform: rotate(-90deg);
     transform-origin: center;
     stroke-linecap: round;
+    /* color: rgb(205, 7, 7); */
+    r: 130px;
+    cx: 150px;
+    cy: 150px;
+}
+svg{
+    width: 300px;
+    height: 300px;
 }
 .xp{
     position: relative;
-    width: 250px;
-    height: 250px;
+    width: 300px;
+    height: 300px;
 }
 .num_progress{
+    width: 100%;
     position: absolute;
-    /* position: relative; */
-    margin: 0;
-    top: 101px;
-    left: 79.5px;
+    margin: auto;
+    top: 40%;
+    text-align: center;
     font-weight: bolder;
+}
+.text_color_{
+    color: #fe4818;
+}
+
+@media(max-width: 500px){
+    .progress2{
+        stroke-width: 20;
+        r:80px;
+        cx: 100px;
+        cy: 100px;
+    }
+    .progress{
+        stroke-width: 25;
+        r:80px;
+        cx: 100px;
+        cy: 100px;
+    }
+    .xp{
+        width: 200px;
+        height: 200px;
+    }
+    svg{
+        width: 200px;
+        height: 200px;
+    }
 }

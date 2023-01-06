@@ -11,16 +11,31 @@ body{
     background-color: #f1f1f6;
 }
 
-header{
+nav{
     box-shadow: rgba(33, 35, 38, 0.1) 0px 10px 10px -10px;
-    height: 65px;
+    height: 60px;
     background-color: #fff;
+    display: flex;
+    align-items: center;
+}
+#container{
+    height: calc(100vh - 60px);
+}
+.cont{
+    display: flex;
+    justify-content: space-between;
 }
 .logo{
-    width: 150px;
+    width: 130px;
 }
 .logo img{
     width: 100%;
+}
+
+.user_menu{
+    display: flex;
+    align-items: center;
+    position: relative;
 }
 
 .user_profile{
@@ -28,11 +43,18 @@ header{
     align-items: center;
 }
 .img_p{
-    width: 45px;
-    height: 45px;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     border-radius: 50px;
-    background-color: #ddd;
+    background-color: rgb(238, 238, 238);
     
+}
+.img_p span{
+    color: #fe4818;
+    font-size: 28px;
 }
 .full_name p{
     margin: 0;
@@ -57,17 +79,17 @@ header{
     border-radius: 50px;
     cursor: pointer;
 }
-
-.navbar{
-    position: relative;
+.user_profile_mobil{
+    display: none;
+    padding: 20px 0px 20px 10px;
 }
 
 .navbar_nav{
+    position: absolute;
     padding: 13px;
     width: 250px;
-    height: 290px;
-    position: absolute;
-    top: 60px;
+    top: 50px;
+    right: 0px;
     border-radius: 10px;
     background-color: #fff;
     box-shadow: rgba(0, 0, 0, 0.15) 0px 2px 8px;
@@ -75,17 +97,24 @@ header{
     z-index: 1;
 }
 .navbar_nav a{
-    color: black;
+    color: rgb(30, 30, 30);
     padding: 10px ;
     width: 100%;
     border-radius: 15px;
     font-weight: 600;
+    display: flex;
+    align-items: center;
+}
+.navbar_nav a span{
+    color: #fe4818;
+    margin-right: 10px;
 }
 .navbar_nav a:hover{
-    background-color: #ddd;
+    color: #fe4818;
+    background-color: rgb(238, 238, 238);
 }
 
-.close_menu{
+.open_menu{
     display: block;
 }
 
@@ -93,12 +122,115 @@ header{
     text-align: center;
     font-size: 30px;
     position: absolute;
-    top: 350px;
-    left: 40%;
-    /* color: #fff; */
+    top: 15%;
+    /* left: 40%; */
+    width: 100%;
+    text-align: center;
+    margin: 0;
+}
+
+.icon_menu{
+    display: none;
+    cursor: pointer;
+    padding-top: 10px;
+    margin-left: 10px;
+}
+.icon_menu span{
+    font-size: 36px;
+}
+.card_head{
+    display: none;
+    width: 100%;
+    height: 60px;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #ddd;
+    padding: 13px;
+}
+.card_head .logo2{
+    width: 130px;
+}
+.card_head .logo2 img{
+    width: 100%;
+}
+.card_head .close_nav{
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.my_container{
+    padding: 30px 0px 0px 0px;
 }
 
 
+
+
+@media(max-width: 995px){
+    .logo{
+        width: 120px;
+    }
+    
+    .user_profile , .sub_m{
+        display: none;
+    }
+    .icon_menu{
+        display: block;
+    }
+
+    .navbar_nav{
+        width: 100%;
+        top: 0px;
+        border-radius: 0px;
+    }
+    .user_profile_mobil{
+        display: flex;
+    }
+    .full_name{
+        display: flex;
+        align-items: center;
+    }
+}
+
+@media(max-width: 500px){
+    .logo{
+        display: none;
+    }
+    #container{
+        padding-left: 0px;
+        padding-right: 0px;
+    }
+    .cont{
+        padding: 0;
+        height: 100%;
+    }
+    .card_head{
+        display: flex;
+    }
+    .user_menu{
+        width: 100%;
+        background-color: #fff;
+    }
+    .navbar_nav{
+        width: 100%;
+        height: 100vh;
+        display: block;
+        left: -100%;
+        transition: all .4s;
+        box-shadow: none;
+        padding: 0px;
+    }
+    .navbar_nav a{
+        padding: 15px 30px;
+        font-size: 20px;
+    }
+    .user_profile_mobil .full_name p{
+        font-size: 20px;
+    }
+}
 
 
 

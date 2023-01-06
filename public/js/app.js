@@ -8,6 +8,7 @@ const codeToLog = document.querySelector('#codeToLog')
 import errorMessage from "./errorMSG.js"
 import loader from "./loader.js"
 import fecha from "./month_es.js"
+import data from "./data.js"
 
 
 let listProducts = []
@@ -17,9 +18,7 @@ let dataCasheir;
 const getSales = async() =>{
     try {
         tbody.innerHTML = `${loader()}`
-        let req = await fetch('/get-sales')
-        let res = await req.json()
-        return res
+        return data.getSales()
     } catch (error) {
         console.log(error);
     }
@@ -27,9 +26,7 @@ const getSales = async() =>{
 
 const getUser = async() =>{
     try {
-        let req = await fetch('/get-user')
-        let res = await req.json()
-        return res
+        return data.getUser()
     } catch (error) {
         console.log(error);
     }
@@ -68,7 +65,7 @@ const showListSales = async() =>{
                 </td>
                 <td>${sales[i].totalPrice}</td>
                 <td>
-                    <a href="/factura/${sales[i]._id}" data-id="${sales[i]._id}" class="btn text-primary">
+                    <a href="/factura/${sales[i]._id}" data-id="${sales[i]._id}" class="btn p-0 text-primary">
                         Ver detalle
                     </a>
                 </td>
@@ -91,15 +88,24 @@ const showListCashiers_select = async() =>{
             <option data-code="${cashier.id_code}" data-act="${cashier.status}" data-i="${i}" id="selectOption" value="${cashier._id}">
                 ${cashier.name} ${cashier.lastName}
             </option>`
+
         }
     })
     for(let i = 0; i < listCashiers.options.length; i++){
-        let status = listCashiers.options[i].getAttribute('data-act')
         let code = listCashiers.options[i].getAttribute('data-code')
+
         if(code == localStorage.getItem('code')){
             listCashiers.options[i].selected = true;
         }
     }
+
+    let x = cashiers.some(cashier => cashier._id == localStorage.getItem('id'))
+
+    if(x == false){
+        localStorage.removeItem('id')
+        localStorage.removeItem('code')
+    }
+
 } 
 showListCashiers_select()
 
@@ -128,15 +134,13 @@ const getCodeProduct = async() =>{
 
 const showProducts = () =>{
     showListProduct.innerHTML = ''
-    const pt = listProducts.reduce((acc, p) => acc = acc + p.price ,0)
- 
     for(let i = 0; i < listProducts.length; i++){
         showListProduct.innerHTML += `
             <tr>
                 <td>${listProducts[i].idcode}</td>
                 <td>${listProducts[i].name}</td>
-                <td>${listProducts[i].price}</td>
-                <td>${listProducts[i].description}</td>
+                <td>${listProducts[i].price.toFixed(2)}</td>
+                <td>${listProducts[i].itbis.toFixed(2)}</td>
                 <td>${listProducts[i].category}</td>
                 <td>
                     <button type="button" data-index="${i}" data-id="${listProducts[i]._id}" class="btn btn-danger delete">
@@ -148,27 +152,40 @@ const showProducts = () =>{
     }
     let x = showListProduct.scrollHeight
     showListProduct.scrollBy(0, x);
-    todalValue()
+    subTotalValue()
+    totalITBIS()
+    totalValue()
 }
 
-const todalValue = () =>{
+const subTotalValue = () =>{
     let totalPrice = listProducts.reduce((acc, p) => acc = acc + p.price ,0)
-    let total = document.getElementById('total')
-    total.innerText = totalPrice.toFixed(2)
+    document.getElementById('subTotal').innerText = totalPrice.toFixed(2)
+    
 }
 
-const clean_list_products = (e) =>{
-    e.preventDefault()
-    listProducts.splice(0, listProducts.length)
-    showListProduct.innerHTML = ''
-    document.getElementById('total').innerText = '0.00'
+const totalITBIS = () =>{
+    let total_itbis = listProducts.reduce((acc, p) => acc = acc + p.itbis ,0)
+    document.getElementById('itbis').innerText = total_itbis.toFixed(2)
 }
 
-const pagoEfectivo = async(e) =>{
+const totalValue = () =>{
+    let total_value = listProducts.reduce((acc, p) => acc = acc + p.sum_price ,0)
+    document.getElementById('total').innerText = total_value.toFixed(2)
+}
+
+const create_sale = async(e) =>{
     const cambio = document.getElementById('cambio')
     const pago = document.getElementById('pago').value
-    let totalPrice = listProducts.reduce((acc, p) => acc = acc + p.price ,0)
+    let subTotal = listProducts.reduce((acc, p) => acc = acc + p.price ,0)
+    let total_itbis = listProducts.reduce((acc, p) => acc = acc + p.itbis ,0)
 
+    let totalPrice = subTotal + total_itbis
+
+    //
+    if(!localStorage.getItem('id')){
+        let e = 'Debes conectar tu usuario (cajero/a) antes de hacer una venta, por favor asegurece de estar conectado para realizar la venta'
+        return alert(e)
+    }
     //
     if(totalPrice == 0){
         let error = 'Por favor agregue productos antes de realizar la compra...'
@@ -188,15 +205,15 @@ const pagoEfectivo = async(e) =>{
     let cambioValue = pago - totalPrice
     cambio.innerText = cambioValue.toFixed(2)
     let cashier_id = localStorage.getItem('id')
-
-    console.log(cashier_id);
     
     let data = {
         products:listProducts,
         totalPrice: totalPrice.toFixed(2),
+        subTotal: subTotal,
         pago: pago,
         cambio: cambioValue.toFixed(2),
-        cashier_id: cashier_id
+        cashier_id: cashier_id,
+        itbis: total_itbis
     }
 
     try {
@@ -219,7 +236,7 @@ const pagoEfectivo = async(e) =>{
         const factura = document.getElementById('factura')
         
         factura.classList.remove('inactive')
-        factura.href = `/factura/${res.id}`
+        factura.href = `javascript:window.open('/factura/${res.id}', '','width=1000,height=700,left=100,top=100,toolbar=yes');void 0`
         errorMessage(res.msg,'alert alert-success')
         showListSales()
     } catch (error) {
@@ -241,6 +258,8 @@ const cancelSele = () =>{
     listProducts.splice(0, listProducts.length)
     showListProduct.innerHTML = ''
     document.getElementById('total').innerText = '0.00'
+    document.getElementById('subTotal').innerText = '0.00'
+    document.getElementById('itbis').innerText = '0.00'
     document.getElementById('codigo').value = ''
 }
 
@@ -254,11 +273,22 @@ const openSele = () => {
     document.getElementById('clean_list').classList.remove('inactive')
 }
 
+const clean_list_products = (e) =>{
+    e.preventDefault()
+    listProducts.splice(0, listProducts.length)
+    showListProduct.innerHTML = ''
+    document.getElementById('total').innerText = '0.00'
+    document.getElementById('subTotal').innerText = '0.00'
+    document.getElementById('itbis').innerText = '0.00'
+}
+
 const closeSales = () =>{
     listProducts.splice(0, listProducts.length)
     showListProduct.innerHTML = ''
     document.getElementById('total').innerText = '0.00'
     document.getElementById('cambio').innerText = '0.00'
+    document.getElementById('subTotal').innerText = '0.00'
+    document.getElementById('itbis').innerText = '0.00'
     document.getElementById('codigo').value = ''
     document.getElementById('pago').value = ''
 
@@ -274,7 +304,7 @@ const closeSales = () =>{
 
 document.getElementById('cancel').addEventListener('click', cancelSele)
 document.getElementById('btn_open_sele').addEventListener('click', openSele)
-document.getElementById('finich').addEventListener('click', pagoEfectivo)
+document.getElementById('finich').addEventListener('click', create_sale)
 document.getElementById('add').addEventListener('click', getCodeProduct)
 document.getElementById('cerrar').addEventListener('click', closeSales)
 document.getElementById('clean_list').addEventListener('click', clean_list_products)

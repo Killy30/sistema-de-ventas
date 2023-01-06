@@ -3,6 +3,8 @@
 const print_factura = document.getElementById('print_factura')
 const fbody = document.getElementById('fbody')
 
+import data from './data.js'
+
 let id = window.location.href.split('a/')[1]
 
 const getSale = async() =>{
@@ -13,9 +15,7 @@ const getSale = async() =>{
 
 const getUser = async() =>{
     try {
-        let req = await fetch('/get-user')
-        let res = await req.json()
-        return res
+        return data.getUser()
     } catch (error) {
         console.log(error);
     }
@@ -27,12 +27,15 @@ const showInfo = async()=>{
     let venta = sale.sale
     let user = await getUser()
 
+    let cashier = user.data.cashiers.find(cashier =>{
+        return cashier._id == venta.cashier
+    })
 
     let time = new Date(venta.date)
 
     fbody.innerHTML = `<div>
         <br>
-        <p class="titulo fs-1 fw-bold text-primary">${user.data.storeName}</p>
+        <p class="titulo fs-1 fw-bold ">${user.data.storeName}</p>
         <div class="card_address">
             <p>${user.data.storeAddress}</p>
         </div>
@@ -42,15 +45,15 @@ const showInfo = async()=>{
         </div>
         <div class="card_date d-flex">
             <p class="me-3">Fecha:</p>
-            <div class="d-flex">
-                <p style="margin-right: 3px;">
-                    ${time.getDate()}/${(time.getMonth()+1)}/${time.getFullYear()}
-                </p> 
-                <p>
-                    ${time.getHours()}:${time.getMinutes()}
-                </p>
-            </div>
+            <p style="margin-right: 3px;">
+                ${time.getDate()}/${(time.getMonth()+1)}/${time.getFullYear()} ${time.getHours()}:${time.getMinutes()}
+            </p> 
         </div>
+        ${
+            user.data.system_control.add_N_C_receipt?
+            `<p>Caja: ${cashier.name} ${cashier.lastName}</p>`
+            : ''
+        }
         <table class="table">
             <span style="display: none;" >----------------------------------</span>
             <thead>
@@ -64,7 +67,7 @@ const showInfo = async()=>{
                     venta.products.map(product =>{
                         return `
                             <tr>
-                                <td class="v_1">${product.name} ${product.description}</td>
+                                <td class="v_1">${product.name} </td>
                                 <td class="v_2 text-end">${product.price}</td>
                             </tr>
                         `
@@ -73,14 +76,28 @@ const showInfo = async()=>{
             </tbody>
         </table>
         <br>
-        <div class="fw-bold d-flex justify-content-end flex-column">
-            <div class="card_total d-flex">
-                <p class="v_1 me-3 mb-0">Total:</p>
-                <p class="v_2 m-0">${venta.totalPrice.toFixed(2)}</p>
+        <div class="d-flex flex-column">
+            <div class="d-flex justify-content-end">
+                <p class="hide_f m-0 text-end" style="width: 100px;">SUBTOTAL:</p>
+                <p class="hide_f m-0 text-end" style="width: 100px;">${venta.subTotal.toFixed(2)}</p>
             </div>
-
-            <p class="hide_f m-0">Pago:    ${venta.pay}</p>
-            <p class="hide_f m-0">Cambio:    ${venta.cambio.toFixed(2)}</p>
+            <div class="d-flex justify-content-end">
+                <p class="hide_f m-0 text-end" style="width: 100px;">ITBIS:</p>
+                <p class="hide_f m-0 text-end" style="width: 100px;">${venta.itbis.toFixed(2)}</p>
+            </div>
+            <div class="d-flex justify-content-end">
+                <p class="hide_f m-0 text-end" style="width: 100px;">PAGO:</p>
+                <p class="hide_f m-0 text-end" style="width: 100px;">${venta.pay}</p>
+            </div>
+            <div class="d-flex justify-content-end">
+                <p class="hide_f m-0 text-end" style="width: 100px;">CAMBIO:</p>
+                <p class="hide_f m-0 text-end" style="width: 100px;">${venta.cambio.toFixed(2)}</p>
+            </div>
+            <div class="d-flex justify-content-end">
+                <p class="fs-5 v_1 fw-bold mb-0 text-end" style="width: 100px;">TOTAL:</p>
+                <p class="fs-5 v_1 fw-bold mb-0 text-end" style="width: 100px;">${venta.totalPrice.toFixed(2)}</p>
+            </div>
+            
         </div>
         <span style="display: none;" >----------------------------------</span>
         <br>
@@ -96,25 +113,6 @@ const showInfo = async()=>{
 
 }
 showInfo()
-
-function fecha(date){
-    var d = new Date(date);
-    
-    var month = new Array();
-    month[0] = "Enero";
-    month[1] = "Febrero";
-    month[2] = "Marzo";
-    month[3] = "Abril";
-    month[4] = "Mayo";
-    month[5] = "Junio";
-    month[6] = "Julio";
-    month[7] = "Agosto";
-    month[8] = "Septiembre";
-    month[9] = "Octubre";
-    month[10] = "Noviembre";
-    month[11] = "Diciembre";
-    return month[d.getMonth()];
-}
 
 
 print_factura.addEventListener('click', e =>{

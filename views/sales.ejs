@@ -6,38 +6,44 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="../css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../css/loader.css">
-    <link rel="stylesheet" href="../css/sales.css">
     <link rel="stylesheet" href="../css/table.css">
+    <link rel="stylesheet" href="../css/sales.css">
     <title>Ventas</title>
 </head>
 <body>
     <%-include ("./header")%>
     
-    <div class="container pt-5" id="container">
+    <div class="container" id="container">
         
         <h3>Ventas</h3>
         <div class="box_table">
-            <div class="navbar navbar-dark mbg ">
-                <div class="container-fluid">
-                    <form class="d-flex">
-                        <select class="form-select" id="typeSearch">
-                            <option value="all">Todos</option>
-                            <option value="day">Dia</option>
-                            <option value="month">Mes</option>
-                            <option value="code">Codigo</option>
-                        </select>
-                        <div class="ms-5">
+            <div class="mbg">
+                <div class="head_mbg">
+                    <form>
+                        <div class="d-flex align-items-center">
+                            <select class="form-select" id="typeSearch">
+                                <option value="all">Todos</option>
+                                <option value="day">Dia</option>
+                                <option value="month">Mes</option>
+                                <option value="code">Codigo</option>
+                            </select>
+                        </div>
+                        <div class="card_cashiers">
+                            <select class="form_select" id="cashiers"></select>
+                        </div>
+                        <button type="button" class="btn_atla" id="search_all">Buscar</button>
+                        <div class="d-flex align-items-center">
                             <div class="inactive" id="day">
-                                <input class="form-control me-2" type="date" id="input_day" placeholder="Search" aria-label="Search">
-                                <button class="btn btn-outline-light" id="btn_day" type="button">Buscar</button>
+                                <input class="form-control me-2" type="date" id="input_day" placeholder="Dia" aria-label="">
+                                <button class="btn_atla" id="btn_day" type="button">Buscar</button>
                             </div>
                             <div class="inactive" id="month">
                                 <input class="form-control me-2" type="month" id="input_month" placeholder="Search" aria-label="Search">
-                                <button class="btn btn-outline-light" id="btn_month" type="button">Buscar</button>
+                                <button class="btn_atla" id="btn_month" type="button">Buscar</button>
                             </div>
                             <div class="inactive" id="code">
                                 <input class="form-control me-2" type="text" style="width: 230px;" id="input_code" placeholder="Search" aria-label="Search">
-                                <button class="btn btn-outline-light" id="btn_code" type="button">Buscar</button>
+                                <button class="btn_atla" id="btn_code" type="button">Buscar</button>
                             </div>
                         </div>
                     </form>

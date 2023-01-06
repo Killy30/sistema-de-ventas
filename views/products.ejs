@@ -12,8 +12,8 @@
 <body>
     <%-include ("./header")%>
     
-    </nav>
     <div class="container" id="container">
+
         <!-- Modal -->
         <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" data-bs-backdrop="static" aria-hidden="true">
             <div class="modal-dialog">
@@ -23,25 +23,39 @@
                         <button type="button" class="btn-close" id="btn_close_m" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <div class="" id="msg_err"></div>
+                        <div class="card_msg_alert" ></div>
                         <form >
-                            <div class="mb-3">
+                            <div class="mb-2">
                                 <label for="recipient-name" class="col-form-label">Codigo:*</label>
                                 <input type="number" class="form-control" required id="idcode" name="idcode">
                             </div>
-                            <div class="mb-3">
+                            <div class="mb-2">
                                 <label for="recipient-name" class="col-form-label">Nombre:*</label>
                                 <input type="text" class="form-control" required id="name" name="name">
                             </div>
-                            <div class="mb-3">
-                                <label for="recipient-name" class="col-form-label">Precio:*</label>
-                                <input type="number" step="any" class="form-control" required id="price" name="price">
+                            <div class="row g-2">
+                                <div class="col-md mb-2">
+                                    <label for="recipient-name" class="col-form-label">Precio:*</label>
+                                    <input type="number" step="any" class="form-control" required id="price" name="price">
+                                </div>
+                                <div class="col-md md-2">
+                                    <label for="recipient-name" class="col-form-label">Beneficio:*</label>
+                                    <input type="number" class="form-control" name="" id="">
+                                </div>
                             </div>
-                            <div class="mb-3">
+                            <div class="mb-2">
+                                <label for="recipient-name" class="col-form-label">ITBIS:</label>
+                                <% if(user.system_control.acceptITBIS){%>
+                                    <input type="number" step="any" class="form-control"  id="itbis" name="itbis">
+                                <%} else {%>
+                                    <input type="number" step="any" class="form-control" readonly id="itbis" name="itbis">
+                                <%}%>
+                            </div>
+                            <div class="mb-2">
                                 <label for="recipient-name" class="col-form-label">Categoria:</label>
                                 <input type="text" class="form-control" id="category" name="category">
                             </div>
-                            <div class="mb-3">
+                            <div class="mb-2">
                                 <label for="message-text" class="col-form-label">Descripcion:</label>
                                 <textarea class="form-control" id="description" name="description"></textarea>
                             </div>
@@ -55,6 +69,7 @@
             </div>
         </div>
 
+        <!-- update product -->
         <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
             aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog">
@@ -64,25 +79,33 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <div class="" id="msg_err"></div>
+                        <div class="card_msg_alert" ></div>
                         <form >
-                            <div class="mb-3">
+                            <div class="mb-2">
                                 <label for="recipient-name" class="col-form-label">Codigo:*</label>
                                 <input type="number" class="form-control" required id="idcode_update" name="idcode">
                             </div>
-                            <div class="mb-3">
+                            <div class="mb-2">
                                 <label for="recipient-name" class="col-form-label">Nombre:*</label>
                                 <input type="text" class="form-control" required id="name_update" name="name">
                             </div>
-                            <div class="mb-3">
+                            <div class="mb-2">
                                 <label for="recipient-name" class="col-form-label">Precio:*</label>
                                 <input type="number" class="form-control" required id="price_update" name="price">
                             </div>
-                            <div class="mb-3">
+                            <div class="mb-2">
+                                <label for="recipient-name" class="col-form-label">ITBIS:</label>
+                                <% if(user.acceptITBIS){%>
+                                    <input type="number" class="form-control" id="itbis_update" name="itbis">
+                                <%} else {%>  
+                                    <input type="number" class="form-control" readonly id="itbis_update" name="itbis">
+                                <%}%>
+                            </div>
+                            <div class="mb-2">
                                 <label for="recipient-name" class="col-form-label">Categoria:</label>
                                 <input type="text" class="form-control" id="category_update" name="category">
                             </div>
-                            <div class="mb-3">
+                            <div class="mb-2">
                                 <label for="message-text" class="col-form-label">Descripcion:</label>
                                 <textarea class="form-control" id="description_update" name="description"></textarea>
                             </div>
@@ -98,17 +121,17 @@
 
         <h3 class="mb-2">Productos</h3>
         <div class="box_table">
-            <div class="navbar navbar-dark mbg">
-                <div class="container-fluid">
+            <div class="mbg">
+                <div class="head_mbg">
                     <form class="d-flex">
                         <div class="">
                             <div class="d-flex" id="code">
-                                <input class="form-control me-2" type="text" style="width: 230px;" id="input_search" placeholder="Search" aria-label="Search">
+                                <input class="form-control me-2" type="text" id="input_search" placeholder="Buscar productos" aria-label="Search">
                             </div>
                         </div>
                     </form>
     
-                    <button type="button" id="btn_open_form" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">
+                    <button type="button" id="btn_open_form" class="btn_atla" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">
                         <span class="material-symbols-outlined">add</span> 
                         Nuevo producto
                     </button>

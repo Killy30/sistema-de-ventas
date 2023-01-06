@@ -1,43 +1,33 @@
 const showListCashiers = document.querySelector('.showListCashiers')
+const _tfoot = document.querySelector('.tfoot')
 
 import errorMessage from "./errorMSG.js"
-
-const getUser = async() =>{
-    try {
-        let req = await fetch('/get-user')
-        let res = await req.json()
-        return res
-    } catch (error) {
-        console.log(error);
-    }
-}
-
-
+import data from './data.js'
 
 const showMyTeam = async() =>{
-    let data = await getUser()
-    let cashiers = data.data.cashiers
+    let user = await data.getUser()
+    let cashiers = user.data.cashiers.reverse()
 
     showListCashiers.innerHTML = ''
     cashiers.forEach((cashier, i) => {
         showListCashiers.innerHTML += `<tr>
-            <th scope="row">${i+1}</th>
             <td>${cashier.name}</td>
             <td>${cashier.lastName}</td>
             <td>${cashier.id_code}</td>
             <td>${cashier.id_document}</td>
             <td>
-                <a href="" data-id_status="${cashier._id}" class="btn ${cashier.status ? 'text-success' :'text-danger' } status">
+                <a href="" data-id_status="${cashier._id}" class="btn p-0 ${cashier.status ? 'text-success' :'text-danger' } status">
                     ${(cashier.status) ? 'Activo' : 'Inactivo' }
                 </a>
             </td>
             <td>
-                <button type="button" data-id_detail="${cashier._id}" class="btn text-primary detail" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                <button type="button" data-id_detail="${cashier._id}" class="btn p-0 text-primary detail" data-bs-toggle="modal" data-bs-target="#exampleModal">
                     Ver detalle
                 </button>
             </td>
         </tr>`
     });
+    _tfoot.innerHTML = `<p class="text-end fw-bolder m-0">Cajeros: ${cashiers.length}</p>`
 }
 
 showMyTeam()
@@ -68,7 +58,7 @@ const createUser = async() =>{
             }
         })
         let res = await req.json()
-        console.log(res.msg);
+
         if(!res.conFirm){
             return alert(res.msg)
         }
@@ -76,6 +66,8 @@ const createUser = async() =>{
         name.value = ""
         lastName.value = ""
         id_document.value = ""
+        tel.value = ""
+        email.value = ""
     } catch (error) {
         console.log(error);
     }
@@ -106,8 +98,6 @@ const showCashierDetail = async(id)=>{
     try {
         let req = await fetch(`/cashier-detail/${id}`)
         let res = await req.json()
-
-        console.log(res);
         const cashier = res.cashier
 
         box_detail.innerHTML = `<div>
@@ -179,7 +169,7 @@ const storeName = async() =>{
 }
 
 const showStoreName = async() =>{
-    let user = await getUser()
+    let user = await data.getUser()
     let show_name = document.getElementById('show_s_n')
 
     store_name.value = user.data.storeName ? user.data.storeName : ""
@@ -188,13 +178,35 @@ const showStoreName = async() =>{
 }
 showStoreName()
 
+const addITBIS = document.getElementById('addITBIS')
+const addNameC = document.getElementById('cashierName')
+
+let active_checkbox = async()=>{
+    let user = await data.getUser()
+    let _user = user.data
+
+    _user.system_control.acceptITBIS ? addITBIS.checked = true : addITBIS.checked = false
+    _user.system_control.add_N_C_receipt ? addNameC.checked = true : addNameC.checked = false
+}
+active_checkbox()
+
+const controlAll = async(x) =>{
+    const req = await fetch('/accept-itbis', {
+        method: 'POST',
+        body: JSON.stringify(x),
+        headers:{
+            'Content-Type': 'application/json'
+        }
+    })
+    const res = await req.json()
+}
+
 
 
 document.getElementById('btn_add_user').addEventListener('click', createUser)
 document.getElementById('btn_storeName').addEventListener('click', storeName)
 
 document.querySelector('.form_list').addEventListener('click', e =>{
-    
     if(e.target.classList.contains('status')){
         e.preventDefault()
         if(confirm('Deseas cambiar el estado de este usuario?')){
@@ -206,5 +218,25 @@ document.querySelector('.form_list').addEventListener('click', e =>{
         e.preventDefault()
         let id = e.target.dataset.id_detail
         showCashierDetail(id)
+    }
+})
+
+addITBIS.addEventListener('change', e =>{
+    controlAll({value:e.currentTarget.checked, x:'1'});
+})
+addNameC.addEventListener('change', e =>{
+    controlAll({value:e.currentTarget.checked, x:'2'});
+})
+
+const the_card = document.querySelectorAll('.box_open')
+window.addEventListener('click', e =>{
+    if(e.target.classList.contains('open_card_one')){
+        the_card[0].classList.toggle('open_the_card')
+    }
+    if(e.target.classList.contains('open_card_two')){
+        the_card[1].classList.toggle('open_the_card')
+    }
+    if(e.target.classList.contains('open_card_three')){
+        the_card[2].classList.toggle('open_the_card')
     }
 })

@@ -87,12 +87,17 @@ module.exports = (app) =>{
 
         const user = req.user
         const newProduct = new Product()
+
+        let _itbis_ = data.itbis || 0.00;
+        let sum_price = (parseFloat(data.price) + parseFloat(_itbis_))
     
         newProduct.idcode = data.idcode
         newProduct.name = data.name
         newProduct.price = data.price
+        newProduct.sum_price = sum_price
         newProduct.description = data.description
         newProduct.category = data.category
+        newProduct.itbis = _itbis_
         newProduct.user = user
         user.products.push(newProduct)
     
@@ -104,13 +109,17 @@ module.exports = (app) =>{
     app.post('/update-product', async(req, res) =>{
         let data = req.body
     
+        let _itbis_ = data.itbis || 0.00
+
         await Product.updateOne({_id: data._id}, {
             $set: {
                 idcode: data.idcode,
                 name: data.name,
                 price: data.price,
+                sum_price: (parseFloat(data.price) + parseFloat(_itbis_)),
                 description: data.description,
-                category: data.category
+                category: data.category,
+                itbis: _itbis_
             }
         })
         res.json({msg:'El producto fue actualizado correctamente'})
@@ -132,6 +141,8 @@ module.exports = (app) =>{
         const newSale = new Sale()
         newSale.code = getCode()
         newSale.totalPrice = data.totalPrice
+        newSale.subTotal = data.subTotal
+        newSale.itbis = data.itbis
         newSale.pay = data.pago
         newSale.cambio = data.cambio
         newSale.user = user
@@ -224,5 +235,28 @@ module.exports = (app) =>{
 
         await user.save()
         res.json({user})
+    })
+
+    app.post('/accept-itbis', async(req, res) =>{
+        let user = req.user
+        let data = req.body
+
+        if(data.x == '1'){
+            if(data.value){
+                user.system_control.acceptITBIS = true
+            }else{
+                user.system_control.acceptITBIS = false
+            }
+        }
+        if(data.x == '2'){
+            if(data.value){
+                user.system_control.add_N_C_receipt = true
+            }else{
+                user.system_control.add_N_C_receipt = false
+            }
+        }
+
+        await user.save()
+        res.json(data)
     })
 }

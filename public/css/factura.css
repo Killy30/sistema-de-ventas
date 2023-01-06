@@ -82,4 +82,7 @@ span{
     .hide_f{
         display: none !important;
     }
+    nav{
+        display: none !important;
+    }
 }

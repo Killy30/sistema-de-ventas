@@ -2,27 +2,33 @@
 
 nav{
     width: 100%;
-    height: 100px;
+    height: 80px;
     background-color: #ffff;
     display: flex;
     justify-content: space-between;
-    align-items: flex-end;
-    padding: 0px 90px 10px 90px;
+    align-items: center;
+    padding: 0px 90px 0px 90px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 2;
     box-shadow: rgba(33, 35, 38, 0.1) 0px 10px 10px -10px;
 }
 nav .logo img{
-    width: 180px;
+    width: 160px;
 }
 nav ul{
     display: flex;
+    margin: 0;
+
 }
 li{
     list-style: none;
     
 }
 ul li a{
-    color: rgb(34, 64, 218);
-    border: 2px solid rgb(34, 64, 218);
+    color: #fe4818;
+    border: 2px solid #fe4818;
     text-decoration: none;
     border-radius: 5px;
     margin-right: 15px;
@@ -32,28 +38,38 @@ ul li a{
 }
 ul li a:hover{
     color: #ffff;
-    background-color: rgb(45, 78, 242);
+    background-color: #fe4818;
 }
 
 .active{
     color: #ffff;
-    background-color: rgb(34, 64, 218); 
+    background-color: #fe4818; 
 }
 
 .box-slider{
     width: 100%;
-    height: 600px;
+    height: 100vh;
+    padding-top: 80px;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 70px;
+    background: rgb(0,117,255);
+    background: linear-gradient(90deg, rgb(0,117,255) 0%, rgba(0,117,255,1) 35%, rgba(77,211,255,1) 100%);
+}
+.containx{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0px;
+    left: 0px;
     display: flex;
     justify-content: space-between;
     padding-left: 40px;
     padding-right: 40px;
-    overflow: hidden;
-    margin-bottom: 30px;
-    background: rgb(9,10,86);
-    background: linear-gradient(90deg, rgba(9,10,86,1) 0%, rgba(9,10,86,1) 35%, rgba(77,211,255,1) 100%);
+    z-index: 1;
 }
 .img{
-    width: 450px;
+    width: 40%;
     height: 100%;
     display: flex;
     align-items: flex-end;
@@ -62,7 +78,7 @@ ul li a:hover{
     width: 100%;
 }
 .htxd{
-   width: 630px;
+   width: 50%;
    height: 100%;
    display: flex;
    align-items: center;
@@ -74,7 +90,7 @@ ul li a:hover{
     color: #ffff;
 }
 .main_tx p{
-    color: rgb(235, 235, 235);
+    color: #ffff;
     font-size: 22px;
     margin-bottom: 30px;
 }
@@ -97,12 +113,12 @@ ul li a:hover{
     width: 100%;
     display: flex;
     justify-content: center;
-    margin-bottom: 30px;
+    margin-bottom: 50px;
 
 }
 .text-service p{
     font-size: 50px;
-    font-weight: 500;
+    color: #00a1ec;
 }
 
 .box-service{
@@ -111,27 +127,38 @@ ul li a:hover{
     justify-content: center;
 }
 .box-center{
-    /* width: 70%; */
-    display: flex;
-    justify-content: space-between;
+
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
 }
 .card-text{
     width: 350px;
     min-width: 293px;
-    height: 300px;
-    border: 1px solid #dddd;
+    height: 370px;
     padding: 15px;
     display: flex;
-    align-items: center;
     border-radius: 15px;
 }
-.card-text:nth-child(2){
-    margin: 0 30px 0 30px;
+
+.image_card{
+    width: 120px;
+    height: 120px;
+    padding-top: 10px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    margin: auto;
+    border: 4px solid #00a1ec;
+    justify-content: center;
+}
+.image_card img{
+    width: 100%;
 }
 .card_head p{
     font-size: 26px;
     font-weight: 500;
-    color: rgb(6, 6, 54);
+    color: #00a1ec;
     text-align: center;
     
 }
@@ -141,37 +168,150 @@ ul li a:hover{
 }
 .nube{
     width: 100%;
+    height: 600px;
     display: flex;
     justify-content: center;
-    margin: 100px 0 50px 0;
+    margin: 100px 0 150px 0;
+    background-color: #00a1ec;
 }
 .nube2{
-    width: 70%;
+    width: 75%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 .img_cloud{
-    width: 200px;
+    width: 1300px;
     margin: auto;
+    margin-right: 40px;
 }
 .img_cloud img{
     width: 100%;
 }
 
 .cloud_text p{
-    font-size: 25px;
-    font-weight: 400;
-    text-align: center;
+    text-align:start;
+    color: #ffff;
+}
+
+.space4{
+    height: 700px;
 }
 
 
 .fooder{
     width: 100%;
-    height: 250px;
+    height: 300px;
+    display: flex;
+    flex-wrap: wrap;
     background-color: rgb(0, 1, 44);
+    justify-content: center;
+}
+.card_fooder{
+    align-self: center;
+    justify-content: center;
+    text-align: center;
+    margin-top: 30px;
+}
+.contact{
+    margin-top: 15px;
+    color: rgb(135, 135, 164);
+}
+.email{
+    margin-bottom: 0;
+}
+.copyright {
+    width: 100%;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-self: flex-end;
+}
+.copyright p{
+    color: #ffff;
 }
 
 .card_logo_white{
     width: 200px;
+    margin: auto;
 }
 .card_logo_white img{
     width: 100%;
+}
+
+
+
+@media(max-width: 500px){
+    nav{
+        height: 70px;
+        padding: 0px 30px 0px 30px;
+    }
+    nav .logo img{
+        width: 120px;
+    }
+    nav  ul{
+        display: none;
+        margin-right: 10px;
+        padding: 5px 10px;
+    }
+    .box-slider{
+        padding-top: 70px;
+    }
+    .containx{
+        display: flex;
+        flex-wrap: wrap;
+        padding: 70px  20px 0px 20px;
+    }
+    .htxd{
+        width: 100%;
+        height: 50%;
+        padding-bottom: 10px;
+    }
+    .main_tx h2{
+        text-align: center;
+        font-size: 30px;
+    }
+    .main_tx p{
+        text-align: center;
+        font-size: 20px;
+    }
+    .main_tx a{
+        
+    }
+    .join{
+        text-align: center;
+    }
+
+    .card-text{
+        height: 330px;
+        border-radius: 0px;
+    }
+
+    .img{
+        width: 100%;
+        height: 48%;
+    }
+    .img img{
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
+    .box-center{
+        grid-template-columns: repeat(1, 1fr); 
+        gap: 0px;
+    }
+
+    .nube2{
+        width: 95%;
+        flex-direction: column;
+    }
+    .img_cloud{
+        width: 250px;
+        margin: 0;
+       
+    }
+    .cloud_text p{
+        text-align:center;
+    }
 }

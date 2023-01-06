@@ -1,11 +1,13 @@
 const {Schema, model} = require('mongoose')
 
 const productsSchema = new Schema({
-    name: {type:String},
-    price: {type:Number},
-    idcode: {type:Number},
-    description: {type:String},
-    category: {type:String},
+    name: {type: String},
+    price: {type: Number},
+    sum_price: {type: Number},
+    idcode: {type: Number},
+    itbis: {type: Number},
+    description: {type: String},
+    category: {type: String},
     status: {type: Boolean, default: true},
     user: { type: Schema.Types.ObjectId, ref: 'User'},
 })

@@ -9,85 +9,128 @@
 </head>
 <body>
     <%-include ("./header")%>
-    <div class="container pt-5">
+    <div class="container pt-5 mb-3">
         <h2>Configuracion</h2>
     
         <div class="box_one">
-            <div class="titles_config">
-                <p class="fs-5 text-primary">Equipo de ventas (Cajeros)</p>
-            </div>
-            <div class="form_list">
-                <form class="mb-3">
-                    <div class="row mb-2">
-                        <div class="col">
-                            <input type="text" class="form-control" required placeholder="Nombre" id="name">
-                        </div>
-                        <div class="col">
-                            <input type="text" class="form-control" required placeholder="Apellido" id="lastName">
-                        </div>
-                        <div class="col">
-                            <input type="text" class="form-control" required placeholder="Cedula/Pasaporte" id="id_document">
+            <div class="box_open">
+                <div class="titles_config">
+                    <p class="fs-5 text-primary m-0">Equipo de ventas (Cajeros)</p>
+                    <div class="open_card_one">
+                        <span class="material-symbols-outlined open_card_one btn_open_card fs-2">keyboard_arrow_down</span>
+                    </div>
+                </div>
+                <div class="cardOpen">
+                    <div class="m_l">
+                        
+                        <form class="create_cashier_card">
+                            <p class="fs-4 text-center">Crear cajero/a</p>
+                            <div class="">
+                                <div class="mb-2">
+                                    <input type="text" class="form-control" required placeholder="Nombre" id="name">
+                                </div>
+                                <div class="mb-2">
+                                    <input type="text" class="form-control" required placeholder="Apellido" id="lastName">
+                                </div>
+                                <div class="mb-2">
+                                    <input type="text" class="form-control" required placeholder="Cedula/Pasaporte" id="id_document">
+                                </div>
+                                <div class="mb-2">
+                                    <input type="number" class="form-control" id="tel" placeholder="Telefono">
+                                </div>
+                                <div class="mb-3">
+                                    <input type="email" class="form-control" placeholder="Correo"  id="email">
+                                </div>
+                                <div class="">
+                                    <button type="button" class="btn btn-primary form-control" id="btn_add_user">Agragar Cajero</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="form_list">
+                        <div class="card_contain">
+                            <div class="xss">
+                                <table class="table m-0">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">Nombre</th>
+                                        <th scope="col">Apellido</th>
+                                        <th scope="col">Codigo</th>
+                                        <th scope="col">Cedula/Pasapt</th>
+                                        <th scope="col">Estado</th>
+                                        <th scope="col">Accion</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody class="showListCashiers"></tbody>
+                                </table>
+                            </div>
+                            <div class="tfoot"></div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col">
-                            <input type="number" class="form-control" id="tel" placeholder="Telefono">
-                        </div>
-                        <div class="col">
-                            <input type="email" class="form-control" placeholder="Correo"  id="email">
-                        </div>
-                        <div class="col">
-                            <button type="button" class="btn btn-primary" id="btn_add_user">Agragar Cajero</button>
-                        </div>
-                    </div>
-                </form>
-
-                <table class="table">
-                    <thead>
-                      <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Nombre</th>
-                        <th scope="col">Apellido</th>
-                        <th scope="col">Codigo</th>
-                        <th scope="col">Cedula/Pasapt</th>
-                        <th scope="col">Estado</th>
-                        <th scope="col">Accion</th>
-                      </tr>
-                    </thead>
-                    <tbody class="showListCashiers"></tbody>
-                </table>
-                <!-- <div class=""></div> -->
+                </div>
             </div>
         </div>
 
         <div class="box_one">
-            <div class="titles_config">
-                <p class="fs-5 text-primary">Informacion de su negocio</p>
-            </div>
-            <div class="form_list">
-                <div class="" id="msg_err"></div>
-                <p class="fs-2" id="show_s_n"></p>
-                <form action="" class="row d-flex mb-4">
-                    <div class="input-groupe col-sm-10 mb-3">
-                        <input type="text" id="store_name" class="form-control" placeholder="Coloque aqui el nombre de su negocio">
+            <div class="box_open ">
+                <div class="titles_config">
+                    <p class="fs-5 text-primary">Informacion de su negocio y control de facturacion</p>
+                    <div class="open_card_two">
+                        <span class="material-symbols-outlined open_card_two btn_open_card fs-2">keyboard_arrow_down</span>
                     </div>
-                    <div class="input-groupe col-sm-10 mb-3">
-                        <input type="text" id="store_address" class="form-control" placeholder="Coloque aqui la direccion de su negocio">
+                </div>
+                <div class="cardOpen">
+                    <div class="m_l"></div>
+                    <div class="form_list">
+                        <div class="" id="msg_err"></div>
+                        <p class="fs-2" id="show_s_n"></p>
+                        <div class="card_contain">
+                            <form action="" class="row d-flex mb-4">
+                                <div class="input-groupe col-sm-10 mb-3">
+                                    <input type="text" id="store_name" class="form-control" placeholder="Coloque aqui el nombre de su negocio">
+                                </div>
+                                <div class="input-groupe col-sm-10 mb-3">
+                                    <input type="text" id="store_address" class="form-control" placeholder="Coloque aqui la direccion de su negocio">
+                                </div>
+                                <div class="input-groupe col-sm-10 mb-3">
+                                    <input type="text" id="store_" class="form-control" placeholder="pie de factura">
+                                </div>
+                                <div class="input-groupe col-sm-2 ">
+                                    <button type="button" id="btn_storeName" class="btn btn-primary">Enviar</button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="d-flex mb-3 mt-3">
+                            <input type="checkbox" name="" id="cashierName" class="me-3">
+                            <p class="mb-0">Agregar nombre del cajero/a a la factura</p>
+                        </div>
                     </div>
-                    <div class="input-groupe col-sm-2 ">
-                        <button type="button" id="btn_storeName" class="btn btn-primary">Enviar</button>
-                    </div>
-                </form>
+                </div>
             </div>
 
         </div>
-    </div>
 
-    <!-- modals -->
-    <!-- Button trigger modal -->
-    <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-        Launch demo modal
-    </button> -->
+        <div class="box_one">
+            <div class="box_open">
+                <div class="titles_config">
+                    <p class="fs-5 text-primary">Control de ventas y productos</p>
+                    <div class="open_card_three">
+                        <span class="material-symbols-outlined open_card_three btn_open_card fs-2">keyboard_arrow_down</span>
+                    </div>
+                </div>
+                <div class="cardOpen">
+                    <div class="m_l"></div>
+                    <div>
+                        <div class="d-flex mb-3">
+                            <input type="checkbox" name="" id="addITBIS" class="me-3">
+                            <p class="mb-0">Agregar (ITBIS) a los productos</p>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     
     <!-- Modal -->
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">

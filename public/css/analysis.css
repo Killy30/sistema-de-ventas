@@ -96,10 +96,7 @@
     display: flex;
     align-self: flex-end;
 }
-.text_green{
-    /* color: #3b9a36; */
-    color: rgb(22, 110, 203);
-}
+
 
 .csxt{
     margin: 0;
@@ -127,6 +124,8 @@
 
 }
 .card_chart{
+    width: 49%;
+    height: 100%;
     padding: 10px;
     border-radius: 7px;
     /* border: 1px solid rgb(223, 223, 223); */
@@ -135,7 +134,8 @@
 }
 
 .grow{
-    width: calc(100% - 700px);
+    /* width: calc(100% - 700px); */
+    width: 49%;
     height: 100%;
     padding: 10px;
     border-radius: 7px;
@@ -179,21 +179,12 @@
 }
 .gbdx{
     display: flex;
-    /* background-color: #2abb22d0; */
-    /* background-color: rgb(0, 149, 255); */
     color: rgb(0, 149, 255);
     margin: 0;
-    padding: 5px;
+    font-weight: 600;
     border-radius: 3px;
 }
-.gbdx span{
-    font-size: 20px;
-    display: flex;
-    justify-content: flex-end;
-    align-self: center;
-    padding: 0;
-    font-weight: 600;
-}
+
 .view_more{
     width: 100%;
     margin-top: 10px;
@@ -232,4 +223,39 @@ thead tr, tbody tr {
     display: table;
     width: 100%;
     table-layout: fixed;
+}
+
+@media(max-width: 500px){
+    .cardx1{
+        flex-direction: column;
+    }
+    .box1{
+        width: 100%;
+        margin-bottom: 15px;
+    }
+    .box_chart{
+        height: 600px;
+        flex-direction: column;
+        margin-bottom: 15px;
+    }
+    .card_chart{
+        width: 100%;
+        height: 300px;
+        margin-bottom: 15px;
+    }
+    .grow{
+        width: 100%;
+        height: 285px;
+    }
+    .box_tables{
+        flex-direction: column;
+    }
+    .card_table_s{
+        width: 100%;
+        margin-bottom: 15px;
+    }
+    .card_table_p{
+        width: 100%;
+    }
+
 }

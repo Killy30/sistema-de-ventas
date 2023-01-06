@@ -4,27 +4,16 @@ const btn_month = document.getElementById('btn_month')
 const btn_code = document.getElementById('btn_code')
 
 import fecha from './month_es.js'
+import data from './data.js'
 
 let salesAnalysis;
 let productsAnalysis = []
 
 
 //request data
-const getAllSales = async() =>{
-    let req = await fetch('/get-sales')
-    let res = await req.json()
-    return res
-}
-const getAllProducts = async() =>{
-    let req = await fetch('/get-products')
-    let res = await req.json()
-    return res
-}
-
 const getData = async() =>{
     try {
-        // tbody.innerHTML = `${loader()}`
-        let allSales = await getAllSales()
+        let allSales = await data.getSales()
         let sales = allSales.sales
 
         salesAnalysis = sales
@@ -62,7 +51,7 @@ selectType(typeSearch.value)
 
 //config and process the data to make the analysis
 const getAnalysis = async()=>{
-    let all_products = await getAllProducts()
+    let all_products = await data.getProducts()
 
     let total = salesAnalysis.reduce((acc, t) => acc = acc + t.totalPrice ,0)
 
@@ -83,8 +72,6 @@ const getAnalysis = async()=>{
         obt[key] = value
         repete_array.push(obt)
     });
-    // console.log(repete_array);
-    // console.log(repete_object);
 
     //get all the info about products that have been sold
     let products_info = [];
@@ -107,7 +94,6 @@ const getAnalysis = async()=>{
         
     })
 
-    //products + sold and - sold
     let more = products_info.length
     let less = all_products.my_products.length - products_info.length
     let countSales = salesAnalysis.length
@@ -146,12 +132,7 @@ const tableProductsView = (data) =>{
                 <td>${product.code}</td>
                 <td>${product.price}</td>
                 <td>${product.soldUnits}</td>
-                <th>
-                    <p class="gbdx">
-                        <span class="material-symbols-outlined">attach_money</span>
-                        ${total}
-                    </p>
-                </th>
+                <th class="gbdx text_color_">$${total}</th>
             </tr>
         `
     })
@@ -166,17 +147,12 @@ const tableSalesView = (data) =>{
     datas.forEach((sale, i) =>{
         let time = new Date(sale.date)
         let total = numberFormat(sale.totalPrice)
-        console.log(i);
         tbodySales.innerHTML += `
             <tr>
                 <td>${sale.code}</td>
                 <td>${sale.products.length}</td>
                 <td>${time.getDate()}/${time.getMonth()}/${time.getFullYear()} ${time.getHours()}:${time.getMinutes()}</td>
-                <th>
-                    <p class="gbdx">
-                        $${total}
-                    </p>
-                </th>
+                <td class="gbdx text_color_">$${total}</td>
             </tr>
             ${(i==29)?'<div class="view_more"><a href="/ventas" >Ver mas</a></div>':''}
         `
@@ -184,7 +160,7 @@ const tableSalesView = (data) =>{
 }
 
 const grafictAnalysis = async() =>{
-    let allSales = await getAllSales()
+    let allSales = await data.getSales()
 
     let date = new Date()
     let cmt = `${date.getMonth()}/${date.getFullYear()}`
@@ -201,7 +177,6 @@ const grafictAnalysis = async() =>{
     let fm = new Date(date.setMonth(date.getMonth()-1))
     let fmt = `${fm.getMonth()}/${fm.getFullYear()}`
     let fm_v = fm.getTime()
-
 
 
     let cm_data = allSales.sales.filter(sale =>{
@@ -236,7 +211,6 @@ const grafictAnalysis = async() =>{
 
     let labels_data = [fecha(fm_v),fecha(tm_v),fecha(sm_v),fecha(cm_v)]
     let data_value = [t_fm.toFixed(2), t_tm.toFixed(2),t_sm.toFixed(2),t_cm.toFixed(2)]
-    // console.log(fecha(p.setMonth(p.getMonth()-1)));
 
     getGrafict(labels_data, data_value)
     compare_values(labels_data, data_value)
@@ -253,7 +227,6 @@ const getGrafict = async(labels_data, data_value) =>{
         chart.destroy();
     }
 
-    // const labels = Utils.months({count: 3});
     const labels = labels_data;
     const data = {
         labels: labels,
@@ -282,42 +255,45 @@ const getGrafict = async(labels_data, data_value) =>{
 }
 
 const compare_values = (months, values) =>{
+
     const grow_box = document.querySelector('.grow')
 
     let previous_value = values[values.length-3];
     let current_value = values[values.length-2];
+
     let x = 0.00
 
     if(current_value != 0 && previous_value != 0){
         x = ((current_value - previous_value) / current_value )*100
     }
-    //<p class="fs-6" >Meses anterioles</p>
-    //<p class="fs-5 mb-0 w-100">Progreso</p>
+   
     grow_box.innerHTML = `
         <div class="card_grow">
             <div class="w-100">
                 <p class="fs-5 mb-0 fw-bolder">Progreso</p>
             </div>
             
-            <div class="w-100 d-flex justify-content-around">
-                <div class="" >
-                    <p class="fs-6 mb-0 text-secondary">${months[months.length-3]}</p>
-                    <p class="fs-5 mb-0 fw-bolder" >$${numberFormat(previous_value)}</p>
-                </div>
-                <div class="">
-                    <p class="fs-6 mb-0 text-secondary">${months[months.length-2]}</p>
-                    <p class="fs-5 mb-0 fw-bolder">$${numberFormat(current_value)}</p>
+            <div class="d-flex align-items-center">
+                <div>
+                    <div class="mb-5" >
+                        <p class="fs-6 mb-0">${months[months.length-3]}</p>
+                        <p class="fs-5 mb-0 fw-bolder" >$${numberFormat(previous_value)}</p>
+                    </div>
+                    <div class="mb-5">
+                        <p class="fs-6 mb-0">${months[months.length-2]}</p>
+                        <p class="fs-5 mb-0 fw-bolder">$${numberFormat(current_value)}</p>
+                    </div>
                 </div>
             </div>
-            <div class="w-100 d-flex justify-content-center flex-wrap">
+            <div class=" d-flex justify-content-center flex-wrap">
                 <div class="xp">
                     <div class="svg">
-                        <svg width="250px" height="250px">
-                            <circle r="100" cx="125" cy="125" class="progress2"></circle>
-                            <circle r="100" cx="125" cy="125" class="progress" id="progress"></circle>
+                        <svg width="300px" height="300px">
+                            <circle class="progress2"></circle>
+                            <circle class="progress" id="progress"></circle>
                         </svg>
                     </div>
-                    <p class="num_progress fs-2 ${x.toString().includes('-') ? 'text-danger':'text_green'}">
+                    <p class="num_progress fs-2 ${x.toString().includes('-') ? 'text-danger':'text_color_'}">
                         ${x.toFixed(2)}%
                     </p>
                 </div>
@@ -329,13 +305,19 @@ const compare_values = (months, values) =>{
 
 const progressCount = (x) =>{
     const progress = document.getElementById('progress')
-    let count2 = 630;
+    let count2 = 819;
+
+    let j = parseInt(x.toString().slice(1, x.length))
     
-    let v = count2 - (6.3 * x)
-    progress.style.strokeDashoffset = v.toFixed(2)
+    let a = (count2 - (8.19 * j))
+    a = (a < 0) ? 100 : a;
 
     if(x.toString().includes('-')){
-        progress.style.stroke = 'rgb(255, 61, 61)'
+        progress.style.strokeDashoffset = -a
+        progress.style.stroke = 'rgb(205, 7, 7)'
+    }else{
+        progress.style.strokeDashoffset = a
+        progress.style.stroke = 'rgb(255, 75, 10)'
     }
 }
 
@@ -348,7 +330,7 @@ const getDateToSearch = async(e) =>{
             return alert('Debes colocar el dia de las ventas')
         }
 
-        let allSales = await getAllSales()
+        let allSales = await data.getSales()
 
         const sales_day = allSales.sales.filter( sale => {
             let date = new Date(sale.date)
@@ -374,7 +356,7 @@ const getMonthToSearch = async(e) =>{
             return alert('Debes colocar el mes de las ventas')
         }
 
-        let allSales = await getAllSales()
+        let allSales = await data.getSales() 
 
         let sales_month = allSales.sales.filter(sale =>{
             let date = new Date(sale.date)

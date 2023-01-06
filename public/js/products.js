@@ -7,13 +7,13 @@ const countProducts = document.getElementById('countProducts')
 let productsXTV
 
 import loader from "./loader.js"
+import alert_message from './alertMSG.js'
+import data from './data.js'
 
 const getAllProducts = async() =>{
     try {
         tbody.innerHTML = `${loader()}`
-        let req = await fetch('/get-products')
-        let res = await req.json()
-        return res
+        return data.getProducts()
     } catch (error) {
         console.log(error);
     }
@@ -32,12 +32,12 @@ const showAllProducts = async() =>{
         return noElement()
     }
     
-    the_products.forEach(product => {
+    the_products.reverse().forEach(product => {
         tbody.innerHTML += `
             <tr>
                 <td>${product.idcode}</td>
                 <td>${product.name}</td>
-                <td>${product.price}</td>
+                <td>${product.sum_price}</td>
                 <td>${product.description}</td>
                 <td>${product.category}</td>
                 <td >
@@ -74,7 +74,7 @@ const searchProducts = async() =>{
                 <tr>
                     <td>${product.idcode}</td>
                     <td>${product.name}</td>
-                    <td>${product.price}</td>
+                    <td>${product.sum_price}</td>
                     <td>${product.description}</td>
                     <td>${product.category}</td>
                     <td>
@@ -94,13 +94,6 @@ const searchProducts = async() =>{
     }
 }
 
-const errorMessage = (err,color) =>{
-    const cardError = document.getElementById('msg_err')
-    cardError.innerHTML = `<div class="${color} p-2 mb-3" role="alert"> ${err}</div>`
-    setTimeout(() =>{
-        cardError.innerHTML = ''
-    },5000)
-} 
 
 //create a new product
 const createProduct = async() => {
@@ -109,19 +102,27 @@ const createProduct = async() => {
     const price = document.getElementById('price')
     const category = document.getElementById('category')
     const description = document.getElementById('description')
+    const itbis = document.getElementById('itbis')
 
     
-    // createP.setAttribute("data-bs-dismiss", "modal");
-    // console.log(idcode.value.trim() === "" && name.value.trim() === "" && price.value.trim() === "");
     if(idcode.value.trim() === "" || name.value.trim() === "" || price.value.trim() === ""){
-        let error = 'Por favor llenar los campos requeridos...'
-        return errorMessage(error,'alert alert-danger')
+    
+        let obj_msg = {
+            msg: 'Por favor llenar los campos requeridos...',
+            color: 'alert alert-danger',
+            index: 0
+        }
+        return alert_message(obj_msg)
     }else{
-        // let products = await getAllProducts()
     
         if(productsXTV.my_products.some(product => product.idcode == idcode.value)){
-            let error = 'Este codigo ya existe en tu lista, por favor colocar otro codigo...';
-            return errorMessage(error,'alert alert-danger')
+            
+            let obj_msg = {
+                msg: 'Este codigo ya existe en tu lista, por favor colocar otro codigo...',
+                color: 'alert alert-danger',
+                index: 0
+            }
+            return alert_message(obj_msg)
         }else{
             
             let data = {
@@ -130,7 +131,8 @@ const createProduct = async() => {
                 price: price.value, 
                 category: category.value, 
                 description: description.value,
-                _id
+                _id: _id,
+                itbis: itbis.value
             }
             
             try {
@@ -149,9 +151,15 @@ const createProduct = async() => {
                 price.value = ""
                 category.value = ""
                 description.value = ""
+                itbis.value = ""
 
-                let error = 'El producto se ha agregado exitosamente...';
-                errorMessage(error,'alert alert-success')
+                let obj_msg = {
+                    msg: 'El producto se ha agregado exitosamente...',
+                    color: 'alert alert-success',
+                    index: 0
+                }
+                
+                alert_message(obj_msg)
 
             } catch (error) {
                 console.log(error);
@@ -166,6 +174,7 @@ const viewProductValue = (product)=>{
     document.getElementById('idcode_update').value = product.product.idcode
     document.getElementById('name_update').value = product.product.name
     document.getElementById('price_update').value = product.product.price
+    document.getElementById('itbis_update').value = product.product.itbis
     document.getElementById('category_update').value = product.product.category
     document.getElementById('description_update').value = product.product.description
 
@@ -178,8 +187,9 @@ const updateProduct = async(e) =>{
     const price = document.getElementById('price_update').value
     const category = document.getElementById('category_update').value
     const description = document.getElementById('description_update').value
+    const itbis = document.getElementById('itbis_update').value
 
-    
+
 
     let products = await getAllProducts()
 
@@ -187,12 +197,12 @@ const updateProduct = async(e) =>{
         return element.idcode == idcode
     })
 
-    if(idcode.trim() === '' || name.trim() === "" || price.trim() === ""){
+    if(idcode.trim() === "" || name.trim() === "" || price.trim() === ""){
         alert('Por favor llenar los campos requeridos')
         return false
     }
 
-    let data = {idcode, name, price, category, description, _id}
+    let data = {idcode, name, price, category, description, _id, itbis}
 
     if(pro.length == 0){
         try {
@@ -204,11 +214,19 @@ const updateProduct = async(e) =>{
                 }
             })
             let res = await req.json()
+
+            showAllProducts()
+
+            let obj_msg = {
+                msg: 'El producto se ha actualizado exitosamente...',
+                color: 'alert alert-success',
+                index: 1
+            }
+            
+            alert_message(obj_msg)
         } catch (error) {
             console.log(error);
         }
-        
-        showAllProducts()
 
     }else if(pro.length == 1 && pro.some(item => item._id == _id)){
         try {
@@ -220,10 +238,19 @@ const updateProduct = async(e) =>{
                 }
             })
             let res = await req.json()
+
+            showAllProducts()
+            let obj_msg = {
+                msg: 'El producto se ha actualizado exitosamente...',
+                color: 'alert alert-success',
+                index: 1
+            }
+            
+            alert_message(obj_msg)
         } catch (error) {
             console.log(error);
         }
-        showAllProducts()
+        
     }else{
         alert('Este codigo ya existe en la base de datos, por favor agregue otro codigo');
     }

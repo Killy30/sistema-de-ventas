@@ -5,7 +5,46 @@
 .inactive{
     display: none;
 }
+#container{
+    padding-top: 50px;
+}
+form{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+.card_cashiers{
+    /* margin-left: 20px; */
+}
 
 #tbody{
     height: 465px;
+}
+
+.form_select{
+    display: block;
+    font-weight: 400;
+    padding: .4em 1.4em .4em .8em;
+    border: 1px solid rgb(215, 215, 215);
+    border-radius: .3em;
+    background-color: #fff;
+    outline: none;
+}
+
+@media(max-width: 500px){
+    #container{
+        padding-top: 15px;
+    }
+    h3{
+        padding-left: 10px;
+    }
+    #input_day{
+        width: 200px;
+    }
+    form{
+        gap: 15px;
+    }
+    .card_table_body{
+        height: calc(100% - 175px);
+    }
 }

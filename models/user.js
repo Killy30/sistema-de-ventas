@@ -9,6 +9,10 @@ const UserSchema = new Schema({
     storeName: {type: String},
     storeAddress: {type: String},
     password: {type: String},
+    system_control:{
+        acceptITBIS: {type: Boolean, default: false},
+        add_N_C_receipt: {type: Boolean, default: false},
+    },
     products: [{ type: Schema.Types.ObjectId, ref: 'product'}],
     sales: [{ type: Schema.Types.ObjectId, ref: 'sale'}],
     cashiers: [{ type: Schema.Types.ObjectId, ref: 'cashier'}]

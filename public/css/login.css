@@ -3,16 +3,15 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    height: 100vh;
 }
 .card_1{
-    margin-top: 100px;
     width: 750px;
     height: 600px;
     padding: 20px;
     border-radius: 10px;
     border: 1px solid rgb(220, 219, 219);
-    box-shadow: rgba(0, 0, 0, 0.15) 0px 2px 8px;
-    
+    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
 }
 .card_h{
     width: 100%;
@@ -37,4 +36,14 @@ form{
 }
 .btn:hover{
     color: #fff;
+}
+
+@media(max-width: 500px){
+    .card_1{
+        border: 0px;
+        box-shadow:none;
+    }
+    .containe{
+        align-items: flex-start;
+    }
 }

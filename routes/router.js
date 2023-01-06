@@ -57,7 +57,6 @@ module.exports = (app) =>{
     
     app.get('/factura/:id', isAuthenticated, async(req, res)=>{
         const user = req.user
-        // const sale = await Sale.findById({_id: req.params.id})
         res.render('factura', {user})
     })
 
