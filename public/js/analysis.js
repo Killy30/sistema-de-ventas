@@ -270,33 +270,41 @@ const compare_values = (months, values) =>{
     grow_box.innerHTML = `
         <div class="card_grow">
             <div class="w-100">
-                <p class="fs-5 mb-0 fw-bolder">Progreso</p>
+                <p class="fs-5 mb-0 ">Progreso</p>
             </div>
-            
-            <div class="d-flex align-items-center">
+            <div class="w-100 d-flex justify-content-between">
+                <div class="d-flex align-items-center">
+                    <div>
+                        <div class="mb-5" >
+                            <p class="fs-6 mb-0">${months[months.length-3]}</p>
+                            <p class="fs-5 mb-0 " >$${numberFormat(previous_value)}</p>
+                        </div>
+                        <div class="mb-5">
+                            <p class="fs-6 mb-0">${months[months.length-2]}</p>
+                            <p class="fs-5 mb-0">$${numberFormat(current_value)}</p>
+                        </div>
+                    </div>
+                </div>
                 <div>
-                    <div class="mb-5" >
-                        <p class="fs-6 mb-0">${months[months.length-3]}</p>
-                        <p class="fs-5 mb-0 fw-bolder" >$${numberFormat(previous_value)}</p>
-                    </div>
-                    <div class="mb-5">
-                        <p class="fs-6 mb-0">${months[months.length-2]}</p>
-                        <p class="fs-5 mb-0 fw-bolder">$${numberFormat(current_value)}</p>
+                    <div class="xp">
+                        <div class="svg">
+                            <svg width="300px" height="300px">
+                                <circle class="progress2"></circle>
+                                <circle class="progress" id="progress"></circle>
+                            </svg>
+                        </div>
+                        <p class="num_progress fs-2 ${x.toString().includes('-') ? 'text-danger':'text_color_'}">
+                            ${x.toFixed(2)}%
+                        </p>
                     </div>
                 </div>
             </div>
-            <div class=" d-flex justify-content-center flex-wrap">
-                <div class="xp">
-                    <div class="svg">
-                        <svg width="300px" height="300px">
-                            <circle class="progress2"></circle>
-                            <circle class="progress" id="progress"></circle>
-                        </svg>
-                    </div>
-                    <p class="num_progress fs-2 ${x.toString().includes('-') ? 'text-danger':'text_color_'}">
-                        ${x.toFixed(2)}%
-                    </p>
-                </div>
+            <div class="w-100">
+                <p class="m-0">${
+                    (x!==0)?
+                    `Tus ventas ha ${(x<0)?'desincrementado':'incrementado'} un ${x.toFixed(2)}% en el mes de ${months[months.length-2]}.`
+                    :''
+                }</p>
             </div>
         </div>
     `
@@ -307,10 +315,10 @@ const progressCount = (x) =>{
     const progress = document.getElementById('progress')
     let count2 = 819;
 
-    let j = parseInt(x.toString().slice(1, x.length))
-    
+    let j = parseInt((x < 0) ? x.toString().slice(1, x.length) : x);
+
     let a = (count2 - (8.19 * j))
-    a = (a < 0) ? 100 : a;
+    a = (a < 0) ? 0 : a;
 
     if(x.toString().includes('-')){
         progress.style.strokeDashoffset = -a

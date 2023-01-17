@@ -1,5 +1,7 @@
 
-
+*{
+    font-family: 'Prompt', sans-serif;
+}
 nav{
     width: 100%;
     height: 80px;
@@ -85,17 +87,18 @@ ul li a:hover{
    padding-bottom: 30px;
 }
 .main_tx h2{
-    font-weight: 500;
-    font-size: 60px;
+    font-weight: 600;
+    font-size: 70px;
     color: #ffff;
 }
 .main_tx p{
     color: #ffff;
-    font-size: 22px;
+    font-size: 30px;
+    font-weight: 300;
     margin-bottom: 30px;
 }
 .main_tx a{
-    padding: 7px 30px;
+    padding: 15px 30px;
     text-decoration: none;
     color: #ffff;
     border-radius: 5px;
@@ -118,7 +121,8 @@ ul li a:hover{
 }
 .text-service p{
     font-size: 50px;
-    color: #00a1ec;
+    color: #007fdb;
+    font-weight: 500;
 }
 
 .box-service{
@@ -127,7 +131,6 @@ ul li a:hover{
     justify-content: center;
 }
 .box-center{
-
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 30px;
@@ -164,7 +167,9 @@ ul li a:hover{
 }
 .card_body p{
     font-size: 20px;
+    font-weight: 400;
     text-align: center;
+    color: rgb(75, 75, 75);
 }
 .nube{
     width: 100%;
@@ -172,7 +177,7 @@ ul li a:hover{
     display: flex;
     justify-content: center;
     margin: 100px 0 150px 0;
-    background-color: #00a1ec;
+    background-color: #007fdb;
 }
 .nube2{
     width: 75%;
@@ -190,13 +195,44 @@ ul li a:hover{
     width: 100%;
 }
 
-.cloud_text p{
+.x1 p{
     text-align:start;
     color: #ffff;
+    font-weight: 500;
+}
+.x2 p{
+    text-align:start;
+    color: #ffff;
+    font-weight: 300;
 }
 
 .space4{
-    height: 700px;
+    width: 100%;
+    margin-bottom: 200px;
+}
+.space4 h3{
+    text-align: center;
+    font-size: 50px;
+}
+.space4 p{
+    text-align: center;
+    font-size: 40px;
+    font-weight: 500;
+}
+.btn_f{
+    width: 100%;
+    text-align: center;
+    margin-top: 40px;
+}
+.btn_f a{
+    padding: 15px 30px;
+    text-decoration: none;
+    color: rgb(255, 255, 255);
+    border-radius: 5px;
+    font-size: 20px;
+    font-weight: 500;
+    transition: 0.5s;
+    background-color: #fe4818;
 }
 
 
@@ -205,7 +241,8 @@ ul li a:hover{
     height: 300px;
     display: flex;
     flex-wrap: wrap;
-    background-color: rgb(0, 1, 44);
+    color: #fe4818;
+    background-color: #0d1333;
     justify-content: center;
 }
 .card_fooder{
@@ -240,7 +277,14 @@ ul li a:hover{
     width: 100%;
 }
 
-
+@media(max-width: 1500px){
+    .main_tx h2{
+        font-size: 50px;
+    }
+    .main_tx p{
+        font-size: 25px;
+    }
+}
 
 @media(max-width: 500px){
     nav{
@@ -296,6 +340,9 @@ ul li a:hover{
         width: 100%;
         height: 100%;
         object-fit: contain;
+    }
+    .text-service p{
+        font-size: 40px;
     }
     .box-center{
         grid-template-columns: repeat(1, 1fr); 

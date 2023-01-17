@@ -1,6 +1,25 @@
 
 #container{
+    display: none;
     padding-top: 50px;
+}
+
+.box_store_name{
+    width: 100%;
+    display: none;
+    justify-content: center;
+    margin-top: 250px;
+}
+.card_store_name{
+    border: 1px solid #ddd;
+    border-radius: 7px;
+    padding: 25px;
+    background-color: #fff;
+
+}
+.tx_ist{
+    font-size: 25px;
+    font-weight: 300;
 }
 
 .modal-dialog {

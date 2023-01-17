@@ -1,88 +1,43 @@
-p{
-    margin: 0;
+
+.boxFactura{
+    /* border: 2px solid rgb(177, 177, 177); */
+    border-radius: 7px;
+    padding: 10px;
+    margin-top: 20px;
+    margin-bottom: 30px;
 }
-.box_fac{
-    display: flex;
-    justify-content: center;
-    width: 220px;
-    padding-top: 40px;
-    padding-bottom: 40px;
-    page-break-after: avoid;
-}
-.titulo{
-    font-size: 23px;
-    text-align: center;
-    align-content: center;
-    margin-top: 30px;
+.name_store{
+    font-size: 30px;
+    font-weight: 400;
+    /* text-align: center; */
+    
     width: 100%;
 }
-.card_address p{
-    text-align: center;
-    align-content: center;
-    margin-bottom: 10px;
-}
-.card_code{
+
+.fheader{
+    width: 100%;
     display: flex;
+    align-items: center;
+    padding: 10px;
+    justify-content: space-between;
+    background-color: #193874;
+    color: #fff;
+    border-radius: 7px;
+
 }
-.card_code p{
-    width: 50%;
+.fheader p{
+    margin: 0;
 }
-.card_date{
+
+.fbodyx{
+    width: 100%;
+    padding: 10px;
+}
+.fbodyRow{
     display: flex;
     justify-content: space-between;
+    border-bottom: 1px solid rgb(193, 193, 193);
 }
-
-table, td, th{
-    border: none;
-}
-
-thead{
-    /* border-bottom: 2px dashed rgb(20, 19, 19); */
-    /* border-top: 2px dashed rgba(20, 19, 19); */
-}
-th, td.v_1{
-    width: 70%;
-}
-th, td.v_2{
-    width: 30%;
-    word-break: break-all;
-}
-.v_1{
-    text-align: start;
-    align-content: flex-start
-}
-.v_2{
-    text-align: end;
-    align-content: flex-end
-}
-
-.card_total{
-    display: flex;
-    font-weight: bold;
-    /* border-bottom: 2px dashed rgb(20, 19, 19); */
-}
-.card_total p{
-    width: 50%;
-}
-
-.card_msg{
-    margin-bottom: 50px;
-
-}
-.card_msg p{
-    text-align: center;
-    align-content: center;
-}
-span{
-    display: flex !important;
-}
-
-
-@media print {
-    .hide_f{
-        display: none !important;
-    }
-    nav{
-        display: none !important;
-    }
+.fbodyRow p{
+    margin: 0;
 }

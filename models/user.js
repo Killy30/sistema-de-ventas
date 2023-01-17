@@ -8,6 +8,7 @@ const UserSchema = new Schema({
     email: {type: String},
     storeName: {type: String},
     storeAddress: {type: String},
+    footText: {type: String},
     password: {type: String},
     system_control:{
         acceptITBIS: {type: Boolean, default: false},

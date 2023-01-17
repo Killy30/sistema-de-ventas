@@ -18,7 +18,7 @@ const getUser = async() =>{
     }
 }
 
-const getAllSales = async() =>{
+const getAllSales = () =>{
     try {
         tbody.innerHTML = `${loader()}`
         return data.getSales()
@@ -59,7 +59,7 @@ const showListSales = async(sales) =>{
                 </td>
                 <td>${sales[i].totalPrice}</td>
                 <td>
-                    <a href="/factura/${sales[i]._id}" data-id="${sales[i]._id}" class="btn text-primary">
+                    <a href="/factura/${sales[i]._id}" data-id="${sales[i]._id}" class="btn p-0 text-primary">
                         Ver detalle
                     </a>
                 </td>
@@ -149,7 +149,6 @@ const selectType = (data)=>{
 
 selectType(typeSearch.value)
 
-
 //
 const getDateToSearch = async(e) =>{
     const dayDate = document.getElementById('input_day').value
@@ -183,10 +182,8 @@ const getDateToSearch = async(e) =>{
         
     } catch (error) {
         console.log(error);
-    }
-    
+    }    
 }
-
 
 //
 const getMonthToSearch = async(e) =>{
@@ -265,7 +262,6 @@ const search_all_sales = async(e)=>{
     } catch (error) {
         console.log(error);
     }
-
 }
 
 //-----------------------------------------------------------------------------

@@ -4,17 +4,20 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="../css/bootstrap.min.css" rel="stylesheet" >
-    <link rel="stylesheet" href="../css/factura.css" media="print">
+    <!-- <link href="../css/bootstrap.min.css" rel="stylesheet" > -->
+    <link rel="stylesheet" href="../css/factura.css">
+    <link rel="stylesheet" href="../css/factura_tiket.css" media="print" type="text/css">
     <title>Document</title>
 </head>
 <body>
     <%-include ("./header")%>
 
     <div class="container">
-        <h1 class="hide_f">factura</h1>
+        <div class="d-flex mt-5 ">
+            <h2 class="hide_f me-5">factura</h2>
+            <button class="btn btn-primary hide_f " id="print_factura">Imprimir factura</button>
+        </div>
         <div class="box_fac" id="fbody"></div>
-        <button class="btn btn-primary hide_f mb-5" id="print_factura">Imprimir factura</button>
     </div>
 
     <script type="module" src="../js/factura.js"></script>

@@ -10,10 +10,8 @@ import loader from "./loader.js"
 import fecha from "./month_es.js"
 import data from "./data.js"
 
-
 let listProducts = []
 let dataCasheir;
-
 
 const getSales = async() =>{
     try {
@@ -32,6 +30,39 @@ const getUser = async() =>{
     }
 }
 
+const verifyStoreName = async()=>{
+    let user = await getUser()
+    if(user.data.storeName){
+        document.querySelector('.box_store_name').style.display = 'none'
+        document.querySelector('#container').style.display = 'block'
+    }else{
+        document.querySelector('.box_store_name').style.display = 'flex'
+        document.querySelector('#container').style.display = 'none'
+    }
+}
+verifyStoreName()
+
+const post_store_name = async(e)=>{
+    let p_store_name = document.getElementById('p_store_name')
+    if(p_store_name.value.trim() == "") {
+        e.preventDefault()
+        return false
+    }
+
+    try {
+        let data = {name: p_store_name.value}
+        let req = await fetch('/store-name', {
+            method:'POST',
+            body:JSON.stringify(data),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        let res = await req.json()
+    } catch (error) {
+        console.log(error);
+    }
+}
 
 const showStoreName = async() =>{
     let user = await getUser()
@@ -105,7 +136,6 @@ const showListCashiers_select = async() =>{
         localStorage.removeItem('id')
         localStorage.removeItem('code')
     }
-
 } 
 showListCashiers_select()
 
@@ -160,7 +190,6 @@ const showProducts = () =>{
 const subTotalValue = () =>{
     let totalPrice = listProducts.reduce((acc, p) => acc = acc + p.price ,0)
     document.getElementById('subTotal').innerText = totalPrice.toFixed(2)
-    
 }
 
 const totalITBIS = () =>{
@@ -188,17 +217,17 @@ const create_sale = async(e) =>{
     }
     //
     if(totalPrice == 0){
-        let error = 'Por favor agregue productos antes de realizar la compra...'
+        let error = 'Por favor agregue productos antes de realizar la venta...'
         return errorMessage(error,'alert alert-danger')
     }
     //
     if(pago.length == 0){
-        let error = 'Por favor agregue el pago efectivo que dio el cliente para cobrar...'
+        let error = 'Por favor agregue el pago en efectivo que dio el cliente para hacer esta venta...'
         return errorMessage(error,'alert alert-danger')
     }
     //
     if(pago < totalPrice){
-        let error = 'Saldo insuficiente para hacer esa compra...'
+        let error = 'Saldo insuficiente para hacer esta venta...'
         return errorMessage(error,'alert alert-danger')
     }
 
@@ -400,6 +429,7 @@ const changeCasheir = async(data) =>{
     }
 }
 
+document.getElementById('btn_store_name').addEventListener('click', post_store_name)
 
 
 

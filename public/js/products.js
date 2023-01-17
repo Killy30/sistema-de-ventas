@@ -41,20 +41,17 @@ const showAllProducts = async() =>{
                 <td>${product.description}</td>
                 <td>${product.category}</td>
                 <td >
-                    <button type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop" data-id="${product._id}" class="btn text-primary mr-2 edit">
+                    <button type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop" data-id="${product._id}" class="btn p-0 text-primary mr-2 edit">
                         Editar
                     </button>
-                    <button type="button" data-id="${product._id}" class="btn ${product.status ? 'text-success' : 'text-danger'} status">
+                    <button type="button" data-id="${product._id}" class="btn p-0 ${product.status ? 'text-success' : 'text-danger'} status">
                         ${product.status ? 'Activado' : 'Desactivado'}
                     </button>
                 </td>
             </tr>
         `
     });
-
-    
 }
-
 showAllProducts()
 
 //search products 
@@ -103,10 +100,8 @@ const createProduct = async() => {
     const category = document.getElementById('category')
     const description = document.getElementById('description')
     const itbis = document.getElementById('itbis')
-
     
     if(idcode.value.trim() === "" || name.value.trim() === "" || price.value.trim() === ""){
-    
         let obj_msg = {
             msg: 'Por favor llenar los campos requeridos...',
             color: 'alert alert-danger',
@@ -114,9 +109,7 @@ const createProduct = async() => {
         }
         return alert_message(obj_msg)
     }else{
-    
         if(productsXTV.my_products.some(product => product.idcode == idcode.value)){
-            
             let obj_msg = {
                 msg: 'Este codigo ya existe en tu lista, por favor colocar otro codigo...',
                 color: 'alert alert-danger',
@@ -124,18 +117,16 @@ const createProduct = async() => {
             }
             return alert_message(obj_msg)
         }else{
-            
-            let data = {
-                idcode:idcode.value, 
-                name: name.value, 
-                price: price.value, 
-                category: category.value, 
-                description: description.value,
-                _id: _id,
-                itbis: itbis.value
-            }
-            
             try {
+                let data = {
+                    idcode:idcode.value, 
+                    name: name.value, 
+                    price: price.value, 
+                    category: category.value, 
+                    description: description.value,
+                    itbis: itbis.value
+                }
+
                 let req = await fetch('/new-product', {
                     method: 'POST',
                     body:JSON.stringify(data),
@@ -160,7 +151,6 @@ const createProduct = async() => {
                 }
                 
                 alert_message(obj_msg)
-
             } catch (error) {
                 console.log(error);
             }
@@ -188,8 +178,6 @@ const updateProduct = async(e) =>{
     const category = document.getElementById('category_update').value
     const description = document.getElementById('description_update').value
     const itbis = document.getElementById('itbis_update').value
-
-
 
     let products = await getAllProducts()
 
@@ -227,7 +215,6 @@ const updateProduct = async(e) =>{
         } catch (error) {
             console.log(error);
         }
-
     }else if(pro.length == 1 && pro.some(item => item._id == _id)){
         try {
             let req = await fetch('/update-product', {

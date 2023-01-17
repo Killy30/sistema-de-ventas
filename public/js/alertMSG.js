@@ -7,7 +7,7 @@ const alert_message = ({msg, color, index}) =>{
     cardError[i].innerHTML = `<div class="${color} p-2 mb-3" role="alert"> ${msg}</div>`
     setTimeout(() =>{
         cardError[i].innerHTML = ''
-    },5000)
+    },6000)
 } 
 
 

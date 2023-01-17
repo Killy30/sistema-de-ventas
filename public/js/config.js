@@ -27,7 +27,7 @@ const showMyTeam = async() =>{
             </td>
         </tr>`
     });
-    _tfoot.innerHTML = `<p class="text-end fw-bolder m-0">Cajeros: ${cashiers.length}</p>`
+    _tfoot.innerHTML = `<p class="text-end m-0">Cajeros: ${cashiers.length}</p>`
 }
 
 showMyTeam()
@@ -142,12 +142,17 @@ const showCashierDetail = async(id)=>{
 
 const store_name = document.getElementById('store_name')
 const store_address = document.getElementById('store_address')
+const foot_text = document.getElementById('store_foot_text')
 //store name 
 const storeName = async() =>{
     
-    if(store_name.value.trim() == "" && store_address.value.trim() == "") return false
+    if(store_name.value.trim() == "" && store_address.value.trim() == "" && foot_text.value.trim() == "") return false
 
-    let data = {name: store_name.value, address: store_address.value}
+    let data = {
+        name: store_name.value, 
+        address: store_address.value,
+        footText: foot_text.value,
+    }
 
     try {
         let req = await fetch('/store-name', {
@@ -159,7 +164,7 @@ const storeName = async() =>{
         })
         let res = await req.json()
         
-        showStoreName()
+        showStoreData()
         let msg = 'Los datos se han enviado exitosamente...'
         errorMessage(msg,'alert alert-success')
         
@@ -168,15 +173,16 @@ const storeName = async() =>{
     }
 }
 
-const showStoreName = async() =>{
+const showStoreData = async() =>{
     let user = await data.getUser()
     let show_name = document.getElementById('show_s_n')
-
+ 
     store_name.value = user.data.storeName ? user.data.storeName : ""
     show_name.innerText = user.data.storeName ? user.data.storeName : ""
     store_address.value = user.data.storeAddress ? user.data.storeAddress : ""
+    foot_text.value = user.data.footText ? user.data.footText : ""
 }
-showStoreName()
+showStoreData()
 
 const addITBIS = document.getElementById('addITBIS')
 const addNameC = document.getElementById('cashierName')

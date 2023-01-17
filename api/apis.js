@@ -2,7 +2,7 @@ const Product = require('../models/products')
 const User = require('../models/user')
 const Sale = require('../models/sales')
 const Cashier = require('../models/cashiers')
-const yesId = require('../yesId')
+const yesId = require('../yesId/yesId')
 
 
 module.exports = (app) =>{
@@ -84,7 +84,6 @@ module.exports = (app) =>{
     
     app.post('/new-product', async(req, res)=>{
         let data = req.body
-
         const user = req.user
         const newProduct = new Product()
 
@@ -103,7 +102,7 @@ module.exports = (app) =>{
     
         await newProduct.save()
         await user.save()
-        res.json({newProduct})
+        res.json({status:true})
     })
     
     app.post('/update-product', async(req, res) =>{
@@ -132,10 +131,10 @@ module.exports = (app) =>{
         const user_data = await User.findById({_id: user._id}).populate('sales')
     
         function getCode() {
-            if(user_data.sales.some(sale => sale.code === yesId(10))){
+            if(user_data.sales.some(sale => sale.code === yesId(9,'V10'))){
                 return getCode()
             }
-            return yesId(10)
+            return yesId(9, 'V10')
         }   
 
         const newSale = new Sale()
@@ -231,7 +230,8 @@ module.exports = (app) =>{
         const data = req.body
 
         user.storeName = data.name
-        user.storeAddress = data.address
+        user.storeAddress = data.address || user.storeAddress;
+        user.footText = data.footText || user.footText;
 
         await user.save()
         res.json({user})

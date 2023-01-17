@@ -1,4 +1,6 @@
-
+*{
+    font-family: 'Prompt', sans-serif;
+}
 :root{
     --blue_one: #071442;
     --blue_two: #1E4DEB;
@@ -60,7 +62,7 @@ nav{
     margin: 0;
     padding-left: 10px;
     font-size: 18px;
-    font-weight: 600;
+    font-weight: 500;
 }
 .sub_m{
     width:30px ;
@@ -101,7 +103,7 @@ nav{
     padding: 10px ;
     width: 100%;
     border-radius: 15px;
-    font-weight: 600;
+    font-weight: 500;
     display: flex;
     align-items: center;
 }
@@ -121,12 +123,9 @@ nav{
 .not_found{
     text-align: center;
     font-size: 30px;
-    position: absolute;
-    top: 15%;
-    /* left: 40%; */
+    /* position: absolute; */
+    /* top: 15%; */
     width: 100%;
-    text-align: center;
-    margin: 0;
 }
 
 .icon_menu{

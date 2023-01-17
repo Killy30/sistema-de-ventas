@@ -1,7 +1,7 @@
 const {Schema, model} = require('mongoose')
 
 const salesSchema = new Schema({
-    code: {type:Number},
+    code: {type:String},
     products:[{ type: Schema.Types.ObjectId, ref: 'product'}],
     totalPrice: {type:Number},
     subTotal: {type:Number},

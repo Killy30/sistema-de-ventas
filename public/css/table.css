@@ -52,6 +52,7 @@ thead{
 }
 thead tr th{
     padding: 10px;
+    font-weight: 500;
 }
 
 #tbody tr{
@@ -64,13 +65,12 @@ thead tr th{
 #tbody tr td{
     color: rgb(26, 25, 25);
     font-size: 17px;
+    font-weight: 300;
     border: none;
     padding: 10px;
+
 }
-#tbody tr:hover{
-    /* background-color: #0095ff61;
-    color: #ffffff; */
-}
+
 #tbody tr td p{
     margin: 0;
 }

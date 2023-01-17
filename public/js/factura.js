@@ -33,86 +33,108 @@ const showInfo = async()=>{
 
     let time = new Date(venta.date)
 
-    fbody.innerHTML = `<div>
-        <br>
-        <p class="titulo fs-1 fw-bold ">${user.data.storeName}</p>
+    fbody.innerHTML = `<div class="boxFactura">
+        <h3 class="name_store">${user.data.storeName}.</h3>
         <div class="card_address">
-            <p>${user.data.storeAddress}</p>
+            <p>${user.data.storeAddress ? user.data.storeAddress : 'No direccion'}</p>
         </div>
-        <div class="card_code d-flex">
-            <p class="v_1 me-3">Codigo:</p>
-            <p class="v_2">${venta.code}</p>        
+        <div class="card_code">
+            <p class="">Codigo: ${venta.code}</p>       
         </div>
-        <div class="card_date d-flex">
-            <p class="me-3">Fecha:</p>
-            <p style="margin-right: 3px;">
-                ${time.getDate()}/${(time.getMonth()+1)}/${time.getFullYear()} ${time.getHours()}:${time.getMinutes()}
-            </p> 
+        <div class="card_date">
+            <p class="">
+                Fecha: ${time.getDate()}/${(time.getMonth()+1)}/${time.getFullYear()} ${time.getHours()}:${time.getMinutes()}
+            </p>
         </div>
         ${
             user.data.system_control.add_N_C_receipt?
             `<p>Caja: ${cashier.name} ${cashier.lastName}</p>`
             : ''
         }
-        <table class="table">
-            <span style="display: none;" >----------------------------------</span>
-            <thead>
-                <tr class="bg-dark text-white">
-                    <th scope="col" class="v_1">Descripcion</th>
-                    <th scope="col" class="v_2 text-end">precio</th>
-                </tr>
-            </thead>
-            <tbody>
+        <div class="ftable">
+            <span style="display: none;">--------------------------------</span>
+            <div class="fheader">
+                <p class="hl">Descripcion</p>
+                <span style="display: none;" class="space"></span>
+                <p class="hr">precio</p>
+            </div>
+            <span style="display: none;">--------------------------------</span>
+            <div class="fbodyx">
                 ${
                     venta.products.map(product =>{
                         return `
-                            <tr>
-                                <td class="v_1">${product.name} </td>
-                                <td class="v_2 text-end">${product.price}</td>
-                            </tr>
+                            <div class="fbodyRow">
+                                <p class="hl">
+                                    ${product.name.substring(0, 15).toUpperCase()}
+                                </p>
+                                <span style="display: none;" class="space"></span>
+                                <p class="hr">${product.price.toFixed(2)}</p>
+                            </div>
                         `
                     }).join('')
                 }
-            </tbody>
-        </table>
+            </div>
+        </div>
+        <span style="display: none;" >--------------------------------</span>
         <br>
         <div class="d-flex flex-column">
             <div class="d-flex justify-content-end">
-                <p class="hide_f m-0 text-end" style="width: 100px;">SUBTOTAL:</p>
-                <p class="hide_f m-0 text-end" style="width: 100px;">${venta.subTotal.toFixed(2)}</p>
+                <p class=" m-0 text-end" style="width: 130px;">SUBTOTAL:---></p>
+                <p class=" m-0 text-end" style="width: 100px;">${venta.subTotal.toFixed(2)}</p>
             </div>
             <div class="d-flex justify-content-end">
-                <p class="hide_f m-0 text-end" style="width: 100px;">ITBIS:</p>
-                <p class="hide_f m-0 text-end" style="width: 100px;">${venta.itbis.toFixed(2)}</p>
+                <p class=" m-0 text-end" style="width: 100px;">ITBIS:---></p>
+                <p class=" m-0 text-end" style="width: 100px;">${venta.itbis.toFixed(2)}</p>
             </div>
             <div class="d-flex justify-content-end">
-                <p class="hide_f m-0 text-end" style="width: 100px;">PAGO:</p>
+                <p class="hide_f m-0 text-end" style="width: 100px;">PAGO:---></p>
                 <p class="hide_f m-0 text-end" style="width: 100px;">${venta.pay}</p>
             </div>
             <div class="d-flex justify-content-end">
-                <p class="hide_f m-0 text-end" style="width: 100px;">CAMBIO:</p>
+                <p class="hide_f m-0 text-end" style="width: 130px;">CAMBIO:---></p>
                 <p class="hide_f m-0 text-end" style="width: 100px;">${venta.cambio.toFixed(2)}</p>
             </div>
             <div class="d-flex justify-content-end">
-                <p class="fs-5 v_1 fw-bold mb-0 text-end" style="width: 100px;">TOTAL:</p>
-                <p class="fs-5 v_1 fw-bold mb-0 text-end" style="width: 100px;">${venta.totalPrice.toFixed(2)}</p>
+                <p class="fs-5 v_1 text-end" style="width: 130px; font-weight: 500">TOTAL:---></p>
+                <p class="fs-5 v_1 text-end" style="width: 100px; font-weight: 500">${venta.totalPrice.toFixed(2)}</p>
             </div>
             
         </div>
-        <span style="display: none;" >----------------------------------</span>
+        <span style="display: none;" >--------------------------------</span>
         <br>
         <div class="card_msg">
-            <p>Mucha paz tienen los que aman tu ley, y nada los hace tropezar.</p>
-            <p>Gracias por su compra y que tenga un lindo dia.</p>
+            <p>
+                ${user.data.footText ? user.data.footText.replace(/\n/g, '<br>') : ''}
+            </p>
+            <p>.</p>
+            <p>.</p>
+            <p>************ Vann ************</p>
+            <p>.</p>
+            <p>.</p>
+            <p>.</p>
         </div>
-        <br>
-        <br>
-        <br>
     </div>    
     `
+    
+    const spaces = () =>{
+        let space = document.querySelectorAll('.space')
+        let leftp = document.querySelectorAll('.hl')
+        let rightp = document.querySelectorAll('.hr')
+    
+        space.forEach((item, i) => {
+            let lp = leftp[i].innerText.length
+            let rp = rightp[i].innerText.length
 
+            let wx = lp + rp;
+            let tx = 30 - (wx + 7);
+            item.innerText = Array(tx).fill('_').join('')
+
+        });
+    }
+    spaces()
 }
 showInfo()
+
 
 
 print_factura.addEventListener('click', e =>{
