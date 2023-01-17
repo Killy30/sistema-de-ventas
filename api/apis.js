@@ -2,7 +2,7 @@ const Product = require('../models/products')
 const User = require('../models/user')
 const Sale = require('../models/sales')
 const Cashier = require('../models/cashiers')
-const yesId = require('../yesId/yesId')
+const yesId = require('../yesId')
 
 
 module.exports = (app) =>{
