@@ -37,17 +37,32 @@
 
     <div class="box_store_name">
         <div class="card_store_name">
-            <form>
-                <div class="mb-3">
-                    <p class="tx_ist">Por favor colocar el nombre de tu negocio</p>
+            <form class="card">
+                <div class="card-header">
+                    <p class="tx_ist">Nombre y tipo de tu negocio</p>
                 </div>
-                <div class="row">
-                    <div class="col-10">
-                        <input type="text" class="form-control" id="p_store_name">
+                <div class="card-body">
+                    <div class="mb-3">
+                        <input type="text" class="form-control" id="p_store_name" placeholder="Nombre de tu negocio">
                     </div>
-                    <div class="col-2">
-                        <button class="btn btn-primary" id="btn_store_name">Enviar</button>
+                    <div class="input-group">
+                        <select class="form-select" id="type_b" style="width: 100%;">
+                            <option value="">Tipo de negocio</option>
+                            <option value="super">Supermercados</option>
+                            <option value="hiper">Hipermercados</option>
+                            <option value="farm">Farmacias</option>
+                            <option value="rest">Restaurante</option>
+                            <option value="cafe">Cafeteria</option>
+                            <option value="tie">Tienda</option>
+                            <option value="col">Colmado</option>
+                            <option value="esti">Estileria</option>
+                            <option value="almc">Almacenes</option>
+                            <option value="tie_elec">Tienda de electrodomesticos</option>
+                        </select>
                     </div>
+                </div>
+                <div class="card-footer text-end">
+                    <button class="btn btn-primary" id="btn_store_name">Enviar</button>
                 </div>
             </form>
         </div>
@@ -87,7 +102,9 @@
                                         <th scope="col">Codigo</th>
                                         <th scope="col">Nombre</th>
                                         <th scope="col">Precio</th>
-                                        <th scope="col">ITBIS</th>
+                                        <% if(user.system_control.acceptITBIS){%>
+                                            <th scope="col">ITBIS</th>
+                                        <%}%>
                                         <th scope="col">Categoria</th>
                                         <th scope="col">Accion</th>
                                     </tr>
@@ -102,7 +119,7 @@
                                 <p class="fs-4" style="font-weight: 500; margin: 0;">Subtotal = </p>
                                 <p class="fs-4" style="width: 130px; font-weight: 500; margin: 0 10px 0 10px;" id="subTotal">0.00</p>
                             </div>
-                            <div class="mr-5 d-flex">
+                            <div class="mr-5 itbis_Card" style="display: none;">
                                 <p class="fs-4" style="font-weight: 500; margin: 0;">ITBIS = </p>
                                 <p class="fs-4" style="width: 115px; font-weight: 500; margin: 0 10px 0 10px;" id="itbis">0.00</p>
                             </div>

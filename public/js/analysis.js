@@ -54,6 +54,8 @@ const getAnalysis = async()=>{
     let all_products = await data.getProducts()
 
     let total = salesAnalysis.reduce((acc, t) => acc = acc + t.totalPrice ,0)
+    // console.log(total);
+    // console.log(salesAnalysis);
 
     let repete_object = {};
     let repete_array = []
@@ -80,14 +82,28 @@ const getAnalysis = async()=>{
         let value = Object.values(product_obj)
 
         let theProduct = all_products.my_products.find(product => product._id == key[0])
+        let productSold = salesAnalysis.filter(sale => {
+            let xc = sale.productsSold.some(pro => pro.productCode == theProduct.idcode)
+            return xc == true
+        })
+
+        let prod_prices = []
+
+        productSold.forEach(item =>{
+            item.productsSold.forEach(ele =>{
+                if(ele.productCode == theProduct.idcode){
+                    prod_prices.push(ele.price)
+                }
+            })
+        })
      
         if(theProduct !== undefined){
             let p = {
                 name: theProduct.name,
                 code: theProduct.idcode,
                 price: theProduct.price,
-                soldUnits: value[0],
-                soldTotal: (parseInt(value[0]) * theProduct.price).toFixed(2)
+                soldUnits: prod_prices.length,
+                soldTotal: prod_prices.reduce((acc, t) => acc = acc + t ,0)
             }
             products_info.push(p)
         }

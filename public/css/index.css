@@ -1,6 +1,6 @@
 
 *{
-    font-family: 'Prompt', sans-serif;
+    font-family:  sans-serif;
 }
 nav{
     width: 100%;
@@ -86,7 +86,7 @@ ul li a:hover{
    align-items: center;
    padding-bottom: 30px;
 }
-.main_tx h2{
+.main_tx h1{
     font-weight: 600;
     font-size: 70px;
     color: #ffff;
@@ -177,7 +177,7 @@ ul li a:hover{
     display: flex;
     justify-content: center;
     margin: 100px 0 150px 0;
-    background-color: #007fdb;
+    background-color: #003b94;
 }
 .nube2{
     width: 75%;
@@ -241,8 +241,8 @@ ul li a:hover{
     height: 300px;
     display: flex;
     flex-wrap: wrap;
-    color: #fe4818;
-    background-color: #0d1333;
+    /* background-color: #0d1333; */
+    background-color: #091130;
     justify-content: center;
 }
 .card_fooder{
@@ -278,8 +278,8 @@ ul li a:hover{
 }
 
 @media(max-width: 1500px){
-    .main_tx h2{
-        font-size: 50px;
+    .main_tx h1{
+        font-size: 45px;
     }
     .main_tx p{
         font-size: 25px;
@@ -312,7 +312,7 @@ ul li a:hover{
         height: 50%;
         padding-bottom: 10px;
     }
-    .main_tx h2{
+    .main_tx h1{
         text-align: center;
         font-size: 30px;
     }

@@ -44,13 +44,15 @@ verifyStoreName()
 
 const post_store_name = async(e)=>{
     let p_store_name = document.getElementById('p_store_name')
-    if(p_store_name.value.trim() == "") {
+    let type_b = document.getElementById('type_b')
+    if(p_store_name.value.trim() == "" || type_b.value == "") {
         e.preventDefault()
         return false
     }
-
+    
     try {
-        let data = {name: p_store_name.value}
+        let data = {name: p_store_name.value, typeStore: type_b.value}
+
         let req = await fetch('/store-name', {
             method:'POST',
             body:JSON.stringify(data),
@@ -70,6 +72,10 @@ const showStoreName = async() =>{
 
     if(user.data.storeName !== undefined){
         show_name.innerText = `${user.data.storeName}`
+    }
+
+    if(user.data.system_control.acceptITBIS){
+        document.querySelector('.itbis_Card').style.display = 'flex'
     }
 }
 showStoreName()
@@ -162,7 +168,8 @@ const getCodeProduct = async() =>{
     code.focus()
 }
 
-const showProducts = () =>{
+const showProducts = async() =>{
+    const user = await getUser()
     showListProduct.innerHTML = ''
     for(let i = 0; i < listProducts.length; i++){
         showListProduct.innerHTML += `
@@ -170,7 +177,9 @@ const showProducts = () =>{
                 <td>${listProducts[i].idcode}</td>
                 <td>${listProducts[i].name}</td>
                 <td>${listProducts[i].price.toFixed(2)}</td>
-                <td>${listProducts[i].itbis.toFixed(2)}</td>
+                ${
+                    user.data.system_control.acceptITBIS ? `<td>${listProducts[i].itbis.toFixed(2)}</td>` : ""
+                }
                 <td>${listProducts[i].category}</td>
                 <td>
                     <button type="button" data-index="${i}" data-id="${listProducts[i]._id}" class="btn btn-danger delete">
@@ -197,18 +206,23 @@ const totalITBIS = () =>{
     document.getElementById('itbis').innerText = total_itbis.toFixed(2)
 }
 
-const totalValue = () =>{
-    let total_value = listProducts.reduce((acc, p) => acc = acc + p.sum_price ,0)
+const totalValue = async() =>{
+    const user = await getUser()
+    let acceptITBIS = user.data.system_control.acceptITBIS
+    let total_value = listProducts.reduce((acc, p) => acc = acc + (acceptITBIS? p.sum_price : p.price) ,0)
     document.getElementById('total').innerText = total_value.toFixed(2)
 }
 
 const create_sale = async(e) =>{
+    const user = await getUser()
+    let acceptITBIS = user.data.system_control.acceptITBIS
+
     const cambio = document.getElementById('cambio')
     const pago = document.getElementById('pago').value
     let subTotal = listProducts.reduce((acc, p) => acc = acc + p.price ,0)
     let total_itbis = listProducts.reduce((acc, p) => acc = acc + p.itbis ,0)
 
-    let totalPrice = subTotal + total_itbis
+    let totalPrice = subTotal + (acceptITBIS ? total_itbis : 0)
 
     //
     if(!localStorage.getItem('id')){
@@ -290,6 +304,7 @@ const cancelSele = () =>{
     document.getElementById('subTotal').innerText = '0.00'
     document.getElementById('itbis').innerText = '0.00'
     document.getElementById('codigo').value = ''
+    document.getElementById('pago').value = ''
 }
 
 const openSele = () => { 

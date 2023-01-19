@@ -23,9 +23,11 @@ const getUser = async() =>{
 
 const showInfo = async()=>{
 
+
     let sale = await getSale()
     let venta = sale.sale
     let user = await getUser()
+    let theProducts = await data.getProducts()
 
     let cashier = user.data.cashiers.find(cashier =>{
         return cashier._id == venta.cashier
@@ -61,14 +63,17 @@ const showInfo = async()=>{
             <span style="display: none;">--------------------------------</span>
             <div class="fbodyx">
                 ${
-                    venta.products.map(product =>{
+                    venta.productsSold.map(prox =>{
+                        let product = theProducts.my_products.find(pro => pro.idcode == prox.productCode)
                         return `
                             <div class="fbodyRow">
                                 <p class="hl">
                                     ${product.name.substring(0, 15).toUpperCase()}
                                 </p>
                                 <span style="display: none;" class="space"></span>
-                                <p class="hr">${product.price.toFixed(2)}</p>
+                                <p class="hr">
+                                    ${prox.price.toFixed(2)}
+                                </p>
                             </div>
                         `
                     }).join('')
@@ -82,7 +87,7 @@ const showInfo = async()=>{
                 <p class=" m-0 text-end" style="width: 130px;">SUBTOTAL:---></p>
                 <p class=" m-0 text-end" style="width: 100px;">${venta.subTotal.toFixed(2)}</p>
             </div>
-            <div class="d-flex justify-content-end">
+            <div class="justify-content-end" style='display: ${venta.subTotal !== venta.totalPrice ? 'flex' : 'none'}'>
                 <p class=" m-0 text-end" style="width: 100px;">ITBIS:---></p>
                 <p class=" m-0 text-end" style="width: 100px;">${venta.itbis.toFixed(2)}</p>
             </div>

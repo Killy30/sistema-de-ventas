@@ -7,6 +7,7 @@ const UserSchema = new Schema({
     lastName: {type: String},
     email: {type: String},
     storeName: {type: String},
+    typeStore: {type: String},
     storeAddress: {type: String},
     footText: {type: String},
     password: {type: String},

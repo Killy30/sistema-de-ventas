@@ -22,10 +22,13 @@ const getAllProducts = async() =>{
 // show all products
 const showAllProducts = async() =>{
    
-    let data = await getAllProducts()
-    let the_products = data.my_products
+    const user = await data.getUser()
+    let acceptITBIS = user.data.system_control.acceptITBIS
+
+    let products = await getAllProducts()
+    let the_products = products.my_products
     countProducts.innerText = 'Productos: '+the_products.length
-    productsXTV = data
+    productsXTV = products
     
     tbody.innerHTML = ""
     if(the_products.length == 0){
@@ -37,7 +40,7 @@ const showAllProducts = async() =>{
             <tr>
                 <td>${product.idcode}</td>
                 <td>${product.name}</td>
-                <td>${product.sum_price}</td>
+                <td>${acceptITBIS ? product.sum_price.toFixed(2) : product.price.toFixed(2)}</td>
                 <td>${product.description}</td>
                 <td>${product.category}</td>
                 <td >
@@ -51,6 +54,12 @@ const showAllProducts = async() =>{
             </tr>
         `
     });
+
+    if(acceptITBIS){
+        let cards = document.querySelectorAll('.itbis_card')
+        cards[0].style.display = 'block'
+        cards[1].style.display = 'block'
+    }
 }
 showAllProducts()
 
@@ -172,6 +181,9 @@ const viewProductValue = (product)=>{
 }
 
 const updateProduct = async(e) =>{
+
+    const user = await data.getUser()
+
     const idcode = document.getElementById('idcode_update').value
     const name = document.getElementById('name_update').value
     const price = document.getElementById('price_update').value
@@ -186,17 +198,21 @@ const updateProduct = async(e) =>{
     })
 
     if(idcode.trim() === "" || name.trim() === "" || price.trim() === ""){
-        alert('Por favor llenar los campos requeridos')
+        alert('Por favor llenar todos los campos requeridos')
         return false
     }
 
-    let data = {idcode, name, price, category, description, _id, itbis}
+    let datas = {idcode, name, price, category, description, _id, itbis}
+
+    console.log(datas);
+    console.log(pro);
+    console.log(products.my_products);
 
     if(pro.length == 0){
         try {
             let req = await fetch('/update-product', {
-                method: 'POST',
-                body:JSON.stringify(data),
+                method: 'PUT',
+                body:JSON.stringify(datas),
                 headers: {
                     'Content-Type': 'application/json'
                 }
@@ -218,8 +234,8 @@ const updateProduct = async(e) =>{
     }else if(pro.length == 1 && pro.some(item => item._id == _id)){
         try {
             let req = await fetch('/update-product', {
-                method: 'POST',
-                body:JSON.stringify(data),
+                method: 'PUT',
+                body:JSON.stringify(datas),
                 headers: {
                     'Content-Type': 'application/json'
                 }

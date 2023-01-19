@@ -105,7 +105,7 @@ module.exports = (app) =>{
         res.json({status:true})
     })
     
-    app.post('/update-product', async(req, res) =>{
+    app.put('/update-product', async(req, res) =>{
         let data = req.body
     
         let _itbis_ = data.itbis || 0.00
@@ -145,10 +145,11 @@ module.exports = (app) =>{
         newSale.pay = data.pago
         newSale.cambio = data.cambio
         newSale.user = user
-        data.products.forEach(element => {
-            newSale.products.push(element)
+        data.products.forEach(product => {
+            let prod =  {productCode: product.idcode, price:product.price}  
+            newSale.products.push(product)
+            newSale.productsSold.push(prod)
         });
-
         
         if(data.cashier_id !== null){
             const cashier = await Cashier.findOne({_id: data.cashier_id})
@@ -229,9 +230,10 @@ module.exports = (app) =>{
         const user = req.user
         const data = req.body
 
-        user.storeName = data.name
+        user.storeName = data.name;
         user.storeAddress = data.address || user.storeAddress;
         user.footText = data.footText || user.footText;
+        user.typeStore = data.typeStore || user.typeStore;
 
         await user.save()
         res.json({user})
