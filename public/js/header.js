@@ -1,24 +1,28 @@
 
-const navbar_nav = document.querySelector('.navbar_nav')
+const user_menu = document.querySelector('.user_menu')
+let links = document.querySelectorAll('.nav_link') 
 
 document.addEventListener('DOMContentLoaded', e=>{
-    let t = document.querySelector('.card_table_body').offsetHeight - 41
-    tbody.style.height = t+"px"
+
+    if(document.querySelector('.card_table_body')){
+        let t = document.querySelector('.card_table_body').offsetHeight - 41
+        tbody.style.height = t+"px"
+    }
+
+    if(document.querySelector('.home')) links[0].classList.add('selected')
+    if(document.querySelector('.product')) links[1].classList.add('selected')
+    if(document.querySelector('.sales')) links[2].classList.add('selected')
+    if(document.querySelector('.analysis')) links[3].classList.add('selected')
+    if(document.querySelector('.config')) links[4].classList.add('selected')
 })
 
 document.addEventListener('click', e =>{
-    if(e.target.classList.contains('open_m')){
-        navbar_nav.classList.toggle('open_menu')
-    }else{
-        navbar_nav.classList.remove('open_menu')
-    }
-
     if(e.target.classList.contains('open_menu_mobile')){
-        navbar_nav.style.left = '0px'
+        user_menu.classList.toggle('toggloMenu')
     }
 
     if(e.target.classList.contains('close_menu_mobile')){
-        navbar_nav.style.left = '-100%'
+        user_menu.classList.remove('toggloMenu')
     }
 })
 

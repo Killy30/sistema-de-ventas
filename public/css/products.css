@@ -1,8 +1,4 @@
 
-#container{
-    padding-top: 50px;
-}
-
 
 .card_table_body{
     height: calc(100% - 223px);
@@ -15,12 +11,13 @@
 #code input{
     width: 230px;
 }
+h3{
+    padding-left: 15px;
+}
 
 @media(max-width: 500px){
     #code input{
         width: 150px;
     }
-    h3{
-        padding-left: 10px;
-    }
+    
 }

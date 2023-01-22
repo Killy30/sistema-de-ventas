@@ -11,28 +11,30 @@
     <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,500;1,300;1,600;1,700&family=Prompt:wght@300;400;500&display=swap" rel="stylesheet">
 </head>
 <nav>
-    <div class="container cont">
+    <div class="cont">
         <div class="logo">
-            <img src="../img/logo12.png" alt="">
+            <img src="../img/logo12.png" alt="hess">
         </div>
-        
+
+        <div class="icon_menu open_menu_mobile">
+            <span class="material-symbols-outlined open_menu_mobile">menu</span>
+        </div>
+
         <div class="user_menu" >
-            <div class="user_profile">
+            <!-- <div class="user_profile">
                 <div class="img_p">
                     <span class="material-symbols-outlined">storefront</span>
                 </div>
                 <div class="full_name">
                     <p><%=user.name%> <%=user.lastName%></p>
                 </div>
-            </div>
+            </div> -->
 
-            <div class="sub_m open_m">
+            <!-- <div class="sub_m open_m">
                 <span class="material-symbols-outlined open_m">keyboard_arrow_down</span>
-            </div>
+            </div> -->
 
-            <div class="icon_menu open_menu_mobile">
-                <span class="material-symbols-outlined open_menu_mobile">menu</span>
-            </div>
+            
 
             <ul class="navbar_nav" >
                 <div class="card_head">
@@ -44,35 +46,35 @@
                     </div>
                 </div>
 
-                <div class="user_profile_mobil">
+                <div class="user_profile">
                     <div class="img_p">
-                        <span class="material-symbols-outlined">person</span>
+                        <span class="material-symbols-outlined">storefront</span>
                     </div>
                     <div class="full_name">
                         <p><%=user.name%> <%=user.lastName%></p>
                     </div>
                 </div>
-                <a class="nav-link" href="/inicio">
+                <a class="nav_link i" href="/inicio">
                     <span class="material-symbols-outlined">home</span>
                     Inicio
                 </a>
-                <a class="nav-link" href="/productos">
+                <a class="nav_link p" href="/productos">
                     <span class="material-symbols-outlined">add_notes</span>
                     Productos
                 </a>
-                <a class="nav-link" href="/ventas">
+                <a class="nav_link v" href="/ventas">
                     <span class="material-symbols-outlined">sell</span>
                     Ventas
                 </a>
-                <a class="nav-link" href="/analisis-de-ventas">
+                <a class="nav_link a" href="/analisis-de-ventas">
                     <span class="material-symbols-outlined">bar_chart</span>
                     Analisis
                 </a>
-                <a class="nav-link" href="/configuracion">
+                <a class="nav_link c" href="/configuracion" >
                     <span class="material-symbols-outlined">settings</span>
                     Configuracion
                 </a>
-                <a class="nav-link" href="/logout">
+                <a class="nav_link" href="/logout">
                     <span class="material-symbols-outlined">logout</span>
                     Salir
                 </a>

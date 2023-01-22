@@ -3,10 +3,10 @@
 }
 :root{
     --blue_one: #071442;
-    --blue_two: #1E4DEB;
-    --black_one: #262626;
+    --blue: #003d71;
+    --orange: #fe4818;
     --black_two: #303030;
-    --gris: #dcdcdc;
+    --gris: #aeaeae;
 }
 
 body{
@@ -14,18 +14,22 @@ body{
 }
 
 nav{
-    box-shadow: rgba(33, 35, 38, 0.1) 0px 10px 10px -10px;
     height: 60px;
+    width: 100%;
     background-color: #fff;
     display: flex;
     align-items: center;
+    border-bottom: 1px solid var(--gris);
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1;
 }
 #container{
-    height: calc(100vh - 60px);
+    height: calc(100vh - 80px);
 }
 .cont{
-    display: flex;
-    justify-content: space-between;
+    padding-left: 10px;
 }
 .logo{
     width: 130px;
@@ -35,14 +39,20 @@ nav{
 }
 
 .user_menu{
-    display: flex;
-    align-items: center;
-    position: relative;
+    position: fixed;
+    top: 60px;
+    left: 0;
+    height: 100vh;
+    width: 310px;
+    padding: 15px;
+    background-color: #fff;
+    border-right: 1px solid var(--gris);
 }
 
 .user_profile{
     display: flex;
     align-items: center;
+    margin-bottom: 30px;
 }
 .img_p{
     width: 40px;
@@ -81,22 +91,11 @@ nav{
     border-radius: 50px;
     cursor: pointer;
 }
-.user_profile_mobil{
-    display: none;
-    padding: 20px 0px 20px 10px;
-}
+
 
 .navbar_nav{
-    position: absolute;
-    padding: 13px;
-    width: 250px;
-    top: 50px;
-    right: 0px;
-    border-radius: 10px;
-    background-color: #fff;
-    box-shadow: rgba(0, 0, 0, 0.15) 0px 2px 8px;
-    display: none;
-    z-index: 1;
+    width: 100%;
+    padding: 15px 0px 0px 0px;
 }
 .navbar_nav a{
     color: rgb(30, 30, 30);
@@ -108,23 +107,22 @@ nav{
     align-items: center;
 }
 .navbar_nav a span{
-    color: #fe4818;
+    color: var(--orange);
     margin-right: 10px;
 }
 .navbar_nav a:hover{
-    color: #fe4818;
-    background-color: rgb(238, 238, 238);
+    color: var(--orange);
 }
-
-.open_menu{
-    display: block;
+.nav_link{
+    text-decoration: none;
+}
+.nav_link:last-child{
+    margin-top: 100px;
 }
 
 .not_found{
     text-align: center;
     font-size: 30px;
-    /* position: absolute; */
-    /* top: 15%; */
     width: 100%;
 }
 
@@ -132,7 +130,7 @@ nav{
     display: none;
     cursor: pointer;
     padding-top: 10px;
-    margin-left: 10px;
+    /* margin-left: 10px; */
 }
 .icon_menu span{
     font-size: 36px;
@@ -162,72 +160,73 @@ nav{
 }
 
 .my_container{
-    padding: 30px 0px 0px 0px;
+    margin-left: 310px;
+    margin-top: 80px;
+}
+
+.selected{
+    color: var(--orange) !important;
 }
 
 
-
-
-@media(max-width: 995px){
-    .logo{
-        width: 120px;
-    }
+@media(max-width: 900px){
     
-    .user_profile , .sub_m{
+    .my_container{
+        margin-left: 0px;
+        margin-top: 80px;
+    }
+    .logo{
         display: none;
     }
-    .icon_menu{
-        display: block;
-    }
-
-    .navbar_nav{
-        width: 100%;
-        top: 0px;
-        border-radius: 0px;
+    .user_menu{
+        width: 400px;
+        top: 60px;
+        left: -400px;
+        transition: all .4s;
     }
     .user_profile_mobil{
         display: flex;
     }
-    .full_name{
-        display: flex;
-        align-items: center;
+    .icon_menu{
+        display: block;
     }
-}
-
-@media(max-width: 500px){
-    .logo{
-        display: none;
-    }
-    #container{
-        padding-left: 0px;
-        padding-right: 0px;
-    }
-    .cont{
-        padding: 0;
-        height: 100%;
+    .navbar_nav{
+        padding-top: 0px;
     }
     .card_head{
         display: flex;
+        margin-bottom: 20px;
+        padding: 0;
     }
+    .user_profile .full_name p{
+        font-size: 22px;
+    }
+    .navbar_nav a{
+        font-size: 21px;
+    }
+
+    .toggloMenu{
+        left: 0px;
+    }
+    
+}
+
+@media(max-width: 500px){
     .user_menu{
-        width: 100%;
-        background-color: #fff;
-    }
-    .navbar_nav{
-        width: 100%;
-        height: 100vh;
-        display: block;
-        left: -100%;
+        width: 80%;
+        top: 0px;
+        left: -80%;
         transition: all .4s;
-        box-shadow: none;
-        padding: 0px;
     }
     .navbar_nav a{
         padding: 15px 30px;
         font-size: 20px;
     }
-    .user_profile_mobil .full_name p{
+    .user_profile .full_name p{
         font-size: 20px;
+    }
+    .toggloMenu{
+        left: 0px;
     }
 }
 

@@ -11,7 +11,7 @@
 <body>
     <%-include ("./header")%>
 
-    <div class="container pt-5">
+    <div class="my_container analysis container_at">
         <h2>Analisis de ventas</h2>
         <div class="cardx1">
             <div class="box1">
@@ -65,7 +65,7 @@
             </div>
         </div>
         
-        <div class="navbar navbar-dark card_filter">
+        <div class="navbar card_filter">
             <p class="ps-3 mb-0 fs-5">Filtrar</p>
             <div class="container-fluid">
                 <form class="d-flex">
@@ -93,7 +93,7 @@
         </div>
 
         <div class="box_chart">
-            <div class="card_chart" >
+            <div class="card_chart">
                 <p class="fs-5 ">Ingresos de ventas al mes</p>
                 <canvas  id="productsGrafict"></canvas>
             </div>
@@ -103,33 +103,37 @@
         <div class="box_tables">
             <div class="card_table_s">
                 <p class="fs-5 mb-2 ">Ventas</p>
-                <table class="">
-                    <thead>
-                        <tr>
-                            <th scope="col">Codigo</th>
-                            <th scope="col">Productos</th>
-                            <th scope="col">Fecha</th>
-                            <th scope="col">Total</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tbodySales"></tbody>
-                </table>
+                <div class="tb">
+                    <table class="">
+                        <thead>
+                            <tr>
+                                <th scope="col">Codigo</th>
+                                <th scope="col">Productos</th>
+                                <th scope="col">Fecha</th>
+                                <th scope="col">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbodySales"></tbody>
+                    </table>
+                </div>
             </div>
 
             <div class="card_table_p">
                 <p class="fs-5 mb-2 ">Productos</p>
-                <table class="">
-                    <thead>
-                        <tr>
-                            <th scope="col">Nombre</th>
-                            <th scope="col">Codigo</th>
-                            <th scope="col">Precio</th>
-                            <th scope="col">Unidad</th>
-                            <th scope="col">Total</th>
-                          </tr>
-                    </thead>
-                    <tbody id="tbodyProducts"></tbody>
-                </table>
+                <div class="tb">
+                    <table class="">
+                        <thead>
+                            <tr>
+                                <th scope="col">Nombre</th>
+                                <th scope="col">Codigo</th>
+                                <th scope="col">Precio</th>
+                                <th scope="col">Unidad</th>
+                                <th scope="col">Total</th>
+                              </tr>
+                        </thead>
+                        <tbody id="tbodyProducts"></tbody>
+                    </table>
+                </div>
             </div>
         </div>
 

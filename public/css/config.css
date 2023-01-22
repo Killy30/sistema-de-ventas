@@ -1,4 +1,6 @@
-
+.container_config{
+    padding: 30px 20px;
+}
 
 .box_one{
     display: flex;
@@ -15,6 +17,7 @@
     border-radius: 7px;
     overflow: hidden;
     transition: all .2s ease-in-out;
+    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
 }
 
 .titles_config{
@@ -59,6 +62,9 @@
 .card_info:last-child{
     border-bottom: 0;
 }
+.xss{
+    overflow-x: auto;
+}
 
 tbody{
     height: 330px;
@@ -68,6 +74,7 @@ tbody{
 thead tr, tbody tr {
     display: table;
     width: 100%;
+    min-width: 750px;
     table-layout: fixed;
 }
 

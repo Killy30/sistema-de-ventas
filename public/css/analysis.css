@@ -1,21 +1,22 @@
 *{
     box-sizing: border-box;
 }
-
+.container_at{
+    padding: 20px;
+}
 .cardx1{
-    display: flex;
+    display: grid;
     width: 100%;
     margin-top: 20px;
-    justify-content: space-between;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
 }
 
 .box1{
-    width: 24%;
     height: 120px;
     display: flex;
     flex-wrap: wrap;
     border-radius: 7px;
-    /* border: 1px solid rgb(223, 223, 223); */
     box-shadow: rgba(0, 0, 0, 0.15) 0px 2px 8px;
     background-color: #ffffff;
 }
@@ -25,7 +26,6 @@
 }
 .tx .px{
     font-size: 22px;
-    /* color: #5f5f5f; */
 }
 .t_i{
     width: 100%;
@@ -108,18 +108,17 @@
 .card_filter{
     width: 100%;
     height: 100px;
-    margin-top: 30px;
+    margin-top: 20px;
     border-radius: 7px;
-    /* border: 1px solid rgb(223, 223, 223); */
     box-shadow: rgba(0, 0, 0, 0.15) 0px 2px 8px;
     background-color: #ffffff;
 }
 
 .box_chart{
     width: 100%;
-    height: 400px;
+    height: 450px;
     display: flex;
-    margin-top: 30px;
+    margin-top: 20px;
     justify-content: space-between;
 
 }
@@ -128,7 +127,6 @@
     height: 100%;
     padding: 10px;
     border-radius: 7px;
-    /* border: 1px solid rgb(223, 223, 223); */
     box-shadow: rgba(0, 0, 0, 0.15) 0px 2px 8px;
     background-color: #ffffff;
 }
@@ -155,8 +153,8 @@
     width: 100%;
     display: flex;
     justify-content: space-between;
-    margin-top: 30px;
-    margin-bottom: 40px;
+    margin-top: 20px;
+    margin-bottom: 30px;
 }
 
 .card_table_s{
@@ -194,6 +192,9 @@
     overflow: hidden;
     text-overflow: ellipsis;
 }
+.tb{
+    width: 100%;
+}
 
 thead{
     background-color: #003d71;
@@ -220,17 +221,45 @@ thead tr, tbody tr {
     width: 100%;
     table-layout: fixed;
 }
+.t_i p{
+    display: flex;
+    align-items: flex-end;
+}
+
+@media(max-width: 1500px){
+    .tx .px{
+        font-size: 18px;
+    }
+    .t_i p{
+        font-size: 23px;
+    }
+}
+@media(max-width: 900px){
+    .cardx1{
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .tx .px{
+        font-size: 20px;
+    }
+    .tb{
+        overflow-x: auto;
+    }
+
+    thead tr, tbody tr {
+        display: table;
+        width: 600px;
+        table-layout: fixed;
+    }
+}
 
 @media(max-width: 500px){
     .cardx1{
-        flex-direction: column;
+        grid-template-columns: repeat(1, 1fr);
     }
-    .box1{
-        width: 100%;
-        margin-bottom: 15px;
-    }
+    
     .box_chart{
-        height: 600px;
+        height: 615px;
         flex-direction: column;
         margin-bottom: 15px;
     }
@@ -241,7 +270,7 @@ thead tr, tbody tr {
     }
     .grow{
         width: 100%;
-        height: 285px;
+        height: 300px;
     }
     .box_tables{
         flex-direction: column;
@@ -249,9 +278,10 @@ thead tr, tbody tr {
     .card_table_s{
         width: 100%;
         margin-bottom: 15px;
+        overflow-x: auto;
     }
     .card_table_p{
         width: 100%;
+        overflow-x: auto;
     }
-
 }

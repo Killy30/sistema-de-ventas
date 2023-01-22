@@ -131,10 +131,10 @@ module.exports = (app) =>{
         const user_data = await User.findById({_id: user._id}).populate('sales')
     
         function getCode() {
-            if(user_data.sales.some(sale => sale.code === yesId(9,'V10'))){
+            if(user_data.sales.some(sale => sale.code === yesId(9,'10'))){
                 return getCode()
             }
-            return yesId(9, 'V10')
+            return yesId(9, '10')
         }   
 
         const newSale = new Sale()

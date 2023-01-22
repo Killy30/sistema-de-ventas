@@ -144,7 +144,10 @@ const tableProductsView = (data) =>{
         let total = numberFormat(product.soldTotal)
         tbodyProducts.innerHTML += `
             <tr>
-                <td class="nxh">${product.name}</td>
+                <td class="nxh" title="${product.name}">
+                    ${product.name}
+                    
+                </td>
                 <td>${product.code}</td>
                 <td>${product.price}</td>
                 <td>${product.soldUnits}</td>

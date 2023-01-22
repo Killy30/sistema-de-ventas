@@ -1,8 +1,5 @@
 
-#container{
-    display: none;
-    padding-top: 50px;
-}
+
 
 .box_store_name{
     width: 100%;
@@ -36,12 +33,12 @@
     display: block;
     overflow-y: auto;
 }
-#thead tr{
+#showListProduct tr{
     display: table;
     width: 100%;
     table-layout: fixed;
 }
-#showListProduct tr{
+#thead tr{
     display: table;
     width: 100%;
     table-layout: fixed;
@@ -65,7 +62,6 @@
 }
 
 
-
 .footer_data{
     width: 100%;
     border-bottom: 1px solid #ddd;
@@ -78,6 +74,17 @@
     display: flex;
     justify-content: space-between;
 }
+.t_b{
+    width: 100%;
+    padding-left: 15px;
+}
+
+#container{
+    display: none;
+}
+.card_table_body{
+    overflow-y: auto;
+}
 
 
 
@@ -85,12 +92,22 @@
     #container{
         padding-top: 30px;
     }
+    .card_store_name {
+        padding: 5px;
+        width: 95%;
+    }
+    .card_store_name form{
+        width:100%;
+    }
+    .tx_ist{
+        font-size: 20px;
+        font-weight: 300;
+        margin: 0;
+    }
     .mbg{
         display: none;
     }
-    .t_b{
-        padding-left: 10px;
-    }
+    
     .card_table_body{
         height: calc(100% - 100px);
     }
