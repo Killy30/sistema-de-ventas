@@ -53,7 +53,7 @@ const post_store_name = async(e)=>{
     try {
         let data = {name: p_store_name.value, typeStore: type_b.value}
 
-        let req = await fetch('/store-name', {
+        let req = await fetch('/store-info', {
             method:'POST',
             body:JSON.stringify(data),
             headers: {
@@ -110,7 +110,6 @@ const showListSales = async() =>{
             </tr>
         `
     }
-    
 }
 showListSales()
 
@@ -126,7 +125,6 @@ const showListCashiers_select = async() =>{
             <option data-code="${cashier.id_code}" data-act="${cashier.status}" data-i="${i}" id="selectOption" value="${cashier._id}">
                 ${cashier.name} ${cashier.lastName}
             </option>`
-
         }
     })
     for(let i = 0; i < listCashiers.options.length; i++){
@@ -145,7 +143,6 @@ const showListCashiers_select = async() =>{
     }
 } 
 showListCashiers_select()
-
 
 const getCodeProduct = async() =>{
     let code = document.getElementById('codigo')
@@ -224,7 +221,6 @@ const create_sale = async(e) =>{
     let total_itbis = listProducts.reduce((acc, p) => acc = acc + p.itbis ,0)
 
     let totalPrice = subTotal + (acceptITBIS ? total_itbis : 0)
-
     //
     if(!localStorage.getItem('id')){
         let e = 'Debes conectar tu usuario (cajero/a) antes de hacer una venta, por favor asegurece de estar conectado para realizar la venta'

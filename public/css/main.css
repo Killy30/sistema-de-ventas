@@ -1,5 +1,6 @@
-
-
+#container{
+    display: none;
+}
 
 .box_store_name{
     width: 100%;
@@ -13,9 +14,11 @@
     padding: 25px;
     background-color: #fff;
 
+    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
 }
 .card_store_name form{
     width: 500px;
+
 }
 .tx_ist{
     font-size: 20px;
@@ -27,6 +30,12 @@
     max-width: 1000px  !important ;
     margin: 30px auto;
 
+}
+.tbs{
+    height: 100%;
+}
+#tbody{
+    height: calc(100% - 45px);
 }
 #showListProduct{
     height: 400px;
@@ -78,14 +87,6 @@
     width: 100%;
     padding-left: 15px;
 }
-
-#container{
-    display: none;
-}
-.card_table_body{
-    overflow-y: auto;
-}
-
 
 
 @media(max-width: 500px){

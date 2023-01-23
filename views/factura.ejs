@@ -6,13 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="../css/bootstrap.min.css" rel="stylesheet" >
     <link rel="stylesheet" href="../css/factura.css">
-    <link rel="stylesheet" href="../css/factura_tiket.css" media="print" type="text/css">
+    <% if(user.system_control.typePrint == 'ticket') {%>
+        <link rel="stylesheet" href="../css/factura_tiket.css" media="print" type="text/css">
+    <%}%>
     <title>Document</title>
 </head>
 <body>
 
     <div class="container">
-        <div class="d-flex mt-5 ">
+        <div class="d-flex mt-5 hide_d">
             <h2 class="hide_f me-5">factura</h2>
             <button class="btn btn-primary hide_f " id="print_factura">Imprimir factura</button>
         </div>

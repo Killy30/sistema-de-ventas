@@ -14,6 +14,7 @@ const UserSchema = new Schema({
     system_control:{
         acceptITBIS: {type: Boolean, default: false},
         add_N_C_receipt: {type: Boolean, default: false},
+        typePrint: {type: String, default: 'ticket'}
     },
     products: [{ type: Schema.Types.ObjectId, ref: 'product'}],
     sales: [{ type: Schema.Types.ObjectId, ref: 'sale'}],

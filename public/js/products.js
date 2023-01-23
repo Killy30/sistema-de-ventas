@@ -100,7 +100,6 @@ const searchProducts = async() =>{
     }
 }
 
-
 //create a new product
 const createProduct = async() => {
     const idcode = document.getElementById('idcode')
@@ -204,10 +203,6 @@ const updateProduct = async(e) =>{
 
     let datas = {idcode, name, price, category, description, _id, itbis}
 
-    console.log(datas);
-    console.log(pro);
-    console.log(products.my_products);
-
     if(pro.length == 0){
         try {
             let req = await fetch('/update-product', {
@@ -253,7 +248,6 @@ const updateProduct = async(e) =>{
         } catch (error) {
             console.log(error);
         }
-        
     }else{
         alert('Este codigo ya existe en la base de datos, por favor agregue otro codigo');
     }
@@ -269,7 +263,6 @@ table.addEventListener('click', async(e) =>{
         let res = await req.json()
         viewProductValue(res)
     }
-
     //delete product
     if(e.target.classList.contains('status')){
         let id = e.target.dataset.id

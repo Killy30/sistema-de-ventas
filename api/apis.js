@@ -192,13 +192,6 @@ module.exports = (app) =>{
         await newCashier.save()
 
         return res.json({msg:'Cajeros agregado exitosamente', conFirm: true})
-       
-        // return res.json({
-        //     msg:'Se ha completado el limite de cajeros para tu usuario, si deseas agregar mas cajeros por favor contactanos...',
-        //     conFirm: false
-        // })
-        
-
     })
 
     app.post('/status-cashier', async(req, res)=>{
@@ -226,14 +219,15 @@ module.exports = (app) =>{
         res.json({cashier})
     })
 
-    app.post('/store-name', async(req, res) =>{
+    app.post('/store-info', async(req, res) =>{
         const user = req.user
         const data = req.body
 
-        user.storeName = data.name;
+        user.storeName = data.name || user.storeName;
         user.storeAddress = data.address || user.storeAddress;
         user.footText = data.footText || user.footText;
         user.typeStore = data.typeStore || user.typeStore;
+        user.system_control.typePrint = data.typePrint || user.system_control.typePrint;
 
         await user.save()
         res.json({user})

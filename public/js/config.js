@@ -92,7 +92,6 @@ const changeStatus = async(id) =>{
 
 const box_detail = document.getElementById('show_detail_cashier')
 const showCashierDetail = async(id)=>{
-
     box_detail.innerHTML = ''
 
     try {
@@ -140,24 +139,12 @@ const showCashierDetail = async(id)=>{
     }
 }
 
-const store_name = document.getElementById('store_name')
-const store_address = document.getElementById('store_address')
-const foot_text = document.getElementById('store_foot_text')
 //store name 
-const storeName = async() =>{
-    
-    if(store_name.value.trim() == "" && store_address.value.trim() == "" && foot_text.value.trim() == "") return false
-
-    let data = {
-        name: store_name.value, 
-        address: store_address.value,
-        footText: foot_text.value,
-    }
-
+const postDataStore = async(_data) =>{
     try {
-        let req = await fetch('/store-name', {
+        let req = await fetch('/store-info', {
             method: 'POST',
-            body: JSON.stringify(data),
+            body: JSON.stringify(_data),
             headers: {
                 'Content-Type': 'application/json'
             }
@@ -165,7 +152,7 @@ const storeName = async() =>{
         let res = await req.json()
         
         showStoreData()
-        let msg = 'Los datos se han enviado exitosamente...'
+        let msg = 'La actualización se han completado exitosamente...'
         errorMessage(msg,'alert alert-success')
         
     } catch (error) {
@@ -175,10 +162,10 @@ const storeName = async() =>{
 
 const showStoreData = async() =>{
     let user = await data.getUser()
-    let show_name = document.getElementById('show_s_n')
+    let show_typeS = document.querySelector('.type_store')
  
     store_name.value = user.data.storeName ? user.data.storeName : ""
-    show_name.innerText = user.data.storeName ? user.data.storeName : ""
+    show_typeS.innerText = user.data.typeStore ?  `Tipo de negocio: ${user.data.typeStore}`: ""
     store_address.value = user.data.storeAddress ? user.data.storeAddress : ""
     foot_text.value = user.data.footText ? user.data.footText : ""
 }
@@ -186,6 +173,7 @@ showStoreData()
 
 const addITBIS = document.getElementById('addITBIS')
 const addNameC = document.getElementById('cashierName')
+const btn_radios = document.querySelectorAll("input[name='t_fatura']")
 
 let active_checkbox = async()=>{
     let user = await data.getUser()
@@ -193,6 +181,9 @@ let active_checkbox = async()=>{
 
     _user.system_control.acceptITBIS ? addITBIS.checked = true : addITBIS.checked = false
     _user.system_control.add_N_C_receipt ? addNameC.checked = true : addNameC.checked = false
+
+    if(_user.system_control.typePrint === 'ticket') btn_radios[0].checked = true
+    if(_user.system_control.typePrint === 'digital') btn_radios[1].checked = true
 }
 active_checkbox()
 
@@ -207,10 +198,38 @@ const controlAll = async(x) =>{
     const res = await req.json()
 }
 
+const store_name = document.getElementById('store_name')
+const store_address = document.getElementById('store_address')
+const foot_text = document.getElementById('store_foot_text')
+
+let storeN = () =>{
+    if(store_name.value.trim() == '') return false
+    let _data = {name: store_name.value}
+    postDataStore(_data)
+}
+let storeAds = () =>{
+    if(store_address.value.trim() == '') return false
+    let _data = {address: store_address.value}
+    postDataStore(_data)
+}
+let storeFtx = () =>{
+    if(foot_text.value.trim() == '') return false
+    let _data = {footText: foot_text.value}
+    postDataStore(_data)
+}
+let type_print = (e) =>{
+    let _data  = {typePrint: e.target.value}
+    postDataStore(_data)
+}
+
 
 
 document.getElementById('btn_add_user').addEventListener('click', createUser)
-document.getElementById('btn_storeName').addEventListener('click', storeName)
+document.getElementById('btn_store_nam').addEventListener('click', storeN)
+document.getElementById('btn_store_ads').addEventListener('click', storeAds)
+document.getElementById('btn_store_ftx').addEventListener('click', storeFtx)
+
+const the_card = document.querySelectorAll('.box_open')
 
 document.querySelector('.form_list').addEventListener('click', e =>{
     if(e.target.classList.contains('status')){
@@ -234,15 +253,18 @@ addNameC.addEventListener('change', e =>{
     controlAll({value:e.currentTarget.checked, x:'2'});
 })
 
-const the_card = document.querySelectorAll('.box_open')
+btn_radios.forEach(btn =>{
+    btn.addEventListener('change', type_print)
+})
+
 window.addEventListener('click', e =>{
     if(e.target.classList.contains('open_card_one')){
-        the_card[0].classList.toggle('open_the_card')
+        the_card[0].classList.toggle('open_the_card_one')
     }
     if(e.target.classList.contains('open_card_two')){
-        the_card[1].classList.toggle('open_the_card')
+        the_card[1].classList.toggle('open_the_card_two')
     }
     if(e.target.classList.contains('open_card_three')){
-        the_card[2].classList.toggle('open_the_card')
+        the_card[2].classList.toggle('open_the_card_three')
     }
 })

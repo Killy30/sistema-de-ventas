@@ -22,8 +22,6 @@ const getUser = async() =>{
 }
 
 const showInfo = async()=>{
-
-
     let sale = await getSale()
     let venta = sale.sale
     let user = await getUser()
@@ -32,7 +30,6 @@ const showInfo = async()=>{
     let cashier = user.data.cashiers.find(cashier =>{
         return cashier._id == venta.cashier
     })
-
     let time = new Date(venta.date)
 
     fbody.innerHTML = `<div class="boxFactura">
@@ -111,16 +108,15 @@ const showInfo = async()=>{
             <p>
                 ${user.data.footText ? user.data.footText.replace(/\n/g, '<br>') : ''}
             </p>
-            <p>.</p>
-            <p>.</p>
+            <p class='' >.</p>
+            <p class=''>.</p>
             <p>************ Vann ************</p>
-            <p>.</p>
-            <p>.</p>
-            <p>.</p>
+            <p class=''>.</p>
+            <p class=''>.</p>
+            <p class=''>.</p>
         </div>
     </div>    
     `
-    
     const spaces = () =>{
         let space = document.querySelectorAll('.space')
         let leftp = document.querySelectorAll('.hl')
@@ -133,14 +129,11 @@ const showInfo = async()=>{
             let wx = lp + rp;
             let tx = 30 - (wx + 7);
             item.innerText = Array(tx).fill('_').join('')
-
         });
     }
     spaces()
 }
 showInfo()
-
-
 
 print_factura.addEventListener('click', e =>{
     window.print()

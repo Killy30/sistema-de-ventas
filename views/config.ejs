@@ -79,29 +79,56 @@
                     </div>
                 </div>
                 <div class="cardOpen">
-                    <div class="m_l"></div>
+                    <!-- <div class="m_l"></div> -->
                     <div class="form_list">
                         <div class="" id="msg_err"></div>
-                        <p class="fs-2" id="show_s_n"></p>
-                        <div class="card_contain">
-                            <form action="" class="row d-flex mb-4">
-                                <div class="input-groupe col-sm-10 mb-3">
-                                    <input type="text" id="store_name" class="form-control" placeholder="Coloque aqui el nombre de su negocio">
+                        <div class="info_store">
+                            <p class="fs-5">Mi Negocio</p>
+                            <div class="card_contain card_xlx" >
+                                <div class="tb_xls">
+                                    <p class="type_store"></p>
                                 </div>
-                                <div class="input-groupe col-sm-10 mb-3">
-                                    <input type="text" id="store_address" class="form-control" placeholder="Coloque aqui la direccion de su negocio">
-                                </div>
-                                <div class="input-groupe col-sm-10 mb-3">
-                                    <textarea type="text" id="store_foot_text" class="form-control" placeholder="pie de factura"></textarea>
-                                </div>
-                                <div class="input-groupe col-sm-2 ">
-                                    <button type="button" id="btn_storeName" class="btn btn-primary">Enviar</button>
-                                </div>
-                            </form>
+                                <form action="" class="row">
+                                    <div class="input-groupe mb-3 d-flex gap-3">
+                                        <input type="text" id="store_name" class="form-control" placeholder="Nombre">
+                                        <button type="button" id="btn_store_nam" class="btn btn-primary">Enviar</button>
+                                    </div>
+                                    <div class="input-groupe mb-3 d-flex gap-3">
+                                        <input type="text" id="store_address" class="form-control" placeholder="Direccion">
+                                        <button type="button" id="btn_store_ads" class="btn btn-primary">Enviar</button>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
-                        <div class="d-flex mb-3 mt-3">
-                            <input type="checkbox" name="" id="cashierName" class="me-3">
-                            <p class="mb-0">Agregar nombre del cajero/a a la factura</p>
+                        <div class="ticket_info">
+                            <p class="fs-5">Control de facturacion</p>
+                            <div class="card_xlx">
+                                <div class="type_ticket">
+                                    <p class="mb-1">Forma de impresion: </p>
+                                    <form action="" class="d-flex gap-4">
+                                        <div>
+                                            <input type="radio" name="t_fatura" id="ticket" value="ticket">
+                                            <label for="">Ticket</label>
+                                        </div>
+                                        <div>
+                                            <input type="radio" name="t_fatura" id="digital" value="digital">
+                                            <label for="">Impresion digital</label>
+                                        </div>
+                                    </form>
+                                </div>
+
+                                <div class="d-flex mb-3 mt-3">
+                                    <input type="checkbox" name="" id="cashierName" class="me-3">
+                                    <p class="mb-0">Agregar nombre del cajero/a a la factura</p>
+                                </div>
+                                <form action="">
+                                    <div class="input-groupe d-flex gap-3">
+                                        <textarea type="text" id="store_foot_text" class="form-control" placeholder="pie de factura"></textarea>
+                                        <button type="button" class="btn btn-primary" id="btn_store_ftx">Enviar</button>
+                                    </div>
+                                </form>
+                            </div>
+
                         </div>
                     </div>
                 </div>

@@ -19,6 +19,7 @@
 .card_table_body{
     background-color: #ffffff;
     height: calc(100% - 120px);
+    overflow: hidden;
 }
 
 .mbg{
@@ -52,7 +53,6 @@ thead tr th{
 tbody{
     display: block;
     position: relative;
-    /* padding-left: 10px; */
     overflow-y: auto !important;
 }
 #tbody {

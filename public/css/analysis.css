@@ -235,6 +235,9 @@ thead tr, tbody tr {
     }
 }
 @media(max-width: 900px){
+    .container_at{
+        padding: 15px;
+    }
     .cardx1{
         display: grid;
         grid-template-columns: repeat(2, 1fr);
@@ -254,6 +257,9 @@ thead tr, tbody tr {
 }
 
 @media(max-width: 500px){
+    .container_at{
+        padding: 10px;
+    }
     .cardx1{
         grid-template-columns: repeat(1, 1fr);
     }

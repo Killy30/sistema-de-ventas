@@ -43,7 +43,6 @@ const showListSales = async(sales) =>{
     countSales.innerText = `Ventas: ${allsales.length}`
 
     tbody.innerHTML = ""
-
     if(sales.length == 0){
         return noElement()
     }
@@ -147,7 +146,6 @@ const selectType = (data)=>{
         search_all.style.display = 'none'
     }
 }
-
 selectType(typeSearch.value)
 
 //
@@ -180,7 +178,6 @@ const getDateToSearch = async(e) =>{
             allsales = sales_day
             limit_item()
         }
-        
     } catch (error) {
         console.log(error);
     }    
@@ -198,7 +195,6 @@ const getMonthToSearch = async(e) =>{
         let allSales = await getAllSales()
 
         if(cashier_id == undefined || cashier_id == '404'){
-
             let sales_month = allSales.sales.filter(sale =>{
                 let date = new Date(sale.date)
                 let fulldate = `${date.getFullYear()}-${(date.getMonth()+1)>9?(date.getMonth()+1):`${0}${(date.getMonth()+1)}`}`
@@ -237,7 +233,6 @@ const getCodeToSearch = async(e) => {
         let sale_code = allSales.sales.filter(sale => {
             return sale.code == code_id
         })
-
         allsales = sale_code
         
         limit_item()
@@ -247,14 +242,12 @@ const getCodeToSearch = async(e) => {
 }
 
 const search_all_sales = async(e)=>{
-
     try {
         if(cashier_id == undefined || cashier_id == '404'){
             getData()
             limit_item()
         }else{
             let sales = await getAllSales()
-            
             let salesOfCashier = sales.sales.filter(sale => sale.cashier == cashier_id)
            
             allsales = salesOfCashier
@@ -280,15 +273,12 @@ const enableButton = (button) => {
     button.removeAttribute("disabled");
 };
 
-
-
 const nextpage = () =>{
     if(currentPage < pages){
         currentPage++
         limit_item()
     }
 }
-
 const previouspage = () =>{
     if(currentPage !== 0){
         currentPage--
@@ -303,8 +293,6 @@ btn_day.addEventListener('click', getDateToSearch)
 btn_month.addEventListener('click', getMonthToSearch)
 btn_code.addEventListener('click', getCodeToSearch)
 search_all.addEventListener('click', search_all_sales)
-
-
 
 typeSearch.addEventListener('change', e =>{
     selectType(typeSearch.value)
