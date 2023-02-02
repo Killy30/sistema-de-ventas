@@ -131,6 +131,7 @@ ul li a:hover{
     justify-content: center;
 }
 .box-center{
+    width: 80%;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 30px;
@@ -314,6 +315,7 @@ ul li a:hover{
 
 @media(max-width: 900px){
     .box-center{
+        width: 100%;
         grid-template-columns: repeat(3, 1fr); 
         gap: 10px;
     }

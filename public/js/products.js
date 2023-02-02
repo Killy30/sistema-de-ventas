@@ -9,6 +9,7 @@ let productsXTV
 import loader from "./loader.js"
 import alert_message from './alertMSG.js'
 import data from './data.js'
+import emergent_alert from "./emergentAlert.js"
 
 const getAllProducts = async() =>{
     try {
@@ -143,6 +144,10 @@ const createProduct = async() => {
                     }
                 })
                 let res = await req.json()
+
+                if(res.msg){
+                    return emergent_alert({msg:res.msg, color: 'alert alert-danger'})
+                }
                 
                 showAllProducts()
                 idcode.value = ""
@@ -180,7 +185,6 @@ const viewProductValue = (product)=>{
 }
 
 const updateProduct = async(e) =>{
-
     const user = await data.getUser()
 
     const idcode = document.getElementById('idcode_update').value

@@ -1,5 +1,6 @@
 .container_config{
     padding: 30px 20px;
+    position: relative;
 }
 
 .box_one{
@@ -107,6 +108,10 @@ thead tr, tbody tr {
 .btn_open_card{
     font-size: 30px;
     cursor: pointer;
+}
+
+.card_emergent_alert{
+    top: 0px;
 }
 
 @media(max-width: 900px){

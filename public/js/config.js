@@ -3,6 +3,7 @@ const _tfoot = document.querySelector('.tfoot')
 
 import errorMessage from "./errorMSG.js"
 import data from './data.js'
+import emergent_alert from "./emergentAlert.js"
 
 const showMyTeam = async() =>{
     let user = await data.getUser()
@@ -84,6 +85,8 @@ const changeStatus = async(id) =>{
             }
         })
         let res = await req.json()
+        console.log(res);
+        emergent_alert({msg:res.msg, color:'alert alert-success'})
         showMyTeam()
     } catch (error) {
         console.log(error);

@@ -2,11 +2,12 @@
 
 .progress2{
     fill: none;
-    stroke: var(--gris);
+    stroke: var(--gris2);
     stroke-width: 35;
     r: 130px;
     cx: 150px;
     cy: 150px;
+
 }
 .progress{
     fill: none;
@@ -39,7 +40,7 @@ svg{
     font-weight: bolder;
 }
 .text_color_{
-    color: #fe4818;
+    color: var(--blue_three);
 }
 
 @media(max-width: 500px){

@@ -54,8 +54,6 @@ const getAnalysis = async()=>{
     let all_products = await data.getProducts()
 
     let total = salesAnalysis.reduce((acc, t) => acc = acc + t.totalPrice ,0)
-    // console.log(total);
-    // console.log(salesAnalysis);
 
     let repete_object = {};
     let repete_array = []
@@ -132,6 +130,19 @@ const cardsDataViwe = (data) =>{
     document.getElementById('more').innerText = `${data.more}` 
     document.getElementById('less').innerText = `${data.less}` 
 }
+
+const cardValance = async() =>{
+    let v_date = document.getElementById('vdate')
+    let v_value = document.getElementById('vvalue')
+
+    let sales = await data.getSales()
+    let today_sales_total = sales.sales_today.reduce((acc, p) => acc = acc + p.totalPrice ,0)
+
+    let date = new Date()
+    v_date.innerHTML = `<p>${fecha(date.getTime())} ${date.getDate()}/${date.getFullYear()}</p>` 
+    v_value.innerText = today_sales_total.toFixed(2)
+}
+cardValance()
 
 
 const tableProductsView = (data) =>{
@@ -321,7 +332,7 @@ const compare_values = (months, values) =>{
             <div class="w-100">
                 <p class="m-0">${
                     (x!==0)?
-                    `Tus ventas ha ${(x<0)?'desincrementado':'incrementado'} un ${x.toFixed(2)}% en el mes de ${months[months.length-2]}.`
+                    `Tus ventas han ${(x<0)?'desincrementado':'incrementado'} un ${x.toFixed(2)}% para el mes de ${months[months.length-2]}.`
                     :''
                 }</p>
             </div>
@@ -344,7 +355,7 @@ const progressCount = (x) =>{
         progress.style.stroke = 'rgb(205, 7, 7)'
     }else{
         progress.style.strokeDashoffset = a
-        progress.style.stroke = 'rgb(255, 75, 10)'
+        progress.style.stroke = 'rgb(0, 149, 255)'
     }
 }
 
@@ -366,13 +377,10 @@ const getDateToSearch = async(e) =>{
         })
 
         salesAnalysis = sales_day
-        getAnalysis()
-        
+        getAnalysis()  
     } catch (error) {
         console.log(error);
     }
-    
-
 }
 
 const getMonthToSearch = async(e) =>{
@@ -401,7 +409,6 @@ const getMonthToSearch = async(e) =>{
 
 btn_day.addEventListener('click', getDateToSearch)
 btn_month.addEventListener('click', getMonthToSearch)
-
 
 typeSearch.addEventListener('change', e =>{
     selectType(typeSearch.value)

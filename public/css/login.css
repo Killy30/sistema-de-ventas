@@ -38,6 +38,12 @@ form{
     color: #fff;
 }
 
+@media(max-width: 900px){
+    .card_1{
+        width: 500px;
+    }
+}
+
 @media(max-width: 500px){
     .card_1{
         border: 0px;

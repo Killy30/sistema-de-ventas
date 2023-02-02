@@ -2,10 +2,19 @@ const Product = require('../models/products')
 const User = require('../models/user')
 const Sale = require('../models/sales')
 const Cashier = require('../models/cashiers')
+const PlanPro = require('../models/proPlan')
 const yesId = require('../yesId')
 
 
 module.exports = (app) =>{
+
+    //this function receives a date and returns a new date calculating 31 days
+    function countTime(date) {
+        let dayCount = 31;
+        let days = dayCount * 1000 * 3600 * 24;
+        let newDate = date.getTime() + days;
+        return new Date(newDate);
+    }
 
     app.get('/get-products', async(req, res) =>{
         const user = req.user
@@ -18,7 +27,6 @@ module.exports = (app) =>{
     app.get('/get-user', async(req, res) =>{
         const _user = req.user;
         const user = await User.findOne({_id: _user._id}).populate('cashiers')
-        
         res.json({data:user})
     })
     
@@ -83,31 +91,38 @@ module.exports = (app) =>{
     })
     
     app.post('/new-product', async(req, res)=>{
-        let data = req.body
         const user = req.user
         const newProduct = new Product()
+        let data = req.body
+        let limit = 30;
 
-        let _itbis_ = data.itbis || 0.00;
-        let sum_price = (parseFloat(data.price) + parseFloat(_itbis_))
-    
-        newProduct.idcode = data.idcode
-        newProduct.name = data.name
-        newProduct.price = data.price
-        newProduct.sum_price = sum_price
-        newProduct.description = data.description
-        newProduct.category = data.category
-        newProduct.itbis = _itbis_
-        newProduct.user = user
-        user.products.push(newProduct)
-    
-        await newProduct.save()
-        await user.save()
-        res.json({status:true})
+        const myUser = await User.findOne({_id: user._id}).populate('products')
+
+        if(myUser.products.length < limit){
+            let _itbis_ = data.itbis || 0.00;
+            let sum_price = (parseFloat(data.price) + parseFloat(_itbis_))
+        
+            newProduct.idcode = data.idcode
+            newProduct.name = data.name
+            newProduct.price = data.price
+            newProduct.sum_price = sum_price
+            newProduct.description = data.description
+            newProduct.category = data.category
+            newProduct.itbis = _itbis_
+            newProduct.user = user
+            user.products.push(newProduct)
+        
+            await newProduct.save()
+            await user.save()
+            return res.json({status:true})
+        }
+        return res.json({
+            msg: 'Ha llegado a su limite de productos, si desea agregar mas productos por favor comuniquense a través de nuestro correo killycenecharles30@gmail.com'
+        })
     })
     
     app.put('/update-product', async(req, res) =>{
         let data = req.body
-    
         let _itbis_ = data.itbis || 0.00
 
         await Product.updateOne({_id: data._id}, {
@@ -195,22 +210,34 @@ module.exports = (app) =>{
     })
 
     app.post('/status-cashier', async(req, res)=>{
+        const user = req.user
+        const myUser = await User.findOne({_id: user._id}).populate('cashiers')
+        let limit = 2
         let data = req.body
         try {
             let cashier = await Cashier.findById({_id: data.id})
+            let activeCashier = myUser.cashiers.filter(cashier => cashier.status == true)
+
             if(cashier.status){
                 cashier.status = false
-            }else{
-                cashier.status = true
+                await cashier.save()
+                return res.json({msg: 'El estado del cajero/a fue actualizado'})
             }
-            
-            await cashier.save()
-            return res.json({msg: 'El estado del cajero/a fue actualizado'})
+            if(activeCashier.length < limit){
+                if(!cashier.status){
+                    cashier.status = true
+                    await cashier.save()
+                    return res.json({msg: 'El estado del cajero/a fue actualizado'})
+                }
+            }
+
+            return res.json({
+                msg: 'Ha llegado a su limite de cajeros activos, si desea activar mas cajeros por favor comuniquense a través de nuestro correo killycenecharles30@gmail.com'
+            })
         } catch (error) {
             console.log(error);
             res.json({msg: 'Un problema ha ocurrido'})
         }
-        
     })
 
     app.get('/cashier-detail/:id', async(req, res) =>{

@@ -1,6 +1,5 @@
 
 const alert_message = ({msg, color, index}) =>{
-
     let i = index || 0
 
     const cardError = document.querySelectorAll('.card_msg_alert')

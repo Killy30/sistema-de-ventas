@@ -64,31 +64,44 @@
                 <div class="des"></div>
             </div>
         </div>
-        
-        <div class="navbar card_filter">
-            <p class="ps-3 mb-0 fs-5">Filtrar</p>
-            <div class="container-fluid">
-                <form class="d-flex">
-                    <select class="form-select" id="typeSearch">
-                        <option value="all">Todos</option>
-                        <option value="day">Dia</option>
-                        <option value="month">Mes</option>
-                    </select>
-                    <div class="ms-5">
-                        <div class="inactive" id="day">
-                            <input class="form-control me-2" type="date" id="input_day" placeholder="Search" aria-label="Search">
-                            <button class="btn btn-primary" id="btn_day" type="button">Buscar</button>
+        <div class="box_filter">
+            <div class="navbar card_filter">
+                <p class="ps-3 mb-0 fs-5">Filtrar</p>
+                <div class="container-fluid">
+                    <form class="d-flex">
+                        <select class="form-select" id="typeSearch">
+                            <option value="all">Todos</option>
+                            <option value="day">Dia</option>
+                            <option value="month">Mes</option>
+                        </select>
+                        <div class="ms-5">
+                            <div class="inactive" id="day">
+                                <input class="form-control me-2" type="date" id="input_day" placeholder="Search" aria-label="Search">
+                                <button class="btn btn-primary" id="btn_day" type="button">Buscar</button>
+                            </div>
+                            <div class="inactive" id="month">
+                                <input class="form-control me-2" type="month" id="input_month" placeholder="Search" aria-label="Search">
+                                <button class="btn btn-primary" id="btn_month" type="button">Buscar</button>
+                            </div>
+                            <div class="inactive" id="code">
+                                <input class="form-control me-2" type="datetime-local" style="width: 230px;" id="input_code" placeholder="Search" aria-label="Search">
+                                <button class="btn btn-primary" id="btn_code" type="button">Buscar</button>
+                            </div>
                         </div>
-                        <div class="inactive" id="month">
-                            <input class="form-control me-2" type="month" id="input_month" placeholder="Search" aria-label="Search">
-                            <button class="btn btn-primary" id="btn_month" type="button">Buscar</button>
-                        </div>
-                        <div class="inactive" id="code">
-                            <input class="form-control me-2" type="datetime-local" style="width: 230px;" id="input_code" placeholder="Search" aria-label="Search">
-                            <button class="btn btn-primary" id="btn_code" type="button">Buscar</button>
-                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="card_valance">
+                <div class="valance_head">
+                    <p class="vtitle">Valance de hoy</p>
+                    <div id="vdate" class="vdate"></div>
+                </div>
+                <div class="t_i">
+                    <div class="_icons one">
+                        <span class="material-symbols-outlined">attach_money</span>
                     </div>
-                </form>
+                    <p id="vvalue" class="csxt"></p>
+                </div>
             </div>
         </div>
 

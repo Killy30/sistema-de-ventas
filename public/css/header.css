@@ -2,11 +2,13 @@
     font-family: 'Prompt', sans-serif;
 }
 :root{
-    --blue_one: #071442;
     --blue: #003d71;
+    --blue_one: #071442;
+    --blue_three: rgb(0, 149, 255);
     --orange: #fe4818;
     --black_two: #303030;
     --gris: #aeaeae;
+    --gris2: #cdcdcd;
 }
 
 body{
@@ -166,6 +168,14 @@ nav{
 
 .selected{
     color: var(--orange) !important;
+}
+
+/* emergency alert */
+.card_emergent_alert{
+    position: absolute;
+    right: 20px;
+    max-width: 70%;
+    z-index: 2000;
 }
 
 
