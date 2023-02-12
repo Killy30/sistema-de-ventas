@@ -31,7 +31,7 @@ nav{
     height: calc(100vh - 80px);
 }
 .cont{
-    padding-left: 10px;
+    padding-left: 20px;
 }
 .logo{
     width: 130px;
@@ -168,6 +168,15 @@ nav{
 
 .selected{
     color: var(--orange) !important;
+}
+
+.display_none{
+    display: none;
+}
+
+.display_enaible{
+    pointer-events: none;
+    color: #0b0b0bac !important;
 }
 
 /* emergency alert */

@@ -2,6 +2,16 @@
 const user_menu = document.querySelector('.user_menu')
 let links = document.querySelectorAll('.nav_link') 
 
+function admin(){
+    let x = localStorage.getItem('admin')
+
+    if(x === 'false'){
+        links[3].classList.add('display_enaible')
+        links[4].classList.add('display_enaible')
+    }
+}
+admin()
+
 document.addEventListener('DOMContentLoaded', e=>{
 
     if(document.querySelector('.card_table_body')){

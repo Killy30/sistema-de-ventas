@@ -12,39 +12,48 @@
 
     <div class="containe">
         <div class="card_1">
-            <div class="card_h mt-4">
-                <a href="/">
-                    <img src="../img/logo_vann2.png" alt="">
-                </a>
-            </div>
-            <div class="tx mt-3">
-                <p class="fs-3 text-center">Registrate</p>
-            </div>
-            <div class="form">
-
-                <form action="/signup" method="post">
-                    <div class="input-group mb-3">
-                        <input type="text" class="form-control" name="name" placeholder="Nombre" id="">
-                    </div>
-                    <div class="input-group mb-3">
-                        <input type="text" class="form-control" name="lastName" placeholder="Apellido" id="">
-                    </div>
-                    <div class="input-group mb-3">
-                        <input type="email" class="form-control" required placeholder="Ingresa tu correo" name="email">
-                    </div>
-                    <div class="input-group mb-3">
-                        <input type="password" class="form-control" required name="password" placeholder="Ingrese tu contrasena" id="">
-                    </div>
-                    <div class="input-group">
-                        <button class="btn form-control" type="submit">Registrar</button>
-                    </div>
-                </form>
-            </div>
-            <div class="tsx">
-                <p class="fs-6 text-center mt-3">Ya tienes una cuenta? <a href="/iniciar-sesion">Inicia sesion aqui</a></p>
+            <div class="card_contain">
+                <div class="card_h">
+                    <a href="/">
+                        <img src="../img/logo_nelvann.png" alt="">
+                    </a>
+                </div>
+                <div class="tx mt-3">
+                    <p class="fs-3 text-center">Registrate</p>
+                </div>
+                <div class="w-100 d-flex justify-content-center">
+                    <% if(signupMessage != ''){ %>
+                        <div class="alert alert-danger p-2 text-center" role="alert" style="min-width: 300px;">
+                            <%=signupMessage%>
+                        </div>
+                    <%}%>
+                </div>
+                <div class="form">
+                    <form action="/signup" method="post" id="signup">
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control" required name="name" placeholder="Nombre" id="">
+                        </div>
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control" required name="lastName" placeholder="Apellido" id="">
+                        </div>
+                        <div class="input-group mb-3">
+                            <input type="email" class="form-control" required placeholder="Ingresa tu correo" name="email">
+                        </div>
+                        <div class="input-group mb-3">
+                            <input type="password" class="form-control" required name="password" placeholder="Ingrese tu contrasena" id="inputPass">
+                        </div>
+                        <div class="input-group">
+                            <button class="btn form-control" type="submit">Registrar</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="tsx">
+                    <p class="fs-6 text-center mt-3">Ya tienes una cuenta? <a href="/iniciar-sesion">Inicia sesion aqui</a></p>
+                </div>
             </div>
         </div>
     </div>
     
+    <script src="../js/signup.js"></script>
 </body>
 </html>

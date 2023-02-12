@@ -173,7 +173,7 @@ const showProducts = async() =>{
         showListProduct.innerHTML += `
             <tr>
                 <td>${listProducts[i].idcode}</td>
-                <td>${listProducts[i].name}</td>
+                <td>${listProducts[i].name.toUpperCase()}</td>
                 <td>${listProducts[i].price.toFixed(2)}</td>
                 ${
                     user.data.system_control.acceptITBIS ? `<td>${listProducts[i].itbis.toFixed(2)}</td>` : ""
@@ -270,6 +270,7 @@ const create_sale = async(e) =>{
         document.getElementById('add').disabled = true
         document.getElementById('finich').disabled = true
         document.getElementById('cancel').disabled = true
+        document.getElementById('codigo').disabled = true
         document.getElementById('cerrar').disabled = false
 
         document.getElementById('clean_list').classList.add('inactive')
@@ -307,6 +308,7 @@ const cancelSele = () =>{
 const openSele = () => { 
     if(document.getElementById('pago').value === ''){
         document.getElementById('cerrar').disabled = true
+        document.getElementById('codigo').disabled = false
     }
     setTimeout(() =>{
         document.getElementById('codigo').focus()

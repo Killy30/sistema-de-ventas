@@ -9,12 +9,52 @@ const yesId = require('../yesId')
 module.exports = (app) =>{
 
     //this function receives a date and returns a new date calculating 31 days
-    function countTime(date) {
+    function nextMonth(date){
         let dayCount = 31;
-        let days = dayCount * 1000 * 3600 * 24;
+        let days = dayCount * (1000 * 3600 * 24);
         let newDate = date.getTime() + days;
         return new Date(newDate);
     }
+
+    async function removeUserToPlanPro(){
+        const allInPlanPro = await PlanPro.find()
+        let _time = 43200000;
+
+        setInterval(() =>{
+            allInPlanPro.forEach(async(user, index) =>{
+                let currentD = new Date()
+                let endD = new Date(user.endDate)
+                let endDate = `${endD.getMonth()}${endD.getDate()}${endD.getFullYear()}`
+                let currentDate = `${currentD.getMonth()}${currentD.getDate()}${currentD.getFullYear()}`
+    
+                if(endDate === currentDate){
+                    let userd = await User.findOne({_id: user.userId})
+                    userd.planPro = false
+                    allInPlanPro.splice(index,1)
+                    await allInPlanPro.save()
+                    await userd.save()
+                }
+            })
+        }, _time)
+    }
+    removeUserToPlanPro()
+
+    app.post('add-user-to-planPro/:id', async(req, res) =>{
+        const user = req.user;
+
+        if(req.params.id == user._id){
+            const addUser = new PlanPro()
+            addUser.initialDate = new Date()
+            addUser.endDate = nextMonth(new Date())
+            addUser.userId = req.params.id
+            user.planPro = true;
+
+            await addUser.save()
+            await user.save()
+            return res.json({msg: 'Ya eres parte de nuestro plan Pro, ya puedes disfrutar de las funciones adicionales'})
+        }
+        res.json({status: false})
+    })
 
     app.get('/get-products', async(req, res) =>{
         const user = req.user
@@ -92,9 +132,8 @@ module.exports = (app) =>{
     
     app.post('/new-product', async(req, res)=>{
         const user = req.user
-        const newProduct = new Product()
         let data = req.body
-        let limit = 30;
+        let limit = user.planPro ? 100 : 25;
 
         const myUser = await User.findOne({_id: user._id}).populate('products')
 
@@ -102,6 +141,7 @@ module.exports = (app) =>{
             let _itbis_ = data.itbis || 0.00;
             let sum_price = (parseFloat(data.price) + parseFloat(_itbis_))
         
+            const newProduct = new Product()
             newProduct.idcode = data.idcode
             newProduct.name = data.name
             newProduct.price = data.price
@@ -179,12 +219,9 @@ module.exports = (app) =>{
     })
 
     app.post('/new-cashier', async(req, res) =>{
-
         let data = req.body
         const user = req.user
         const user_cashier = await User.findById({_id: user._id}).populate('cashiers')
-
-        
 
         function getCodeId() {
             if(user_cashier.cashiers.some(cashier => cashier.id_code === yesId(5))){
@@ -212,7 +249,7 @@ module.exports = (app) =>{
     app.post('/status-cashier', async(req, res)=>{
         const user = req.user
         const myUser = await User.findOne({_id: user._id}).populate('cashiers')
-        let limit = 2
+        let limit = user.planPro ? 4 :  2
         let data = req.body
         try {
             let cashier = await Cashier.findById({_id: data.id})

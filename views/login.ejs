@@ -1,45 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta name="keywords" content="nel-vann: iniciar sesion, vann: iniciar sesion, punto de venta online gratis">
+    <meta name="description" content="Vann es un sistema de punto de venta que brinda servicios de tus necesidades acuerdo a tu negocio sin importa si tu negocio es grande o pequeno.">
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="../css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../css/login.css">
-    <title>iniciar sesion</title>
+    <title>Vann: iniciar sesion</title>
 </head>
 <body>
-
     <div class="containe">
-
         <div class="card_1">
-            <div class="card_h mt-5">
-                <a href="/">
-                    <img src="../img/logo_vann2.png" alt="">
-                </a>
-            </div>
-            <div class="tx mt-5">
-                <p class="fs-3 text-center">Iniciar sesion</p>
-            </div>
-            <div class="form">
-                <form class="" action="/login" method="post">
-                    <div class="input-group mb-3">
-                        <input class="form-control" type="email" required placeholder="Ingresa tu correo" name="email">
+            <div class="card_contain">
+                <div class="card_h">
+                    <div>
+                        <a href="/">
+                            <img src="../img/logo_nelvann.png" alt="">
+                        </a>
                     </div>
-                    <div class="input-group mb-3">
-                        <input class="form-control"  type="password" required name="password" placeholder="Ingrese tu contrasena" id="">
-                    </div>
-                    <div class="input-group">
-                        <button class="btn form-control" type="submit">Iniciar sesion</button>
-                    </div>
-                </form>
-            </div>
-            <div class="tsx">
-                <p class="fs-6 text-center mt-3">No tienes una cuenta? <a href="/registrar">Registrate aqui</a></p>
+                </div>
+                <div class="tx mt-4">
+                    <p class="fs-3 text-center">Iniciar sesion</p>
+                </div>
+                <div class="w-100 d-flex justify-content-center">
+                    <% if(signinMessage != ''){ %>
+                        <div class="alert alert-danger p-2 text-center" role="alert" style="width: 300px;">
+                            <%=signinMessage%>
+                        </div>
+                    <%}%>
+                </div>
+                <div class="form">
+                    <form class="" action="/login" method="post">
+                        <div class="input-group mb-3">
+                            <input class="form-control" type="email" required placeholder="Ingresa tu correo" name="email">
+                        </div>
+                        <div class="input-group mb-3">
+                            <input class="form-control"  type="password" required name="password" placeholder="Ingrese tu contrasena" >
+                        </div>
+                        <div class="input-group mb-3">
+                            <input class=""  type="checkbox" id="adminCheck">
+                            <label class="ms-2" for="">Iniciar sesion como administrador</label>
+                        </div>
+                        <div class="input-group">
+                            <button class="btn form-control" type="submit">Iniciar sesion</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="tsx">
+                    <p class="fs-6 text-center mt-3">No tienes una cuenta? <a href="/registrar">Registrate aqui</a></p>
+                </div>
             </div>
         </div>
-
     </div>
+
+    <script src="../js/login.js"></script>
     
 </body>
 </html>

@@ -12,16 +12,16 @@ module.exports = (app) =>{
     router.get('/registrar', async (req, res, next) => {
         res.render('signup')
     });
+
+    router.get('/iniciar-sesion', (req, res, next) => {
+        res.render('login')
+    });
     
     router.post('/signup', passport.authenticate('local-signup', {
         successRedirect: '/inicio',
         failureRedirect: '/registrar',
         passReqToCallback: true
     }));
-    
-    router.get('/iniciar-sesion', (req, res, next) => {
-        res.render('login')
-    });
     
     router.post('/login', passport.authenticate('local-login', {
         successRedirect: '/inicio',
