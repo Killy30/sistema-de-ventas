@@ -85,7 +85,6 @@ const changeStatus = async(id) =>{
             }
         })
         let res = await req.json()
-        console.log(res);
         emergent_alert({msg:res.msg, color:'alert alert-success'})
         showMyTeam()
     } catch (error) {

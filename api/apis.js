@@ -8,7 +8,7 @@ const yesId = require('../yesId')
 
 module.exports = (app) =>{
 
-    //this function receives a date and returns a new date calculating 31 days
+    //this function receives a date and returns a new date calculating 31 days after
     function nextMonth(date){
         let dayCount = 31;
         let days = dayCount * (1000 * 3600 * 24);
@@ -157,7 +157,7 @@ module.exports = (app) =>{
             return res.json({status:true})
         }
         return res.json({
-            msg: 'Ha llegado a su limite de productos, si desea agregar mas productos por favor comuniquense a través de nuestro correo killycenecharles30@gmail.com'
+            msg: 'Ha llegado a su limite de productos, si desea agregar mas productos por favor comuniquense con nosotros a través de nuestro correo killycenecharles30@gmail.com'
         })
     })
     
@@ -249,7 +249,7 @@ module.exports = (app) =>{
     app.post('/status-cashier', async(req, res)=>{
         const user = req.user
         const myUser = await User.findOne({_id: user._id}).populate('cashiers')
-        let limit = user.planPro ? 4 :  2
+        let limit = user.planPro ? 4 :  1
         let data = req.body
         try {
             let cashier = await Cashier.findById({_id: data.id})
@@ -269,7 +269,7 @@ module.exports = (app) =>{
             }
 
             return res.json({
-                msg: 'Ha llegado a su limite de cajeros activos, si desea activar mas cajeros por favor comuniquense a través de nuestro correo killycenecharles30@gmail.com'
+                msg: 'Ha llegado a su limite de cajeros activos, si desea activar mas cajeros por favor comuniquense con nosotros a través de nuestro correo killycenecharles30@gmail.com'
             })
         } catch (error) {
             console.log(error);

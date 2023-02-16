@@ -30,6 +30,7 @@ const showInfo = async()=>{
     let cashier = user.data.cashiers.find(cashier =>{
         return cashier._id == venta.cashier
     })
+
     let time = new Date(venta.date)
 
     fbody.innerHTML = `<div class="boxFactura">
@@ -45,11 +46,12 @@ const showInfo = async()=>{
                 Fecha: ${time.getDate()}/${(time.getMonth()+1)}/${time.getFullYear()} ${time.getHours()}:${time.getMinutes()}
             </p>
         </div>
-        ${
-            user.data.system_control.add_N_C_receipt?
-            `<p>Caja: ${cashier.name} ${cashier.lastName}</p>`
-            : ''
-        }
+        ${  (cashier !== undefined)?
+                user.data.system_control.add_N_C_receipt?
+                `<p>Caja: ${cashier.name} ${cashier.lastName}</p>`
+                : ''
+            :'<p>ADMIN</p>'
+        }   
         <div class="ftable">
             <span style="display: none;">--------------------------------</span>
             <div class="fheader">

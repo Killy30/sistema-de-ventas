@@ -144,6 +144,59 @@ const showListCashiers_select = async() =>{
 } 
 showListCashiers_select()
 
+
+
+const showCurrentUser = async() =>{
+    let box = document.getElementById('c_user')
+    const user = await getUser()
+    const cashiers = user.data.cashiers
+
+    box.innerText = (localStorage.getItem('admin') == 'true') ? 'ADMINISTRADOR' : 'NO USUARIO'
+
+    cashiers.forEach(cashier =>{
+        if(cashier.id_code == localStorage.getItem('code')){
+            return box.innerText = ` ${cashier.name} ${cashier.lastName}`
+        }
+    })
+}
+
+const boxSearchProducts = document.querySelector('.boxSearchProducts')
+const seachProducts = async(text) =>{
+    const products = await data.getProducts()
+    boxSearchProducts.style.display = 'block'
+    
+    let _text = text.toLowerCase()
+
+    boxSearchProducts.innerHTML = ""
+
+    for(let product of products.my_products){
+        let name = product.name.toLowerCase()
+        let code = product.idcode.toString()
+
+        if(name.indexOf(_text) !== -1 || code.indexOf(_text) !== -1){
+            boxSearchProducts.innerHTML +=`
+                <div class="d-flex border-bottom d_block">
+                    <div style="width: 150px;" class="d_block"> <p class="d_block mb-0 p-2">${product.idcode}</p> </div>
+                    <div style="width: 200px;" class="d_block"> <p class="d_block mb-0 p-2">${product.name.toUpperCase()}</p> </div>
+                    <div style="width: 100px;" class="d_block"> <p class="d_block mb-0 p-2">$${product.sum_price}</p> </div>
+                    <div style="width: 100px;" class="d_block p-2"> <a href="#" class="add_p" data-id="${product.idcode}" >Agregar</a> </div>
+                </div>
+            `
+        }
+    }
+}
+
+const addProduct = async(e) =>{
+    const products = await data.getProducts()
+    console.log(e.target.dataset.id);
+
+    let product = products.my_products.find(prod => prod.idcode == e.target.dataset.id)
+    listProducts.push(product)
+    showProducts()
+    boxSearchProducts.style.display = 'none'
+    document.getElementById('textSearch').value = ''
+}
+
 const getCodeProduct = async() =>{
     let code = document.getElementById('codigo')
     
@@ -158,7 +211,7 @@ const getCodeProduct = async() =>{
         }else{
             listProducts.push(res.product)
             showProducts()
-        }
+        }   
     } catch (error) {
         console.log(error);
     }
@@ -222,7 +275,7 @@ const create_sale = async(e) =>{
 
     let totalPrice = subTotal + (acceptITBIS ? total_itbis : 0)
     //
-    if(!localStorage.getItem('id')){
+    if(!localStorage.getItem('id') && localStorage.getItem('admin') == 'false'){
         let e = 'Debes conectar tu usuario (cajero/a) antes de hacer una venta, por favor asegurece de estar conectado para realizar la venta'
         return alert(e)
     }
@@ -244,7 +297,7 @@ const create_sale = async(e) =>{
 
     let cambioValue = pago - totalPrice
     cambio.innerText = cambioValue.toFixed(2)
-    let cashier_id = localStorage.getItem('id')
+    let cashier_id = localStorage.getItem('id') 
     
     let data = {
         products:listProducts,
@@ -271,6 +324,7 @@ const create_sale = async(e) =>{
         document.getElementById('finich').disabled = true
         document.getElementById('cancel').disabled = true
         document.getElementById('codigo').disabled = true
+        document.getElementById('textSearch').disabled = true
         document.getElementById('cerrar').disabled = false
 
         document.getElementById('clean_list').classList.add('inactive')
@@ -306,14 +360,19 @@ const cancelSele = () =>{
 }
 
 const openSele = () => { 
+    showCurrentUser()
+
     if(document.getElementById('pago').value === ''){
         document.getElementById('cerrar').disabled = true
         document.getElementById('codigo').disabled = false
+        document.getElementById('textSearch').disabled = false
+        document.getElementById('clean_list').classList.remove('inactive')
+    }else{
+        document.getElementById('clean_list').classList.add('inactive')
     }
     setTimeout(() =>{
         document.getElementById('codigo').focus()
     },500)
-    document.getElementById('clean_list').classList.remove('inactive')
 }
 
 const clean_list_products = (e) =>{
@@ -425,6 +484,21 @@ modalBoxLog.addEventListener('click', e =>{
         showListCashiers_select()
     } 
 })
+
+document.getElementById('textSearch').addEventListener('keyup', e =>{
+    seachProducts(e.target.value)
+})
+
+window.addEventListener('click', e =>{
+    if(e.target.classList.contains('add_p')){
+        e.preventDefault()
+        addProduct(e)
+    }
+    if(!e.target.classList.contains('d_block')){
+        boxSearchProducts.style.display = 'none'
+    }
+})
+
 
 const changeCasheir = async(data) =>{
     try {

@@ -4,17 +4,10 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
     <link href="../css/bootstrap.min.css" rel="stylesheet" >
-    <style>
-        /* #tbody {
-            overflow-y: auto !important;
-        } */
-    </style>
     <link rel="stylesheet" href="../css/table.css">
     <link rel="stylesheet" href="../css/modall.css">
     <link rel="stylesheet" href="../css/main.css">
-    
     <title>Inicio</title>
 </head>
 <body>
@@ -88,14 +81,28 @@
                     </div>
                     <div class="modal-body">
                         <div class="" id="msg_err"></div>
+                        <div class="d-flex mb-3 pb-2 border-bottom justify-content-md-between">
+                            <div class="user me-3 d-flex align-items-center">
+                                <div class="d-flex">
+                                    <p class="me-2 mb-0" style="font-weight: 500;">Le atiende: </p>
+                                    <p class="mb-0 " style="font-weight: 500;" id="c_user"></p>
+                                </div>
+                            </div>
+                            <div class="position-relative">
+                                <div class="d-flex align-items-center">
+                                    <label for="" class="me-2">Buscar productos: </label>
+                                    <input type="text" class="form-control" id="textSearch" style="width: 300px;" placeholder="Buscar por nombre o codigo">
+                                </div>
+                                <div class="boxSearchProducts"></div>
+                            </div>
+                        </div>
                         <div class="d-flex justify-content-md-between mb-3 form-groupe">
                             <div class="input-group">
                                 <select id="mode_code" style="width: 150px;" >
                                     <option value="automatico">Automatico</option>
                                     <option value="manual">Manual</option>
                                 </select>
-                                <!-- <label for="codigo" class="col-form-label">Codigo:</label> -->
-                                <input type="number" class="form-control" style="width: 100px; margin-left: 10px;" id="codigo">
+                                <input type="number" class="form-control" placeholder="Ingrese el codigo del producto aqui" style="width: 100px; margin-left: 10px;" id="codigo">
                                 <button type="button" id="add" style="display:none;" class="btn btn-primary ms-3">Agregar</button>
                             </div>
                             <div class="d-flex " style="margin-left: 100px;">
@@ -103,7 +110,7 @@
                                 <a href="" id="factura" class="btn btn-primary inactive ms-3" >Factura</a>
                             </div>
                         </div>
-                        <div class="w-100" style="height: 500px;" id="list_product">
+                        <div class="w-100" style="height: 460px;" id="list_product">
                             <table class="table table_xzs">
                                 <thead id="thead">
                                     <tr>
@@ -146,9 +153,9 @@
                                 <p class="fs-4" style="width: 115px; font-weight: 500; margin: 0 10px 0 10px;" id="cambio">0.00</p>
                             </div>
                             <div class="d-flex align-items-center">
-                                <button type="button" class="btn btn-secondary" id="cancel" data-bs-dismiss="modal">Cancelar</button>
+                                <button type="button" class="btn btn-danger" id="cancel" data-bs-dismiss="modal">Cancelar</button>
                                 <button type="button" class="btn btn-primary" style="margin: 0px 15px;" id="finich" >Finalizar</button>
-                                <button type="button" class="btn btn-danger" id="cerrar" data-bs-dismiss="modal">Cerrar</button>
+                                <button type="button" class="btn btn-secondary" id="cerrar" data-bs-dismiss="modal">Cerrar venta</button>
                             </div>
                         </div>
                     </div>
