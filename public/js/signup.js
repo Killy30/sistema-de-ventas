@@ -14,7 +14,7 @@ inputPass.addEventListener('keypress', e =>{
 signUpbtn.addEventListener('submit', e =>{
     if(count < 8 ){
         e.preventDefault()
-        alert('Por motivo de seguridad su contraseña debe tener al menos 8 caracteres.')
+        document.getElementById('security_text').innerText = 'Por motivo de seguridad su contraseña debe tener al menos 8 caracteres.'
     }
 })
 
