@@ -30,8 +30,13 @@
                                 <input type="number" class="form-control" required id="idcode" name="idcode">
                             </div>
                             <div class="mb-2">
-                                <label for="recipient-name" class="col-form-label">Nombre:*</label>
-                                <input type="text" class="form-control" required id="name" name="name">
+                                <div class="d-flex justify-content-md-between">
+                                    <label for="recipient-name" class="col-form-label">Nombre:*</label>
+                                    <div class="d-flex align-items-center">
+                                        <span class="text-secondary" id="cCharacterLimit">0/16</span>
+                                    </div>
+                                </div>
+                                <input type="text" class="form-control" maxlength="16" required id="name" name="name">
                             </div>
                             <div class="">
                                 <div class="mb-2">
@@ -52,8 +57,13 @@
                                 <input type="text" class="form-control" id="category" name="category">
                             </div>
                             <div class="mb-2">
-                                <label for="message-text" class="col-form-label">Descripcion:</label>
-                                <textarea class="form-control" id="description" name="description"></textarea>
+                                <div class="d-flex justify-content-md-between">
+                                    <label for="message-text" class="col-form-label">Descripcion:</label>
+                                    <div class="d-flex align-items-center">
+                                        <span class="text-secondary" id="cD_CharacterLimit">0/70</span>
+                                    </div>
+                                </div>
+                                <textarea class="form-control" id="description" maxlength="70" name="description"></textarea>
                             </div>
                         </form>
                     </div>
@@ -82,8 +92,13 @@
                                 <input type="number" class="form-control" required id="idcode_update" name="idcode">
                             </div>
                             <div class="mb-2">
-                                <label for="recipient-name" class="col-form-label">Nombre:*</label>
-                                <input type="text" class="form-control" required id="name_update" name="name">
+                                <div class="d-flex justify-content-md-between">
+                                    <label for="recipient-name" class="col-form-label">Nombre:*</label>
+                                    <div class="d-flex align-items-center">
+                                        <span class="text-secondary" id="uCharacterLimit">16/16</span>
+                                    </div>
+                                </div>
+                                <input type="text" class="form-control" required maxlength="16" id="name_update" name="name">
                             </div>
                             <div class="mb-2">
                                 <label for="recipient-name" class="col-form-label">Precio:*</label>
@@ -98,8 +113,13 @@
                                 <input type="text" class="form-control" id="category_update" name="category">
                             </div>
                             <div class="mb-2">
-                                <label for="message-text" class="col-form-label">Descripcion:</label>
-                                <textarea class="form-control" id="description_update" name="description"></textarea>
+                                <div class="d-flex justify-content-md-between">
+                                    <label for="message-text" class="col-form-label">Descripcion:</label>
+                                    <div class="d-flex align-items-center">
+                                        <span class="text-secondary" id="uD_CharacterLimit">0/70</span>
+                                    </div>
+                                </div>
+                                <textarea class="form-control" id="description_update" maxlength="70" name="description"></textarea>
                             </div>
                         </form>
                     </div>

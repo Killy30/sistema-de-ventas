@@ -184,6 +184,9 @@ const seachProducts = async(text) =>{
             `
         }
     }
+    if(boxSearchProducts.innerHTML == ""){
+        boxSearchProducts.innerHTML = `<p>No hay productos con este nombre</p>`
+    }
 }
 
 const addProduct = async(e) =>{

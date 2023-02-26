@@ -42,7 +42,7 @@ const showAllProducts = async() =>{
                 <td>${product.idcode}</td>
                 <td>${product.name}</td>
                 <td>${acceptITBIS ? product.sum_price.toFixed(2) : product.price.toFixed(2)}</td>
-                <td>${product.description}</td>
+                <td class="nxh" title="${product.description}">${product.description}</td>
                 <td>${product.category}</td>
                 <td >
                     <button type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop" data-id="${product._id}" class="btn p-0 text-primary mr-2 edit">
@@ -82,10 +82,10 @@ const searchProducts = async() =>{
                     <td>${product.idcode}</td>
                     <td>${product.name}</td>
                     <td>${product.sum_price}</td>
-                    <td>${product.description}</td>
+                    <td class="nxh" title="${product.description}">${product.description}</td>
                     <td>${product.category}</td>
                     <td>
-                        <button type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop" data-id="${product._id}" class="btn text-primary mr-2 edit">
+                        <button type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop" data-id="${product._id}" class="btn p-0 text-primary mr-2 edit">
                             Editar
                         </button>
                         <button type="button" data-id="${product._id}" class="btn ${product.status ? 'text-success' : 'text-danger'} status">
@@ -100,6 +100,29 @@ const searchProducts = async() =>{
         noElement()
     }
 }
+
+//character limit for product name
+const c_limit = (data) =>{
+    let nameLimit = document.getElementById('cCharacterLimit')
+    let descriptionLimit = document.getElementById('cD_CharacterLimit')
+
+    if(data.name == 'name'){
+        nameLimit.innerText = `${data.text.length}/16`
+    }else{
+        descriptionLimit.innerText = `${data.text.length}/70`
+    }
+} 
+
+const up_limit = (data) =>{
+    let u_nameLimit = document.getElementById('uCharacterLimit')
+    let u_descriptionLimit = document.getElementById('uD_CharacterLimit')
+
+    if(data.name == 'name'){
+        u_nameLimit.innerText = `${data.text.length}/16`
+    }else{
+        u_descriptionLimit.innerText = `${data.text.length}/70`
+    }
+} 
 
 //create a new product
 const createProduct = async() => {
@@ -182,6 +205,13 @@ const viewProductValue = (product)=>{
     document.getElementById('description_update').value = product.product.description
 
     _id = product.product._id
+
+    let uCharacterLimit = document.getElementById('uCharacterLimit')
+    let u_descLimit = document.getElementById('uD_CharacterLimit')
+
+    uCharacterLimit.innerText = `${product.product.name.length}/16`
+    u_descLimit.innerText = `${product.product.description.length}/70`
+
 }
 
 const updateProduct = async(e) =>{
@@ -278,6 +308,23 @@ table.addEventListener('click', async(e) =>{
     }
 })
 
+document.getElementById('name').addEventListener('keyup', e =>{
+    let x = {text: e.target.value, name: 'name'}
+    c_limit(x)
+})
+document.getElementById('description').addEventListener('keyup', e =>{
+    let x = {text: e.target.value, name: 'desc'}
+    c_limit(x)
+})
+
+document.getElementById('name_update').addEventListener('keyup', e =>{
+    let x = {text: e.target.value, name:'name'}
+    up_limit(x)
+})
+document.getElementById('description_update').addEventListener('keyup', e =>{
+    let x = {text: e.target.value, name:'desc'}
+    up_limit(x)
+})
 
 createP.addEventListener('click', createProduct)
 btn_update.addEventListener('click', updateProduct)

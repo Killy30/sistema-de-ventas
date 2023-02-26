@@ -19,6 +19,12 @@ h3{
     top: 10px;
 }
 
+.nxh{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 @media(max-width: 500px){
     #code input{
         width: 150px;
