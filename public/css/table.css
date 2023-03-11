@@ -1,4 +1,16 @@
 
+.card_container{
+    background-color: #fff;
+    width: 98%;
+    height: 100%;
+    padding: 15px;
+    margin: auto;
+    border: 1px solid var(--gris2); 
+}
+.the_title{
+    margin-bottom: 15px;
+    border-bottom: 1px solid var(--gris);
+}
 .btn_atla{
     display: flex;
     align-items: center;
@@ -13,7 +25,7 @@
 
 .box_table{
     height: calc(100% - 62px);
-    border-top: 1px solid var(--gris);
+    border: 1px solid var(--gris2);
     overflow: hidden;
 }
 .card_table_body{
@@ -89,6 +101,7 @@ thead tr, tbody tr {
     height: 60px;
     display: flex;
     padding: 0 20px 0 20px;
+    border-top: 1px solid var(--gris2);
     align-items: center;
     justify-content: flex-end;
     background-color: #ffffff;
@@ -118,6 +131,9 @@ thead tr, tbody tr {
         display: table;
         width: 850px;
         table-layout: fixed;
+    }
+    .card_container{
+        padding: 15px 2px 0px 2px;
     }
     .card_table_body{
         overflow-x: auto;

@@ -14,65 +14,70 @@
     <%-include ("./header")%>
     
     <div class="my_container sales" id="container">
-        
-        <h3>Ventas</h3>
-        <div class="box_table">
-            <div class="mbg">
-                <div class="head_mbg">
-                    <form>
-                        <div class="d-flex align-items-center">
-                            <select class="form-select" id="typeSearch">
-                                <option value="all">Todos</option>
-                                <option value="day">Dia</option>
-                                <option value="month">Mes</option>
-                                <option value="code">Codigo</option>
-                            </select>
-                        </div>
-                        <div class="card_cashiers">
-                            <select class="form_select" id="cashiers"></select>
-                        </div>
-                        <button type="button" class="btn_atla" id="search_all">Buscar</button>
-                        <div class="d-flex align-items-center">
-                            <div class="inactive" id="day">
-                                <input class="form-control me-2" type="date" id="input_day" placeholder="Dia" aria-label="">
-                                <button class="btn_atla" id="btn_day" type="button">Buscar</button>
-                            </div>
-                            <div class="inactive" id="month">
-                                <input class="form-control me-2" type="month" id="input_month" placeholder="Search" aria-label="Search">
-                                <button class="btn_atla" id="btn_month" type="button">Buscar</button>
-                            </div>
-                            <div class="inactive" id="code">
-                                <input class="form-control me-2" type="text" style="width: 230px;" id="input_code" placeholder="Search" aria-label="Search">
-                                <button class="btn_atla" id="btn_code" type="button">Buscar</button>
-                            </div>
-                        </div>
-                    </form>
+        <div class="main_container">
+            <div class="card_container">
+                <div class="the_title">
+                    <h3 class="mb-1">Ventas</h3>
                 </div>
-            </div>
-    
-            <div class="card_table_body">
-                <table class="">
-                    <thead>
-                        <tr class=" trbg">
-                            <th scope="col">Codigo</th>
-                            <th scope="col">Productos</th>
-                            <th scope="col">Fecha</th>
-                            <th scope="col">Total</th>
-                            <th scope="col">Accion</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tbody"></tbody>
-                </table>
-            </div>
-            <div class="card_table_fooder">
-                <p class="mb-0 me-3" id="countSales"></p>
-                <div class="d-flex">
-                    <button type="button" id="btn_prev" class="btn btn-primary">
-                        <span class="material-symbols-outlined">chevron_left</span>
-                    </button>
-                    <button type="button" id="btn_next" class="btn btn-primary">
-                        <span class="material-symbols-outlined">chevron_right</span>
-                    </button>
+                <div class="box_table">
+                    <div class="mbg">
+                        <div class="head_mbg">
+                            <form>
+                                <div class="d-flex align-items-center">
+                                    <select class="form-select" id="typeSearch">
+                                        <option value="all">Todos</option>
+                                        <option value="day">Dia</option>
+                                        <option value="month">Mes</option>
+                                        <option value="code">Codigo</option>
+                                    </select>
+                                </div>
+                                <div class="card_cashiers">
+                                    <select class="form_select" id="cashiers"></select>
+                                </div>
+                                <button type="button" class="btn_atla" id="search_all">Buscar</button>
+                                <div class="d-flex align-items-center">
+                                    <div class="inactive" id="day">
+                                        <input class="form-control me-2" type="date" id="input_day" placeholder="Dia" aria-label="">
+                                        <button class="btn_atla" id="btn_day" type="button">Buscar</button>
+                                    </div>
+                                    <div class="inactive" id="month">
+                                        <input class="form-control me-2" type="month" id="input_month" placeholder="Search" aria-label="Search">
+                                        <button class="btn_atla" id="btn_month" type="button">Buscar</button>
+                                    </div>
+                                    <div class="inactive" id="code">
+                                        <input class="form-control me-2" type="text" style="width: 230px;" id="input_code" placeholder="Search" aria-label="Search">
+                                        <button class="btn_atla" id="btn_code" type="button">Buscar</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+            
+                    <div class="card_table_body">
+                        <table class="">
+                            <thead>
+                                <tr class=" trbg">
+                                    <th scope="col">Codigo</th>
+                                    <th scope="col">Productos</th>
+                                    <th scope="col">Fecha</th>
+                                    <th scope="col">Total</th>
+                                    <th scope="col">Accion</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbody"></tbody>
+                        </table>
+                    </div>
+                    <div class="card_table_fooder">
+                        <p class="mb-0 me-3" id="countSales"></p>
+                        <div class="d-flex">
+                            <button type="button" id="btn_prev" class="btn btn-primary">
+                                <span class="material-symbols-outlined">chevron_left</span>
+                            </button>
+                            <button type="button" id="btn_next" class="btn btn-primary">
+                                <span class="material-symbols-outlined">chevron_right</span>
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

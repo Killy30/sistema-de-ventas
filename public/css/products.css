@@ -1,4 +1,7 @@
 
+#container{
+    padding: 20px 0px;
+}
 
 .card_table_body{
     height: calc(100% - 223px);
@@ -11,10 +14,6 @@
 #code input{
     width: 230px;
 }
-h3{
-    padding-left: 15px;
-}
-
 .card_emergent_alert{
     top: 10px;
 }

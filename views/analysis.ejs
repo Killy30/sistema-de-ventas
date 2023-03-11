@@ -12,144 +12,145 @@
     <%-include ("./header")%>
 
     <div class="my_container analysis container_at">
-        <h2>Analisis de ventas</h2>
-        <div class="cardx1">
-            <div class="box1">
-                <div class="tx">
-                    <p class="px">Ingreso total</p>
+        <div class="main_container">
+            <h2>Analisis de ventas</h2>
+            <div class="cardx1">
+                <div class="box1">
+                    <div class="tx">
+                        <p class="px">Ingreso total</p>
+                        <div class="t_i">
+                            <div class="_icons one">
+                                <span class="material-symbols-outlined">attach_money</span>
+                            </div>
+                            <p id="total" class="csxt"></p>
+                        </div>
+                    </div>
+                    <div class="deco"></div>
+                </div>
+                <div class="box1">
+                    <div class="tx">
+                        <p class="px">Cantidad de ventas</p>
+                        <div class="t_i">
+                            <div class="_icons two">
+                                <span class="material-symbols-outlined">sell</span>
+                            </div>
+                            <p id="ventas" class="csxt"></p>
+                        </div>
+                    </div>
+                    <div class="deco"></div>
+                </div>
+                <div class="box1">
+                    <div class="tx">
+                        <p class="px">Productos vendidos</p>
+                        <div class="t_i">
+                            <div class="_icons three">
+                                <span class="material-symbols-outlined">shopping_cart</span>
+                            </div>
+                            <p id="more" class="csxt"></p>
+                        </div>
+                    </div>
+                    <div class="deco"></div>
+                </div>
+                <div class="box1">
+                    <div class="tx">
+                        <p class="px">Productos no vendidos</p>
+                        <div class="t_i">
+                            <div class="_icons four">
+                                <span class="material-symbols-outlined">warning</span>
+                            </div>
+                            <p class="csxt" id="less"></p>
+                        </div>
+                        
+                    </div>
+                    <div class="des"></div>
+                </div>
+            </div>
+            <div class="box_filter">
+                <div class="navbar card_filter">
+                    <p class="ps-3 mb-0 fs-5">Filtrar</p>
+                    <div class="container-fluid">
+                        <form class="d-flex">
+                            <select class="form-select" id="typeSearch">
+                                <option value="all">Todos</option>
+                                <option value="day">Dia</option>
+                                <option value="month">Mes</option>
+                            </select>
+                            <div class="ms-5">
+                                <div class="inactive" id="day">
+                                    <input class="form-control me-2" type="date" id="input_day" placeholder="Search" aria-label="Search">
+                                    <button class="btn btn-primary" id="btn_day" type="button">Buscar</button>
+                                </div>
+                                <div class="inactive" id="month">
+                                    <input class="form-control me-2" type="month" id="input_month" placeholder="Search" aria-label="Search">
+                                    <button class="btn btn-primary" id="btn_month" type="button">Buscar</button>
+                                </div>
+                                <div class="inactive" id="code">
+                                    <input class="form-control me-2" type="datetime-local" style="width: 230px;" id="input_code" placeholder="Search" aria-label="Search">
+                                    <button class="btn btn-primary" id="btn_code" type="button">Buscar</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="card_valance">
+                    <div class="valance_head">
+                        <p class="vtitle">Valance de hoy</p>
+                        <div id="vdate" class="vdate"></div>
+                    </div>
                     <div class="t_i">
                         <div class="_icons one">
                             <span class="material-symbols-outlined">attach_money</span>
                         </div>
-                        <p id="total" class="csxt"></p>
+                        <p id="vvalue" class="csxt"></p>
                     </div>
-                </div>
-                <div class="deco"></div>
-            </div>
-            <div class="box1">
-                <div class="tx">
-                    <p class="px">Cantidad de ventas</p>
-                    <div class="t_i">
-                        <div class="_icons two">
-                            <span class="material-symbols-outlined">sell</span>
-                        </div>
-                        <p id="ventas" class="csxt"></p>
-                    </div>
-                </div>
-                <div class="deco"></div>
-            </div>
-            <div class="box1">
-                <div class="tx">
-                    <p class="px">Productos vendidos</p>
-                    <div class="t_i">
-                        <div class="_icons three">
-                            <span class="material-symbols-outlined">shopping_cart</span>
-                        </div>
-                        <p id="more" class="csxt"></p>
-                    </div>
-                </div>
-                <div class="deco"></div>
-            </div>
-            <div class="box1">
-                <div class="tx">
-                    <p class="px">Productos no vendidos</p>
-                    <div class="t_i">
-                        <div class="_icons four">
-                            <span class="material-symbols-outlined">warning</span>
-                        </div>
-                        <p class="csxt" id="less"></p>
-                    </div>
-                    
-                </div>
-                <div class="des"></div>
-            </div>
-        </div>
-        <div class="box_filter">
-            <div class="navbar card_filter">
-                <p class="ps-3 mb-0 fs-5">Filtrar</p>
-                <div class="container-fluid">
-                    <form class="d-flex">
-                        <select class="form-select" id="typeSearch">
-                            <option value="all">Todos</option>
-                            <option value="day">Dia</option>
-                            <option value="month">Mes</option>
-                        </select>
-                        <div class="ms-5">
-                            <div class="inactive" id="day">
-                                <input class="form-control me-2" type="date" id="input_day" placeholder="Search" aria-label="Search">
-                                <button class="btn btn-primary" id="btn_day" type="button">Buscar</button>
-                            </div>
-                            <div class="inactive" id="month">
-                                <input class="form-control me-2" type="month" id="input_month" placeholder="Search" aria-label="Search">
-                                <button class="btn btn-primary" id="btn_month" type="button">Buscar</button>
-                            </div>
-                            <div class="inactive" id="code">
-                                <input class="form-control me-2" type="datetime-local" style="width: 230px;" id="input_code" placeholder="Search" aria-label="Search">
-                                <button class="btn btn-primary" id="btn_code" type="button">Buscar</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-            <div class="card_valance">
-                <div class="valance_head">
-                    <p class="vtitle">Valance de hoy</p>
-                    <div id="vdate" class="vdate"></div>
-                </div>
-                <div class="t_i">
-                    <div class="_icons one">
-                        <span class="material-symbols-outlined">attach_money</span>
-                    </div>
-                    <p id="vvalue" class="csxt"></p>
-                </div>
-            </div>
-        </div>
-
-        <div class="box_chart">
-            <div class="card_chart">
-                <p class="fs-5 ">Ingresos de ventas al mes</p>
-                <canvas  id="productsGrafict"></canvas>
-            </div>
-            <div class="grow"></div>
-        </div>
-
-        <div class="box_tables">
-            <div class="card_table_s">
-                <p class="fs-5 mb-2 ">Ventas</p>
-                <div class="tb">
-                    <table class="">
-                        <thead>
-                            <tr>
-                                <th scope="col">Codigo</th>
-                                <th scope="col">Productos</th>
-                                <th scope="col">Fecha</th>
-                                <th scope="col">Total</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tbodySales"></tbody>
-                    </table>
                 </div>
             </div>
 
-            <div class="card_table_p">
-                <p class="fs-5 mb-2 ">Productos</p>
-                <div class="tb">
-                    <table class="">
-                        <thead>
-                            <tr>
-                                <th scope="col">Nombre</th>
-                                <th scope="col">Codigo</th>
-                                <th scope="col">Precio</th>
-                                <th scope="col">Unidad</th>
-                                <th scope="col">Total</th>
-                              </tr>
-                        </thead>
-                        <tbody id="tbodyProducts"></tbody>
-                    </table>
+            <div class="box_chart">
+                <div class="card_chart">
+                    <p class="fs-5 ">Ingresos de ventas al mes</p>
+                    <canvas  id="productsGrafict"></canvas>
+                </div>
+                <div class="grow"></div>
+            </div>
+
+            <div class="box_tables">
+                <div class="card_table_s">
+                    <p class="fs-5 mb-2 ">Ventas</p>
+                    <div class="tb">
+                        <table class="">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Codigo</th>
+                                    <th scope="col">Productos</th>
+                                    <th scope="col">Fecha</th>
+                                    <th scope="col">Total</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbodySales"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="card_table_p">
+                    <p class="fs-5 mb-2 ">Productos</p>
+                    <div class="tb">
+                        <table class="">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Nombre</th>
+                                    <th scope="col">Codigo</th>
+                                    <th scope="col">Precio</th>
+                                    <th scope="col">Unidad</th>
+                                    <th scope="col">Total</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbodyProducts"></tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
-
     </div>
 
     <script src="../js/chart.js"></script>

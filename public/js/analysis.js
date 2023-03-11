@@ -294,7 +294,12 @@ const compare_values = (months, values) =>{
     let x = 0.00
 
     if(current_value != 0 && previous_value != 0){
-        x = ((current_value - previous_value) / current_value )*100
+        if(current_value < previous_value){
+            x = ((current_value - previous_value) / current_value )*100
+        }else{
+            let t = ((previous_value - current_value) / previous_value )*100
+            x = -t
+        }
     }
    
     grow_box.innerHTML = `

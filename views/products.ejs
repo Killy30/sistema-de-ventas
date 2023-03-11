@@ -12,162 +12,169 @@
 <body>
     <%-include ("./header")%>
     
-    <div class="my_container product" id="container">
-        <div class="card_emergent_alert"></div>
-        <!-- Modal -->
-        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" data-bs-backdrop="static" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Nuevo Producto/Servicio</h5>
-                        <button type="button" class="btn-close" id="btn_close_m" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="card_msg_alert" ></div>
-                        <form >
-                            <div class="mb-2">
-                                <label for="recipient-name" class="col-form-label">Codigo:*</label>
-                                <input type="number" class="form-control" required id="idcode" name="idcode">
-                            </div>
-                            <div class="mb-2">
-                                <div class="d-flex justify-content-md-between">
-                                    <label for="recipient-name" class="col-form-label">Nombre:*</label>
-                                    <div class="d-flex align-items-center">
-                                        <span class="text-secondary" id="cCharacterLimit">0/16</span>
-                                    </div>
-                                </div>
-                                <input type="text" class="form-control" maxlength="16" required id="name" name="name">
-                            </div>
-                            <div class="">
-                                <div class="mb-2">
-                                    <label for="recipient-name" class="col-form-label">Precio:*</label>
-                                    <input type="number" step="any" class="form-control" required id="price" name="price">
-                                </div>
-                                <!-- <div class="col-md md-2">
-                                    <label for="recipient-name" class="col-form-label">Beneficio:*</label>
-                                    <input type="number" class="form-control" name="" id="">
-                                </div> -->
-                            </div>
-                            <div class="mb-2 itbis_card" style="display: none;">
-                                <label for="recipient-name" class="col-form-label">ITBIS:</label>
-                                <input type="number" step="any" class="form-control"  id="itbis" name="itbis">
-                            </div>
-                            <div class="mb-2">
-                                <label for="recipient-name" class="col-form-label">Categoria:</label>
-                                <input type="text" class="form-control" id="category" name="category">
-                            </div>
-                            <div class="mb-2">
-                                <div class="d-flex justify-content-md-between">
-                                    <label for="message-text" class="col-form-label">Descripcion:</label>
-                                    <div class="d-flex align-items-center">
-                                        <span class="text-secondary" id="cD_CharacterLimit">0/70</span>
-                                    </div>
-                                </div>
-                                <textarea class="form-control" id="description" maxlength="70" name="description"></textarea>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="button" id="createP" class="btn btn-primary" >Crear</button>
-                    </div>
+    
+    <div class="card_emergent_alert"></div>
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" data-bs-backdrop="static" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Nuevo Producto/Servicio</h5>
+                    <button type="button" class="btn-close" id="btn_close_m" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-            </div>
-        </div>
-
-        <!-- update product -->
-        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-            aria-labelledby="staticBackdropLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="staticBackdropLabel">Actualizar producto</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="card_msg_alert" ></div>
-                        <form >
-                            <div class="mb-2">
-                                <label for="recipient-name" class="col-form-label">Codigo:*</label>
-                                <input type="number" class="form-control" required id="idcode_update" name="idcode">
-                            </div>
-                            <div class="mb-2">
-                                <div class="d-flex justify-content-md-between">
-                                    <label for="recipient-name" class="col-form-label">Nombre:*</label>
-                                    <div class="d-flex align-items-center">
-                                        <span class="text-secondary" id="uCharacterLimit">16/16</span>
-                                    </div>
+                <div class="modal-body">
+                    <div class="card_msg_alert" ></div>
+                    <form >
+                        <div class="mb-2">
+                            <label for="recipient-name" class="col-form-label">Codigo:*</label>
+                            <input type="number" class="form-control" required id="idcode" name="idcode">
+                        </div>
+                        <div class="mb-2">
+                            <div class="d-flex justify-content-md-between">
+                                <label for="recipient-name" class="col-form-label">Nombre:*</label>
+                                <div class="d-flex align-items-center">
+                                    <span class="text-secondary" id="cCharacterLimit">0/16</span>
                                 </div>
-                                <input type="text" class="form-control" required maxlength="16" id="name_update" name="name">
                             </div>
+                            <input type="text" class="form-control" maxlength="16" required id="name" name="name">
+                        </div>
+                        <div class="">
                             <div class="mb-2">
                                 <label for="recipient-name" class="col-form-label">Precio:*</label>
-                                <input type="number" class="form-control" required id="price_update" name="price">
+                                <input type="number" step="any" class="form-control" required id="price" name="price">
                             </div>
-                            <div class="mb-2 itbis_card" style="display: none;">
-                                <label for="recipient-name" class="col-form-label">ITBIS:</label>
-                                <input type="number" class="form-control" id="itbis_update" name="itbis">
-                            </div>
-                            <div class="mb-2">
-                                <label for="recipient-name" class="col-form-label">Categoria:</label>
-                                <input type="text" class="form-control" id="category_update" name="category">
-                            </div>
-                            <div class="mb-2">
-                                <div class="d-flex justify-content-md-between">
-                                    <label for="message-text" class="col-form-label">Descripcion:</label>
-                                    <div class="d-flex align-items-center">
-                                        <span class="text-secondary" id="uD_CharacterLimit">0/70</span>
-                                    </div>
+                            <!-- <div class="col-md md-2">
+                                <label for="recipient-name" class="col-form-label">Beneficio:*</label>
+                                <input type="number" class="form-control" name="" id="">
+                            </div> -->
+                        </div>
+                        <div class="mb-2 itbis_card" style="display: none;">
+                            <label for="recipient-name" class="col-form-label">ITBIS:</label>
+                            <input type="number" step="any" class="form-control"  id="itbis" name="itbis">
+                        </div>
+                        <div class="mb-2">
+                            <label for="recipient-name" class="col-form-label">Categoria:</label>
+                            <input type="text" class="form-control" id="category" name="category">
+                        </div>
+                        <div class="mb-2">
+                            <div class="d-flex justify-content-md-between">
+                                <label for="message-text" class="col-form-label">Descripcion:</label>
+                                <div class="d-flex align-items-center">
+                                    <span class="text-secondary" id="cD_CharacterLimit">0/70</span>
                                 </div>
-                                <textarea class="form-control" id="description_update" maxlength="70" name="description"></textarea>
                             </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="button" class="btn btn-primary" id="btn_update">Actualizar</button>
-                    </div>
+                            <textarea class="form-control" id="description" maxlength="70" name="description"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" id="createP" class="btn btn-primary" >Crear</button>
                 </div>
             </div>
         </div>
+    </div>
 
-        <h3 class="mb-2">Productos</h3>
-        <div class="box_table">
-            <div class="mbg">
-                <div class="head_mbg">
-                    <form class="d-flex">
-                        <div class="">
-                            <div class="d-flex" id="code">
-                                <input class="form-control me-2" type="text" id="input_search" placeholder="Buscar productos" aria-label="Search">
+    <!-- update product -->
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">Actualizar producto</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="card_msg_alert" ></div>
+                    <form >
+                        <div class="mb-2">
+                            <label for="recipient-name" class="col-form-label">Codigo:*</label>
+                            <input type="number" class="form-control" required id="idcode_update" name="idcode">
+                        </div>
+                        <div class="mb-2">
+                            <div class="d-flex justify-content-md-between">
+                                <label for="recipient-name" class="col-form-label">Nombre:*</label>
+                                <div class="d-flex align-items-center">
+                                    <span class="text-secondary" id="uCharacterLimit">16/16</span>
+                                </div>
                             </div>
+                            <input type="text" class="form-control" required maxlength="16" id="name_update" name="name">
+                        </div>
+                        <div class="mb-2">
+                            <label for="recipient-name" class="col-form-label">Precio:*</label>
+                            <input type="number" class="form-control" required id="price_update" name="price">
+                        </div>
+                        <div class="mb-2 itbis_card" style="display: none;">
+                            <label for="recipient-name" class="col-form-label">ITBIS:</label>
+                            <input type="number" class="form-control" id="itbis_update" name="itbis">
+                        </div>
+                        <div class="mb-2">
+                            <label for="recipient-name" class="col-form-label">Categoria:</label>
+                            <input type="text" class="form-control" id="category_update" name="category">
+                        </div>
+                        <div class="mb-2">
+                            <div class="d-flex justify-content-md-between">
+                                <label for="message-text" class="col-form-label">Descripcion:</label>
+                                <div class="d-flex align-items-center">
+                                    <span class="text-secondary" id="uD_CharacterLimit">0/70</span>
+                                </div>
+                            </div>
+                            <textarea class="form-control" id="description_update" maxlength="70" name="description"></textarea>
                         </div>
                     </form>
-    
-                    <button type="button" id="btn_open_form" class="btn_atla" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">
-                        <span class="material-symbols-outlined">add</span> 
-                        Nuevo producto
-                    </button>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" id="btn_update">Actualizar</button>
                 </div>
             </div>
-            <div class="card_table_body">
-                <table>
-                    <thead>
-                        <tr>
-                            <th scope="col">Codigo</th>
-                            <th scope="col">Nombre</th>
-                            <th scope="col">Precio</th>
-                            <th scope="col">Descripcion</th>
-                            <th scope="col">Categoria</th>
-                            <th scope="col">Accion</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tbody"></tbody>
-                </table>
+        </div>
+    </div>
+    
+    <div class="my_container product" id="container">
+        <div class="main_container">
+            <div class="card_container">
+                <div class="the_title">
+                    <h3 class="mb-1">Productos</h3>
+                </div>
+                <div class="box_table">
+                    <div class="mbg">
+                        <div class="head_mbg">
+                            <form class="d-flex">
+                                <div class="">
+                                    <div class="d-flex" id="code">
+                                        <input class="form-control me-2" type="text" id="input_search" placeholder="Buscar productos" aria-label="Search">
+                                    </div>
+                                </div>
+                            </form>
+            
+                            <button type="button" id="btn_open_form" class="btn_atla" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">
+                                <span class="material-symbols-outlined">add</span> 
+                                Nuevo producto
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card_table_body">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th scope="col">Codigo</th>
+                                    <th scope="col">Nombre</th>
+                                    <th scope="col">Precio</th>
+                                    <th scope="col">Descripcion</th>
+                                    <th scope="col">Categoria</th>
+                                    <th scope="col">Accion</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbody"></tbody>
+                        </table>
+                    </div>
+                    <div class="card_table_fooder">
+                        <p class="mb-0" id="countProducts"></p>
+                    </div>
+                </div> 
             </div>
-            <div class="card_table_fooder">
-                <p class="mb-0" id="countProducts"></p>
-            </div>
-        </div> 
+        </div>
     </div>
 
     <script type="module" src="../js/products.js"></script>

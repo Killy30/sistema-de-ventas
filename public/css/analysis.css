@@ -150,19 +150,23 @@
 
 
 .card_chart{
-    width: 49%;
+    width: calc(100% - 465px);
     height: 100%;
     padding: 10px;
     border-radius: 7px;
     box-shadow: rgba(0, 0, 0, 0.15) 0px 2px 8px;
     background-color: #ffffff;
 }
+canvas{
+    max-width: 700px;
+    max-height: 350px;
+}
 
 .grow{
-    /* width: calc(100% - 700px); */
-    width: 49%;
+    width: 450px;
     height: 100%;
     padding: 10px;
+    margin-left: 15px;
     border-radius: 7px;
     /* border: 1px solid rgb(223, 223, 223); */
     box-shadow: rgba(0, 0, 0, 0.15) 0px 2px 8px;
@@ -277,6 +281,13 @@ thead tr, tbody tr {
     }
     .vtitle{
         font-size: 20px;
+    }
+    .grow{
+        width: 50%;
+        /* height: 300px; */
+    }
+    .card_chart{
+        width: 50%;
     }
 
     thead tr, tbody tr {
