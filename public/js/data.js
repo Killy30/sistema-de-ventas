@@ -19,4 +19,10 @@ data.getSales = async()=>{
     return res
 }
 
+data.getClients = async()=>{
+    let req = await fetch('/get-clients')
+    let res = await req.json()
+    return res
+}
+
 export default data

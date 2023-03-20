@@ -19,7 +19,8 @@ const UserSchema = new Schema({
     },
     products: [{ type: Schema.Types.ObjectId, ref: 'product'}],
     sales: [{ type: Schema.Types.ObjectId, ref: 'sale'}],
-    cashiers: [{ type: Schema.Types.ObjectId, ref: 'cashier'}]
+    cashiers: [{ type: Schema.Types.ObjectId, ref: 'cashier'}],
+    clients: [{ type: Schema.Types.ObjectId, ref: 'client'}]
 })
 
 UserSchema.methods.encryptPassword = (password) => {

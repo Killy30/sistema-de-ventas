@@ -1,0 +1,13 @@
+
+.clients{
+    padding: 20px;
+}
+.boxx{
+    padding: 15px;
+
+}
+.card_head_c{
+    display: flex;
+    justify-content: flex-end;
+    gap: 20px;
+}

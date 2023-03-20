@@ -3,6 +3,7 @@ const User = require('../models/user')
 const Sale = require('../models/sales')
 const Cashier = require('../models/cashiers')
 const PlanPro = require('../models/proPlan')
+const Client = require('../models/clients')
 const yesId = require('../yesId')
 
 
@@ -144,6 +145,7 @@ module.exports = (app) =>{
             const newProduct = new Product()
             newProduct.idcode = data.idcode
             newProduct.name = data.name
+            newProduct.buy_price = data.buy_price
             newProduct.price = data.price
             newProduct.sum_price = sum_price
             newProduct.description = data.description
@@ -169,6 +171,7 @@ module.exports = (app) =>{
             $set: {
                 idcode: data.idcode,
                 name: data.name,
+                buy_price: data.buy_price,
                 price: data.price,
                 sum_price: (parseFloat(data.price) + parseFloat(_itbis_)),
                 description: data.description,
@@ -318,5 +321,42 @@ module.exports = (app) =>{
 
         await user.save()
         res.json(data)
+    })
+
+    app.post('/create-client', async(req, res)=>{
+        const user = req.user;
+        const data = req.body;
+
+        const user_client = await User.findById({_id: user._id}).populate('clients')
+
+        function getCodeId() {
+            if(user_client.clients.some(client => client.id_client === yesId(5, '12'))){
+                return getCodeId()
+            }
+            return yesId(5, '12')
+        }
+
+        const newClient = new Client()
+        newClient.name = data.name;
+        newClient.lastName = data.lastName;
+        newClient.tel = data.tel;
+        newClient.id_doc = data.doc_id;
+        newClient.email = data.email;
+        newClient.id_client = data.id_client || getCodeId()
+        newClient.user = user
+
+        user.clients.push(newClient)
+
+        await user.save()
+        await newClient.save()
+        res.json({data: newClient})
+    })
+
+    app.get('/get-clients', async(req, res)=>{
+        const user = req.user
+        const clients = await Client.find({user: user._id})
+        const my_user = User.findOne({_id: user._id}).populate('clients')
+
+        res.json({data: clients})
     })
 }

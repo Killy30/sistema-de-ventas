@@ -2,7 +2,7 @@
     box-sizing: border-box;
 }
 .container_at{
-    padding: 20px;
+    /* padding: 20px; */
 }
 .cardx1{
     display: grid;
@@ -185,7 +185,6 @@ canvas{
     display: flex;
     justify-content: space-between;
     margin-top: 20px;
-    margin-bottom: 30px;
 }
 
 .card_table_s{

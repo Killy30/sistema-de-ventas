@@ -128,12 +128,13 @@ const up_limit = (data) =>{
 const createProduct = async() => {
     const idcode = document.getElementById('idcode')
     const name = document.getElementById('name')
+    const buy_price = document.getElementById('buy_price')
     const price = document.getElementById('price')
     const category = document.getElementById('category')
     const description = document.getElementById('description')
     const itbis = document.getElementById('itbis')
     
-    if(idcode.value.trim() === "" || name.value.trim() === "" || price.value.trim() === ""){
+    if(idcode.value.trim() === "" || name.value.trim() === "" || price.value.trim() === "" || buy_price.value.trim() === ""){
         let obj_msg = {
             msg: 'Por favor llenar los campos requeridos...',
             color: 'alert alert-danger',
@@ -153,6 +154,7 @@ const createProduct = async() => {
                 let data = {
                     idcode:idcode.value, 
                     name: name.value, 
+                    buy_price: price.value, 
                     price: price.value, 
                     category: category.value, 
                     description: description.value,
@@ -175,6 +177,7 @@ const createProduct = async() => {
                 showAllProducts()
                 idcode.value = ""
                 name.value = ""
+                buy_price.value = ""
                 price.value = ""
                 category.value = ""
                 description.value = ""
@@ -199,6 +202,7 @@ let _id;
 const viewProductValue = (product)=>{
     document.getElementById('idcode_update').value = product.product.idcode
     document.getElementById('name_update').value = product.product.name
+    document.getElementById('buy_price_update').value = product.product.buy_price
     document.getElementById('price_update').value = product.product.price
     document.getElementById('itbis_update').value = product.product.itbis
     document.getElementById('category_update').value = product.product.category
@@ -219,6 +223,7 @@ const updateProduct = async(e) =>{
 
     const idcode = document.getElementById('idcode_update').value
     const name = document.getElementById('name_update').value
+    const buy_price = document.getElementById('buy_price_update').value
     const price = document.getElementById('price_update').value
     const category = document.getElementById('category_update').value
     const description = document.getElementById('description_update').value
@@ -235,7 +240,7 @@ const updateProduct = async(e) =>{
         return false
     }
 
-    let datas = {idcode, name, price, category, description, _id, itbis}
+    let datas = {idcode, name, buy_price, price, category, description, _id, itbis}
 
     if(pro.length == 0){
         try {

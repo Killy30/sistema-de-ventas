@@ -2,6 +2,7 @@ const {Schema, model} = require('mongoose')
 
 const productsSchema = new Schema({
     name: {type: String},
+    buy_price: {type: Number},
     price: {type: Number},
     sum_price: {type: Number},
     idcode: {type: Number},

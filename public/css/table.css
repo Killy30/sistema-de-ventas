@@ -1,28 +1,4 @@
 
-.card_container{
-    background-color: #fff;
-    width: 98%;
-    height: 100%;
-    padding: 15px;
-    margin: auto;
-    border: 1px solid var(--gris2); 
-}
-.the_title{
-    margin-bottom: 15px;
-    border-bottom: 1px solid var(--gris);
-}
-.btn_atla{
-    display: flex;
-    align-items: center;
-    color: #fff;
-    border: 0;
-    border-radius: 5px;
-    padding: 7px 15px;
-    font-weight: 500;
-    transition: 0.5s;
-    background-color: var(--orange);
-}
-
 .box_table{
     height: calc(100% - 62px);
     border: 1px solid var(--gris2);
@@ -59,7 +35,7 @@ thead{
     /* padding-left: 10px; */
 }
 thead tr th{
-    font-weight: 500;
+    font-weight: 700;
     padding: 10px;
 }
 tbody{
@@ -78,8 +54,8 @@ tbody{
 
 #tbody tr td{
     color: rgb(26, 25, 25);
-    font-size: 17px;
-    font-weight: 300;
+    font-size: 15px;
+    font-weight: 500;
     border: none;
     padding: 10px;
 }

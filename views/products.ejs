@@ -38,15 +38,15 @@
                             </div>
                             <input type="text" class="form-control" maxlength="16" required id="name" name="name">
                         </div>
-                        <div class="">
-                            <div class="mb-2">
-                                <label for="recipient-name" class="col-form-label">Precio:*</label>
+                        <div class="row g-2 mb-2">
+                            <div class="col-md">
+                                <label for="recipient-name" class="col-form-label">Precio de compra:*</label>
+                                <input type="number" step="any" required class="form-control" id="buy_price">
+                            </div>
+                            <div class="col-md">
+                                <label for="recipient-name" class="col-form-label">Precio de venta:*</label>
                                 <input type="number" step="any" class="form-control" required id="price" name="price">
                             </div>
-                            <!-- <div class="col-md md-2">
-                                <label for="recipient-name" class="col-form-label">Beneficio:*</label>
-                                <input type="number" class="form-control" name="" id="">
-                            </div> -->
                         </div>
                         <div class="mb-2 itbis_card" style="display: none;">
                             <label for="recipient-name" class="col-form-label">ITBIS:</label>
@@ -100,9 +100,15 @@
                             </div>
                             <input type="text" class="form-control" required maxlength="16" id="name_update" name="name">
                         </div>
-                        <div class="mb-2">
-                            <label for="recipient-name" class="col-form-label">Precio:*</label>
-                            <input type="number" class="form-control" required id="price_update" name="price">
+                        <div class="row g-2 mb-2">
+                            <div class="col-md">
+                                <label for="recipient-name" class="col-form-label">Precio de compra:*</label>
+                                <input type="number" class="form-control" required id="buy_price_update">
+                            </div>
+                            <div class="col-md">
+                                <label for="recipient-name" class="col-form-label">Precio de venta:*</label>
+                                <input type="number" class="form-control" required id="price_update" name="price">
+                            </div>
                         </div>
                         <div class="mb-2 itbis_card" style="display: none;">
                             <label for="recipient-name" class="col-form-label">ITBIS:</label>

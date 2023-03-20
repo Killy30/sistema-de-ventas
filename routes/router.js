@@ -54,6 +54,11 @@ module.exports = (app) =>{
         const user = req.user
         res.render('config', {user})
     })
+
+    router.get('/clientes', isAuthenticated, (req, res) =>{
+        const user = req.user;
+        res.render('client', {user})
+    })
     
     app.get('/factura/:id', isAuthenticated, async(req, res)=>{
         const user = req.user

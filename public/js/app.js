@@ -70,9 +70,9 @@ const showStoreName = async() =>{
     let user = await getUser()
     let show_name = document.getElementById('show_s_n')
 
-    if(user.data.storeName !== undefined){
-        show_name.innerText = `${user.data.storeName}`
-    }
+    // if(user.data.storeName !== undefined){
+    //     show_name.innerText = `${user.data.storeName}`
+    // }
 
     if(user.data.system_control.acceptITBIS){
         document.querySelector('.itbis_Card').style.display = 'flex'
@@ -158,6 +158,32 @@ const showCurrentUser = async() =>{
             return box.innerText = ` ${cashier.name} ${cashier.lastName}`
         }
     })
+}
+
+const boxSearchClients = document.querySelector('.boxSearchClients')
+const seachClients = async(text) =>{
+    const clients = await data.getClients()
+    boxSearchClients.style.display = 'block'
+
+    let _text = text.toLowerCase()
+
+    boxSearchClients.innerHTML = ""
+    for(let client of clients.data){
+        let name = client.name.toLowerCase()
+
+        if(name.indexOf(_text) !== -1){
+            boxSearchClients.innerHTML +=`
+                <div class="d-flex border-bottom d_block">
+                    <div style="width: 100px;" class="d_block"> <p class="d_block mb-0 p-2">${client.id_client}</p> </div>
+                    <div style="width: 250px;" class="d_block"> <p class="d_block mb-0 p-2">${client.name} ${client.lastName}</p> </div>
+                    <div style="width: 100px;" class="d_block"> 
+                        <a href="#" class="add_c" data-id_client="${client.id_client}" data-name="${client.name} ${client.lastName}">Agregar</a> 
+                    </div>
+                </div>
+            `
+        }
+        
+    }
 }
 
 const boxSearchProducts = document.querySelector('.boxSearchProducts')
@@ -491,15 +517,41 @@ modalBoxLog.addEventListener('click', e =>{
 document.getElementById('textSearch').addEventListener('keyup', e =>{
     seachProducts(e.target.value)
 })
+document.getElementById('clientSearch').addEventListener('keyup', e =>{
+    seachClients(e.target.value)
+})
 
 window.addEventListener('click', e =>{
+    let client_name = document.querySelector('.client_name')
+    let delete_client = document.querySelector('.delete_client')
+
     if(e.target.classList.contains('add_p')){
         e.preventDefault()
         addProduct(e)
     }
+    if(e.target.classList.contains('add_c')){
+        let id_client = e.target.dataset.id_client
+        let name = e.target.dataset.name
+        document.getElementById('clientSearch').value = ""
+        document.getElementById('clientSearch').style.display = 'none'
+
+        client_name.innerText = name
+        delete_client.style.display = 'block'
+        localStorage.setItem('id_client', id_client)
+    }
+
+    if(e.target.classList.contains('delete_client')){
+        client_name.innerText = ""
+        delete_client.style.display = 'none'
+        document.getElementById('clientSearch').style.display = 'block'
+        localStorage.removeItem('id_client')
+    }
+
     if(!e.target.classList.contains('d_block')){
         boxSearchProducts.style.display = 'none'
+        boxSearchClients.style.display = 'none'
     }
+    
 })
 
 
