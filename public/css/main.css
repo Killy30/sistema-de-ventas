@@ -6,7 +6,7 @@
     width: 100%;
     display: none;
     justify-content: center;
-    margin-top: 200px;
+    margin-top: 100px;
 }
 .card_store_name{
     border: 1px solid #ddd;
@@ -23,16 +23,27 @@
     font-weight: 300;
     margin: 0;
 }
-
-.modal-dialog {
-    max-width: 1200px  !important ;
-    margin: 30px auto;
+.modal_dialog{
+    margin: 0px auto !important;
+    height: 100vh !important;
+    max-width: 80% !important;
+}
+.modal_content{
+    height: 100%;
+}
+.modal_dialog .modal-body{
+    padding: 10px !important;
+}
+.modal_dialog .modal-footer{
+    padding: 5px !important;
+    background-color: #fff;
+    z-index: 2000;
 }
 .row_one{
     display: grid;
-    grid-template-columns: repeat(2, 1fr) 450px;
-    margin-bottom: 15px;
-    padding: 10px 0px;
+    grid-template-columns: 1fr 1fr 84px;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
     gap: 15px;
 }
 .tbs{
@@ -71,19 +82,23 @@
 }
 
 .delete_client{
-    position: absolute;
-    top: 0px;
-    right: 0px;
     cursor: pointer;
+    margin-bottom: 10px;
 }
 
- tbody{
-    height: calc(100% - 45px);
+#list_product{
+    height: calc(100% - 105px) !important;
+}
+.table_xzs{
+    height: 100%;
 }
 #showListProduct{
-    height: 432px;
+    height: calc(100% - 45px);
     display: block;
     overflow-y: auto;
+}
+#showListProduct tr td{
+    height: 40px ;
 }
 #showListProduct tr{
     display: table;
@@ -118,14 +133,61 @@
     border-bottom: 1px solid #ddd;
     display: flex;
     justify-content: space-between;
-    padding-bottom: 10px;
+    margin: 0px;
 }
 .footer_btn{
     width: 100%;
     display: flex;
     justify-content: space-between;
 }
+.card_inset{
+    display: grid;
+    grid-template-columns: 2fr 1fr 82px; ;
+    gap: 20px;
+}
 
+.form_control{
+    border: none;
+    border: 1px solid var(--gris);
+    height: 38px;
+    padding: 6px 12px;
+    border-radius: 0.25rem;
+    appearance: none;
+}
+.total{
+    display: flex;
+}
+
+.input_code{
+    width: 100%;
+    margin-left: 10px;
+}
+.textSearch{
+    width: 100%;
+}
+
+
+@media(max-width: 1200px){
+    .modal_dialog{
+        max-width: 98% !important;
+    }
+}
+
+/* tablets */
+@media(max-width: 950px){
+    .modal_dialog{
+        max-width: 100% !important;
+    }
+    .card_inset{
+        gap: 10px;
+    }
+    #cancel #finich #cerrar{
+        font-size: 17px;
+    }
+    .total{
+        display: block;
+    }
+}
 
 @media(max-width: 500px){
     #container{

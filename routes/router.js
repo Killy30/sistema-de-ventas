@@ -50,6 +50,11 @@ module.exports = (app) =>{
         res.render('analysis', {user})
     })
 
+    app.get('/usuarios-cajeros', isAuthenticated, (req, res) =>{
+        const user = req.user;
+        res.render('users', {user})
+    })
+
     router.get('/configuracion', isAuthenticated, (req, res) =>{
         const user = req.user
         res.render('config', {user})

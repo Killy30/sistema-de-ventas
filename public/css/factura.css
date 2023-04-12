@@ -1,7 +1,5 @@
 
 .boxFactura{
-    /* border: 2px solid rgb(177, 177, 177); */
-    border-radius: 7px;
     padding: 10px;
     margin-top: 20px;
     margin-bottom: 30px;
@@ -9,9 +7,10 @@
 .name_store{
     font-size: 30px;
     font-weight: 400;
-    /* text-align: center; */
-    
     width: 100%;
+}
+.ftable{
+    border: 1px solid #1c1c1c;
 }
 
 .fheader{
@@ -20,10 +19,8 @@
     align-items: center;
     padding: 10px;
     justify-content: space-between;
-    background-color: #193874;
-    color: #fff;
-    border-radius: 7px;
-
+    border-bottom: 1px solid #1c1c1c;
+    font-weight: 700;
 }
 .fheader p{
     margin: 0;
@@ -31,9 +28,9 @@
 
 .fbodyx{
     width: 100%;
-    padding: 10px;
 }
 .fbodyRow{
+    padding: 10px;
     display: flex;
     justify-content: space-between;
     border-bottom: 1px solid rgb(193, 193, 193);
@@ -41,9 +38,6 @@
 .fbodyRow p{
     margin: 0;
 }
-
-@media print {
-    .hide_d{
-        display: none !important;
-    }
+.show_only_ticket{
+    display: none !important;
 }

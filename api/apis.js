@@ -189,10 +189,10 @@ module.exports = (app) =>{
         const user_data = await User.findById({_id: user._id}).populate('sales')
     
         function getCode() {
-            if(user_data.sales.some(sale => sale.code === yesId(9,'10'))){
+            if(user_data.sales.some(sale => sale.code === yesId(9,'100'))){
                 return getCode()
             }
-            return yesId(9, '10')
+            return yesId(9, '100')
         }   
 
         const newSale = new Sale()
@@ -202,9 +202,16 @@ module.exports = (app) =>{
         newSale.itbis = data.itbis
         newSale.pay = data.pago
         newSale.cambio = data.cambio
+        newSale.useItbis = user.system_control.sale_with_ITBIS ? true : false
         newSale.user = user
+
         data.products.forEach(product => {
-            let prod =  {productCode: product.idcode, price:product.price}  
+            let prod =  {
+                productCode: product.idcode, 
+                buy_price: product.buy_price, 
+                price:product.price,
+                itbis: user.system_control.sale_with_ITBIS ? product.itbis : 0
+            }  
             newSale.products.push(product)
             newSale.productsSold.push(prod)
         });
@@ -214,6 +221,13 @@ module.exports = (app) =>{
             newSale.cashier = cashier
             cashier.sales.push(newSale)
             await cashier.save()
+        }
+
+        if(data.client_id !== null){
+            const client = await Client.findOne({_id: data.client_id})
+            newSale.client = client
+            client.sales.push(newSale)
+            await client.save()
         }
 
         await newSale.save()
@@ -291,6 +305,7 @@ module.exports = (app) =>{
         const data = req.body
 
         user.storeName = data.name || user.storeName;
+        user.storeNumber = data.storeNumber || user.storeNumber;
         user.storeAddress = data.address || user.storeAddress;
         user.footText = data.footText || user.footText;
         user.typeStore = data.typeStore || user.typeStore;
@@ -318,6 +333,13 @@ module.exports = (app) =>{
                 user.system_control.add_N_C_receipt = false
             }
         }
+        if(data.x == '3'){
+            if(data.value){
+                user.system_control.sale_with_ITBIS = true
+            }else{
+                user.system_control.sale_with_ITBIS = false
+            }
+        }
 
         await user.save()
         res.json(data)
@@ -326,6 +348,7 @@ module.exports = (app) =>{
     app.post('/create-client', async(req, res)=>{
         const user = req.user;
         const data = req.body;
+        let limit = user.planPro ? 100 :  15
 
         const user_client = await User.findById({_id: user._id}).populate('clients')
 
@@ -336,25 +359,34 @@ module.exports = (app) =>{
             return yesId(5, '12')
         }
 
-        const newClient = new Client()
-        newClient.name = data.name;
-        newClient.lastName = data.lastName;
-        newClient.tel = data.tel;
-        newClient.id_doc = data.doc_id;
-        newClient.email = data.email;
-        newClient.id_client = data.id_client || getCodeId()
-        newClient.user = user
-
-        user.clients.push(newClient)
-
-        await user.save()
-        await newClient.save()
-        res.json({data: newClient})
+        try {
+            if(user_client.clients.length < limit){
+                const newClient = new Client()
+                newClient.name = data.name;
+                newClient.lastName = data.lastName;
+                newClient.tel = data.tel;
+                newClient.id_doc = data.doc_id;
+                newClient.email = data.email;
+                newClient.id_client = data.id_client || getCodeId()
+                newClient.user = user
+        
+                user.clients.push(newClient)
+        
+                await user.save()
+                await newClient.save()
+                return res.json({status:true})
+            }
+            return res.json({
+                msg: 'Ha llegado al limite de clientes permitidos por este plan, si desea agregar mas clientes por favor comuniquense con nosotros a través de nuestro correo killycenecharles30@gmail.com'
+            })
+        } catch (error) {
+            console.log(error);
+        }
     })
 
     app.get('/get-clients', async(req, res)=>{
         const user = req.user
-        const clients = await Client.find({user: user._id})
+        const clients = await Client.find({user: user._id}).populate('sales')
         const my_user = User.findOne({_id: user._id}).populate('clients')
 
         res.json({data: clients})

@@ -11,176 +11,151 @@
     <%-include ("./header")%>
 
     <div class="card_emergent_alert"></div>
-
-    <!-- Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
-        <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Cajero/a</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="show_detail_cashier" id="show_detail_cashier"></div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            </div>
-        </div>
-        </div>
-    </div>
+    <div class="msg_err" id="msg_err"></div>
 
     <div class="my_container container_config config">
         <div class="main_container">
-            <div class="card_container">
+            <div class="card_container pb-5">
                 <div class="the_title">
                     <h3 class="mb-1">Configuracion</h3>
                 </div>
             
-                <div class="box_one">
-                    <div class="box_open">
-                        <div class="titles_config">
-                            <p class="fs-5 text-primary m-0">Equipo de ventas (Cajeros)</p>
-                            <div class="open_card_one">
-                                <span class="material-symbols-outlined open_card_one btn_open_card fs-2">keyboard_arrow_down</span>
-                            </div>
+                <div class="cards mt-5">
+                    <div class="titles_config">
+                        <p class="fs-4 m-0">Cuentas</p>
+                    </div>
+                    <div class="cards_body">
+                        <div class="acount_title">
+                            <p style="font-weight: 700;">Cuenta Principal</p>
                         </div>
-                        <div class="cardOpen">
-                            <div class="m_l">
-                                <form class="create_cashier_card">
-                                    <p class="fs-4 text-center">Crear cajero/a</p>
-                                    <div class="">
-                                        <div class="mb-2">
-                                            <input type="text" class="form-control" required placeholder="Nombre" id="name">
-                                        </div>
-                                        <div class="mb-2">
-                                            <input type="text" class="form-control" required placeholder="Apellido" id="lastName">
-                                        </div>
-                                        <div class="mb-2">
-                                            <input type="text" class="form-control" required placeholder="Cedula/Pasaporte" id="id_document">
-                                        </div>
-                                        <div class="mb-2">
-                                            <input type="number" class="form-control" id="tel" placeholder="Telefono">
-                                        </div>
-                                        <div class="mb-3">
-                                            <input type="email" class="form-control" placeholder="Correo"  id="email" name="email">
-                                        </div>
-                                        <div class="">
-                                            <button type="button" class="btn btn-primary form-control" id="btn_add_user">Agragar Cajero</button>
-                                        </div>
+                        <div class="boxs">
+                            <div class="names"> <p>Nombre</p> </div>
+                            <div class="contain"> <p><%=user.name%></p> </div>
+                        </div>
+                        <div class="boxs">
+                            <div class="names"> <p>Apellido</p> </div>
+                            <div class="contain"> <p><%=user.lastName%></p> </div>
+                        </div>
+                        <div class="boxs">
+                            <div class="names"> <p>Correo electronoco</p> </div>
+                            <div class="contain"> <p><%=user.email%></p> </div>
+                        </div>
+                        <!-- <div class="boxs">
+                            <div class="names"> <p>Contrasena</p> </div>
+                            <div class="contain"> <p>..............</p> </div>
+                        </div> -->
+
+                        <div class="acount_title mt-4">
+                            <p class="" style="font-weight: 700;">Cuenta del negocio</p>
+                        </div>
+                        <div class="boxs">
+                            <div class="names"> <p>Nombre</p> </div>
+                            <div class="contain">
+                                <form action="">
+                                    <div class="input-groupe mb-3 d-flex gap-3">
+                                        <input type="text" id="store_name" class="form-control" placeholder="Nombre">
+                                        <button type="button" id="btn_store_nam" class="btn btn-primary">Enviar</button>
                                     </div>
                                 </form>
                             </div>
-                            <div class="form_list">
-                                <div class="card_contain">
-                                    <div class="xss">
-                                        <table class="table m-0">
-                                            <thead>
-                                            <tr>
-                                                <th scope="col">Nombre</th>
-                                                <th scope="col">Apellido</th>
-                                                <th scope="col">Codigo</th>
-                                                <th scope="col">Cedula/Pasapt</th>
-                                                <th scope="col">Estado</th>
-                                                <th scope="col">Accion</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody class="showListCashiers"></tbody>
-                                        </table>
+                        </div>
+                        <div class="boxs">
+                            <div class="names"> <p>Telefono</p> </div>
+                            <div class="contain">
+                                <form action="">
+                                    <div class="input-groupe mb-3 d-flex gap-3">
+                                        <input type="number" id="store_number" class="form-control" placeholder="Telefono">
+                                        <button type="button" id="btn_store_number" class="btn btn-primary">Enviar</button>
                                     </div>
-                                    <div class="tfoot"></div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="boxs">
+                            <div class="names"> <p>Direccion</p> </div>
+                            <div class="contain">
+                                <form action="">
+                                    <div class="input-groupe mb-3 d-flex gap-3">
+                                        <input type="text" id="store_address" class="form-control" placeholder="Direccion">
+                                        <button type="button" id="btn_store_ads" class="btn btn-primary">Enviar</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="boxs">
+                            <div class="names"> <p>Tipo de negocio</p> </div>
+                            <div class="contain"> <p id="store_type"></p> </div>
+                        </div>
+
+                        <!-- <div class="acount_title mt-4">
+                            <p class="" style="font-weight: 700;">Clientes</p>
+                        </div>
+                        <div class="boxs">
+                            <div class="names"> <p>Contrasena</p> </div>
+                            <div class="contain"> <p>..............</p> </div>
+                        </div> -->
+                    </div>
+                </div>
+
+                <div class="cards mt-5 mb-5">
+                    <div class="titles_config">
+                        <p class="fs-4 m-0">Facturacion, control de productos y ventas</p>
+                    </div>
+                    <div class="cards_body">
+                        <div class="acount_title">
+                            <p class="" style="font-weight: 700;">Facturacion</p>
+                        </div>
+                        <div class="boxs mb-3">
+                            <div class="names"> <p>Impresion de factura</p> </div>
+                            <div class="contain">
+                                <form action="">
+                                    <div class="mb-1">
+                                        <input type="radio" name="t_fatura" id="ticket" value="ticket" class="me-2">
+                                        <label for="">Ticket</label>
+                                    </div>
+                                    <div>
+                                        <input type="radio" name="t_fatura" id="digital" value="digital" class="me-2">
+                                        <label for="">Impresion digital</label>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="boxs mb-3">
+                            <div class="names"> <p>Usuario/cajero</p> </div>
+                            <div class="contain d-flex align-items-center">
+                                <input type="checkbox" name="" id="cashierName" class="me-2">
+                                <label for="" class="">Agregar nombre del cajero/a a la factura</label>
+                            </div>
+                        </div>
+                        <div class="boxs">
+                            <div class="names"> <p>Pie de factura</p> </div>
+                            <div class="contain">
+                                <form action="">
+                                    <div class="input-groupe f_foot">
+                                        <textarea type="text" id="store_foot_text" class="form-control" placeholder="pie de factura"></textarea>
+                                        <button type="button" class="btn btn-primary" id="btn_store_ftx">Agregar</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                        <div class="acount_title mt-5">
+                            <p class="" style="font-weight: 700;">Control de productos y ventas</p>
+                        </div>
+                        <div class="boxs">
+                            <div class="names"> <p>ITBIS</p> </div>
+                            <div class="contain">
+                                <div class="d-flex align-items-center mb-2">
+                                    <input type="checkbox" name="" id="addITBIS" class="me-2">
+                                    <label for="" class="">Agregar (ITBIS) a los productos</label>
+                                </div>
+                                <div class="d-flex align-items-center">
+                                    <input type="checkbox" name="" id="useITBIS" class="me-2">
+                                    <label for="" class="">Usar (ITBIS) en las ventas</label>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-    
-                <div class="box_one">
-                    <div class="box_open ">
-                        <div class="titles_config">
-                            <p class="fs-5 text-primary">Informacion de su negocio y control de facturacion</p>
-                            <div class="open_card_two">
-                                <span class="material-symbols-outlined open_card_two btn_open_card fs-2">keyboard_arrow_down</span>
-                            </div>
-                        </div>
-                        <div class="cardOpen">
-                            <!-- <div class="m_l"></div> -->
-                            <div class="form_list">
-                                <div class="" id="msg_err"></div>
-                                <div class="info_store">
-                                    <p class="fs-5">Mi Negocio</p>
-                                    <div class="card_contain card_xlx" >
-                                        <div class="tb_xls">
-                                            <p class="type_store"></p>
-                                        </div>
-                                        <form action="" class="row">
-                                            <div class="input-groupe mb-3 d-flex gap-3">
-                                                <input type="text" id="store_name" class="form-control" placeholder="Nombre">
-                                                <button type="button" id="btn_store_nam" class="btn btn-primary">Enviar</button>
-                                            </div>
-                                            <div class="input-groupe mb-3 d-flex gap-3">
-                                                <input type="text" id="store_address" class="form-control" placeholder="Direccion">
-                                                <button type="button" id="btn_store_ads" class="btn btn-primary">Enviar</button>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                                <div class="ticket_info">
-                                    <p class="fs-5">Control de facturacion</p>
-                                    <div class="card_xlx">
-                                        <div class="type_ticket">
-                                            <p class="mb-1">Forma de impresion: </p>
-                                            <form action="" class="d-flex gap-4">
-                                                <div>
-                                                    <input type="radio" name="t_fatura" id="ticket" value="ticket">
-                                                    <label for="">Ticket</label>
-                                                </div>
-                                                <div>
-                                                    <input type="radio" name="t_fatura" id="digital" value="digital">
-                                                    <label for="">Impresion digital</label>
-                                                </div>
-                                            </form>
-                                        </div>
-    
-                                        <div class="d-flex mb-3 mt-3">
-                                            <input type="checkbox" name="" id="cashierName" class="me-3">
-                                            <p class="mb-0">Agregar nombre del cajero/a a la factura</p>
-                                        </div>
-                                        <form action="">
-                                            <div class="input-groupe d-flex gap-3">
-                                                <textarea type="text" id="store_foot_text" class="form-control" placeholder="pie de factura"></textarea>
-                                                <button type="button" class="btn btn-primary" id="btn_store_ftx">Enviar</button>
-                                            </div>
-                                        </form>
-                                    </div>
-    
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-    
-                </div>
-    
-                <div class="box_one">
-                    <div class="box_open">
-                        <div class="titles_config">
-                            <p class="fs-5 text-primary">Control de ventas y productos</p>
-                            <div class="open_card_three">
-                                <span class="material-symbols-outlined open_card_three btn_open_card fs-2">keyboard_arrow_down</span>
-                            </div>
-                        </div>
-                        <div class="cardOpen">
-                            <div class="m_l"></div>
-                            <div>
-                                <div class="d-flex mb-3">
-                                    <input type="checkbox" name="" id="addITBIS" class="me-3">
-                                    <p class="mb-0">Agregar (ITBIS) a los productos</p>
-                                </div>
-                                
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                </div> 
             </div>
         </div>
     </div>

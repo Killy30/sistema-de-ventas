@@ -4,21 +4,26 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="../css/bootstrap.min.css" rel="stylesheet" >
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css/factura.css">
     <% if(user.system_control.typePrint == 'ticket') {%>
         <link rel="stylesheet" href="../css/factura_tiket.css" media="print" type="text/css">
+    <%}else{%>
+        <link rel="stylesheet" href="../css/factura_digital.css" media="print" type="text/css">
     <%}%>
-    <title>Document</title>
+    <title>Factura</title>
 </head>
 <body>
 
     <div class="container">
-        <div class="d-flex mt-5 hide_d">
+        <div class="d-flex mt-5 mb-3 hide_d">
             <h2 class="hide_f me-5">factura</h2>
             <button class="btn btn-primary hide_f " id="print_factura">Imprimir factura</button>
         </div>
-        <div class="box_fac" id="fbody"></div>
+        <div class="box_fac mb-3" id="fbody"></div>
     </div>
 
     <script type="module" src="../js/factura.js"></script>

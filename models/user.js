@@ -9,11 +9,13 @@ const UserSchema = new Schema({
     storeName: {type: String},
     typeStore: {type: String},
     storeAddress: {type: String},
+    storeNumber: {type: Number},
     footText: {type: String},
     password: {type: String},
     planPro: {type: Boolean, default: false},
     system_control:{
         acceptITBIS: {type: Boolean, default: false},
+        sale_with_ITBIS: {type: Boolean, default: false},
         add_N_C_receipt: {type: Boolean, default: false},
         typePrint: {type: String, default: 'ticket'}
     },

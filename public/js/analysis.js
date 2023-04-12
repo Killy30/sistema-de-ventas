@@ -57,12 +57,12 @@ const getAnalysis = async()=>{
 
     let repete_object = {};
     let repete_array = []
+   
     productsAnalysis.splice(0, productsAnalysis.length)
-
     salesAnalysis.forEach( sale => {
         productsAnalysis.push(...sale.products)
     })
-
+    
     // groupe  
     productsAnalysis.forEach(product =>{
         repete_object[product] = (repete_object[product] || 0) + 1;
@@ -88,9 +88,9 @@ const getAnalysis = async()=>{
         let prod_prices = []
 
         productSold.forEach(item =>{
-            item.productsSold.forEach(ele =>{
-                if(ele.productCode == theProduct.idcode){
-                    prod_prices.push(ele.price)
+            item.productsSold.forEach(p =>{
+                if(p.productCode == theProduct.idcode){
+                    prod_prices.push({buy_price: p.buy_price, price: p.price})
                 }
             })
         })
@@ -100,19 +100,26 @@ const getAnalysis = async()=>{
                 name: theProduct.name,
                 code: theProduct.idcode,
                 price: theProduct.price,
+                buy_price: theProduct.buy_price,
                 soldUnits: prod_prices.length,
-                soldTotal: prod_prices.reduce((acc, t) => acc = acc + t ,0)
+                soldTotal: prod_prices.reduce((acc, t) => acc = acc + t.price ,0),
+                totalSpends: prod_prices.reduce((acc, t) => acc = acc + t.buy_price, 0)
             }
             products_info.push(p)
         }
         
     })
 
+    //the spends, 
+    let total_spends = products_info.reduce((acc, total) => acc = acc + total.totalSpends, 0) 
+    let total_sold = products_info.reduce((acc, total) => acc = acc + total.soldTotal, 0) 
+    let total_earnings = total_sold - total_spends;
+
     let more = products_info.length
     let less = all_products.my_products.length - products_info.length
     let countSales = salesAnalysis.length
 
-    let cardx1Data = { more,less,total,countSales}
+    let cardx1Data = {total, countSales, total_spends, total_earnings, more, less}
 
     cardsDataViwe(cardx1Data)
     tableProductsView(products_info)
@@ -125,8 +132,10 @@ const numberFormat = (number) =>{
 
 const cardsDataViwe = (data) =>{
     let total_v = numberFormat(data.total)
-    document.getElementById('total').innerText = `${total_v}` 
+    document.getElementById('total').innerText = `$${total_v}` 
     document.getElementById('ventas').innerText = `${data.countSales}` 
+    document.getElementById('spend').innerText = `$${data.total_spends}` 
+    document.getElementById('earnings').innerText = `$${data.total_earnings}` 
     document.getElementById('more').innerText = `${data.more}` 
     document.getElementById('less').innerText = `${data.less}` 
 }
@@ -140,7 +149,7 @@ const cardValance = async() =>{
 
     let date = new Date()
     v_date.innerHTML = `<p>${fecha(date.getTime())} ${date.getDate()}/${date.getFullYear()}</p>` 
-    v_value.innerText = today_sales_total.toFixed(2)
+    v_value.innerText = `$${today_sales_total.toFixed(2)}`
 }
 cardValance()
 
@@ -150,18 +159,20 @@ const tableProductsView = (data) =>{
     tbodyProducts.innerHTML = ''
 
     let datas = data.sort((a, b) => b.soldUnits - a.soldUnits)
-
+    
     datas.forEach(product =>{
+        let earnings = product.soldTotal - product.totalSpends
         let total = numberFormat(product.soldTotal)
         tbodyProducts.innerHTML += `
             <tr>
                 <td class="nxh" title="${product.name}">
                     ${product.name}
-                    
                 </td>
                 <td>${product.code}</td>
                 <td>${product.price}</td>
                 <td>${product.soldUnits}</td>
+                <td>$${product.totalSpends}</td>
+                <td>$${earnings}</td>
                 <th class="gbdx text_color_">$${total}</th>
             </tr>
         `

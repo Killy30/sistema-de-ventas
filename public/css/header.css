@@ -7,8 +7,9 @@
     --blue_three: rgb(0, 149, 255);
     --orange: #fe4818;
     --white: #ffffff;
-    --gris: #aeaeae;
+    --gris: #888888;
     --gris2: #cdcdcd;
+    --text: rgb(8, 13, 33);
 }
 
 body{
@@ -16,7 +17,7 @@ body{
 }
 
 nav{
-    height: 60px;
+    height: 50px;
     width: 100%;
     background-color: #fff;
     display: flex;
@@ -29,7 +30,7 @@ nav{
 }
 
 #container{
-    height: calc(100vh - 60px);
+    height: calc(100vh - 50px);
 }
 .cont{
     width: 100%;
@@ -45,7 +46,7 @@ nav{
     border-right: 1px solid var(--gris2);
 }
 .logo{
-    width: 110px;
+    width: 130px;
 }
 .logo img{
     width: 100%;
@@ -71,13 +72,17 @@ nav{
 }
 .user_account .img_p{
     background-color: #e1e1e1;
+    width: 35px;
+    height: 35px;
 }
+
 
 .user_menu{
     position: fixed;
-    top: 60px;
+    top: 50px;
     left: 0;
     height: 100vh;
+    overflow-y: auto;
     width: 300px;
     transition: 0.3s;
     background-color: var(--blue_one);
@@ -157,10 +162,6 @@ nav{
 .nav_link{
     text-decoration: none;
 }
-.nav_link:last-child{
-    margin-top: 100px;
-
-}
 
 .not_found{
     text-align: center;
@@ -203,7 +204,7 @@ nav{
 .my_container{
     width: calc(100% - 300px);
     margin-left: 300px;
-    margin-top: 60px;
+    margin-top: 50px;
     transition: 0.3s;
     padding: 20px;
 }
@@ -270,9 +271,13 @@ nav{
 /* emergency alert */
 .card_emergent_alert{
     position: absolute;
-    right: 20px;
+    top: 65px;
+    right: 15px;
     max-width: 70%;
     z-index: 2000;
+}
+.close_emergent_alert{
+    cursor: pointer;
 }
 
 @media(max-width: 1500px) {
@@ -288,6 +293,7 @@ nav{
         width: 100%;
         margin-left: 0px;
         margin-top: 60px;
+        padding: 10px;
     }
     .main_container{
         width: 100%;
@@ -336,6 +342,12 @@ nav{
 }
 
 @media(max-width: 500px){
+    .my_container{
+        padding: 6px;
+    }
+    .card_container{
+        padding: 7px;
+    }
     .user_menu{
         width: 80%;
         left: -80%;

@@ -48,17 +48,19 @@
                     <div class="input-group">
                         <select class="form-select" id="type_b" style="width: 100%;">
                             <option value="">Tipo de negocio</option>
-                            <option value="super">Supermercados</option>
-                            <option value="serv">Servicios</option>
-                            <option value="hiper">Hipermercados</option>
-                            <option value="farm">Farmacias</option>
-                            <option value="rest">Restaurante</option>
-                            <option value="cafe">Cafeteria</option>
-                            <option value="tie">Tienda</option>
-                            <option value="col">Colmado</option>
-                            <option value="esti">Estileria</option>
-                            <option value="almc">Almacenes</option>
-                            <option value="tie_elec">Tienda de electrodomesticos</option>
+                            <option value="supermercado">Supermercado</option>
+                            <option value="servicio">Servicio</option>
+                            <option value="hipermercado">Hipermercado</option>
+                            <option value="mini market">Mini market</option>
+                            <option value="sarmacia">Farmacia</option>
+                            <option value="restaurante">Restaurante</option>
+                            <option value="cafeteria">Cafeteria</option>
+                            <option value="tienda">Tienda</option>
+                            <option value="colmado">Colmado</option>
+                            <option value="estileria">Estileria</option>
+                            <option value="almacen">Almacen</option>
+                            <option value="ferreteria">Ferreteria</option>
+                            <option value="tienda de electrodomesticos">Tienda de electrodomesticos</option>
                         </select>
                     </div>
                 </div>
@@ -71,8 +73,8 @@
 
         <!-- Modal -->
     <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog modal-1000">
-            <div class="modal-content">
+        <div class="modal-dialog modal-xl modal_dialog ">
+            <div class="modal-content modal_content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="staticBackdropLabel">Nueva Venta/Servicio</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -86,45 +88,47 @@
                                 <p class="mb-0 " style="font-weight: 500;" id="c_user"></p>
                             </div>
                         </div>
-                        <div class="d-flex align-items-center position-relative" style="border-left: 1px solid #ddd; border-right: 1px solid #ddd;">
-                            <div class="d-flex align-items-center ps-2 pe-2">
+                        <div class="d-flex align-items-center position-relative" style="min-width: 400px;">
+                            <div class="d-flex align-items-center">
                                 <label for="" class="me-2">Cliente:</label>
                                 <p class="client_name m-0"></p>
-                                <input type="text" class="form-control" disabled id="clientSearch" autocomplete="off" placeholder="Buscar clientes">
-                                <span class="material-symbols-outlined delete_client" style="display: none;">close</span>
+                                <input type="text" class="form-control" id="clientSearch" autocomplete="off" placeholder="Buscar clientes">
+                                <span class="material-symbols-outlined delete_client text-danger ms-2" style="display: none;">close</span>
                             </div>
                             <div class="boxSearchClients"></div>
                         </div>
-                        <div class="position-relative">
-                            <div class="d-flex align-items-center">
-                                <label for="" class="me-2">Buscar productos: </label>
-                                <input type="text" class="form-control" id="textSearch" style="width: 300px;" placeholder="Buscar por nombre o codigo">
-                            </div>
-                            <div class="boxSearchProducts"></div>
+                        <div>
+                            <a href="" id="factura" class="btn btn-primary inactive" >Factura</a>
                         </div>
                     </div>
-                    <div class="d-flex justify-content-md-between mb-3 form-groupe">
-                        <div class="input-group">
-                            <select id="mode_code" style="width: 150px;" >
+                    <div class="mb-2 card_inset">
+                        <div class="d-flex">
+                            <select id="mode_code" style="width: 120px;" >
                                 <option value="automatico">Automatico</option>
                                 <option value="manual">Manual</option>
                             </select>
-                            <input type="number" class="form-control" placeholder="Ingresa el codigo del producto aqui" style="width: 100px; margin-left: 10px;" id="codigo">
+                            <input type="number" class="form_control input_code" placeholder="Ingresa el codigo del producto aqui" id="codigo">
                             <button type="button" id="add" style="display:none;" class="btn btn-primary ms-3">Agregar</button>
                         </div>
-                        <div class="d-flex " style="margin-left: 100px;">
+                        <div class="position-relative">
+                            <div class="d-flex align-items-center">
+                                <!-- <label for="" class="me-2">Buscar productos: </label> -->
+                                <input type="text" class="form_control textSearch" id="textSearch" placeholder="Buscar productos (nombre o codigo)">
+                            </div>
+                            <div class="boxSearchProducts"></div>
+                        </div>
+                        <div class="">
                             <a href="" class="btn btn-warning " id="clean_list">Limpiar</a>
-                            <a href="" id="factura" class="btn btn-primary inactive ms-3" >Factura</a>
                         </div>
                     </div>
-                    <div class="w-100" style="height: 460px;" id="list_product">
+                    <div class="w-100" id="list_product">
                         <table class="table table_xzs">
                             <thead id="thead">
                                 <tr>
                                     <th scope="col">Codigo</th>
                                     <th scope="col">Nombre</th>
                                     <th scope="col">Precio</th>
-                                    <% if(user.system_control.acceptITBIS){%>
+                                    <% if(user.system_control.sale_with_ITBIS){%>
                                         <th scope="col">ITBIS</th>
                                     <%}%>
                                     <th scope="col">Categoria</th>
@@ -146,23 +150,25 @@
                             <p class="fs-4" style="width: 115px; font-weight: 500; margin: 0 10px 0 10px;" id="itbis">0.00</p>
                         </div>
                         <div class="d-flex align-items-center">
-                            <label for="codigo" class="col-form-label fs-4" style="font-weight: 500;">Pago:</label>
+                            <label for="pago" class="col-form-label fs-4" style="font-weight: 500;">Pago:</label>
                             <input type="number" class="form-control ml-3" style="width: 130px;  margin-left: 10px;" id="pago">
                         </div>
                     </div>
                     <div class="footer_btn">
-                        <div class="mr-5 d-flex">
-                            <p class="fs-2" style="font-weight: 500; margin: 0;">Total = </p>
-                            <p class="fs-2" style="width: 150px; font-weight: 500; margin: 0 10px 0 10px;" id="total">0.00</p>
-                        </div>
-                        <div class="mr-5 d-flex">
-                            <p class="fs-4" style="font-weight: 500; margin: 0;">Cambio: </p>
-                            <p class="fs-4" style="width: 115px; font-weight: 500; margin: 0 10px 0 10px;" id="cambio">0.00</p>
+                        <div class="total">
+                            <div class="mr-5 d-flex">
+                                <p class="fs-2" style="font-weight: 500; margin: 0;">Total = </p>
+                                <p class="fs-2" style="width: 150px; font-weight: 500; margin: 0 10px 0 10px;" id="total">0.00</p>
+                            </div>
+                            <div class="mr-5 d-flex">
+                                <p class="fs-4" style="font-weight: 500; margin: 0;">Cambio: </p>
+                                <p class="fs-4" style="width: 115px; font-weight: 500; margin: 0 10px 0 10px;" id="cambio">0.00</p>
+                            </div>
                         </div>
                         <div class="d-flex align-items-center">
-                            <button type="button" class="btn btn-danger" id="cancel" data-bs-dismiss="modal">Cancelar</button>
-                            <button type="button" class="btn btn-primary" style="margin: 0px 15px;" id="finich" >Finalizar</button>
-                            <button type="button" class="btn btn-primary" id="cerrar" data-bs-dismiss="modal">Cerrar venta</button>
+                            <button type="button" class="btn btn-secondary" id="cancel" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="button" class="btn btn-primary" style="margin: 0px 15px;" id="finich" >Finalizar venta</button>
+                            <button type="button" class="btn btn-danger" id="cerrar" data-bs-dismiss="modal">Cerrar venta</button>
                         </div>
                     </div>
                 </div>

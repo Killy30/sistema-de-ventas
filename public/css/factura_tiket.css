@@ -58,6 +58,12 @@ span{
     display: block;
 }
 @media print {
+    .ftable{
+        border: none;
+    }
+    .show_only_ticket{
+        display: block !important;
+    }
     .hide_f{
         display: none !important;
     }

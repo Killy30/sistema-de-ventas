@@ -30,6 +30,7 @@ const getUser = async() =>{
     }
 }
 
+//this function allows the user to configure the data before using the application
 const verifyStoreName = async()=>{
     let user = await getUser()
     if(user.data.storeName){
@@ -42,6 +43,7 @@ const verifyStoreName = async()=>{
 }
 verifyStoreName()
 
+//configure the data
 const post_store_name = async(e)=>{
     let p_store_name = document.getElementById('p_store_name')
     let type_b = document.getElementById('type_b')
@@ -61,24 +63,22 @@ const post_store_name = async(e)=>{
             }
         })
         let res = await req.json()
+
+        location.reload()
+        
     } catch (error) {
         console.log(error);
     }
 }
 
-const showStoreName = async() =>{
+const allow = async() =>{
     let user = await getUser()
-    let show_name = document.getElementById('show_s_n')
 
-    // if(user.data.storeName !== undefined){
-    //     show_name.innerText = `${user.data.storeName}`
-    // }
-
-    if(user.data.system_control.acceptITBIS){
+    if(user.data.system_control.sale_with_ITBIS){
         document.querySelector('.itbis_Card').style.display = 'flex'
     }
 }
-showStoreName()
+allow()
 
 const showListSales = async() =>{
     let sale = await getSales()
@@ -115,7 +115,6 @@ showListSales()
 
 const showListCashiers_select = async() =>{
     const user = await getUser()
-
     let cashiers = user.data.cashiers
 
     listCashiers.innerHTML = '<option data-code="404" data-act="-1" data-i="-1" value="null">Cajero/a</option>'
@@ -145,7 +144,7 @@ const showListCashiers_select = async() =>{
 showListCashiers_select()
 
 
-
+//this function displays the current user/cashier who is using the app
 const showCurrentUser = async() =>{
     let box = document.getElementById('c_user')
     const user = await getUser()
@@ -170,19 +169,23 @@ const seachClients = async(text) =>{
     boxSearchClients.innerHTML = ""
     for(let client of clients.data){
         let name = client.name.toLowerCase()
+        let lastName = client.lastName.toLowerCase()
+        let code = client.id_client.toLowerCase()
 
-        if(name.indexOf(_text) !== -1){
+        if(name.indexOf(_text) !== -1 || lastName.indexOf(_text) !== -1 || code.indexOf(_text) !== -1){
             boxSearchClients.innerHTML +=`
                 <div class="d-flex border-bottom d_block">
                     <div style="width: 100px;" class="d_block"> <p class="d_block mb-0 p-2">${client.id_client}</p> </div>
                     <div style="width: 250px;" class="d_block"> <p class="d_block mb-0 p-2">${client.name} ${client.lastName}</p> </div>
                     <div style="width: 100px;" class="d_block"> 
-                        <a href="#" class="add_c" data-id_client="${client.id_client}" data-name="${client.name} ${client.lastName}">Agregar</a> 
+                        <a href="#" class="add_c" data-id_client="${client._id}" data-name="${client.name} ${client.lastName}">Agregar</a> 
                     </div>
                 </div>
             `
         }
-        
+    }
+    if(boxSearchClients.innerHTML == ""){
+        boxSearchClients.innerHTML = `<p>Cliente no encontrado...</p>`
     }
 }
 
@@ -217,7 +220,6 @@ const seachProducts = async(text) =>{
 
 const addProduct = async(e) =>{
     const products = await data.getProducts()
-    console.log(e.target.dataset.id);
 
     let product = products.my_products.find(prod => prod.idcode == e.target.dataset.id)
     listProducts.push(product)
@@ -258,13 +260,13 @@ const showProducts = async() =>{
                 <td>${listProducts[i].name.toUpperCase()}</td>
                 <td>${listProducts[i].price.toFixed(2)}</td>
                 ${
-                    user.data.system_control.acceptITBIS ? `<td>${listProducts[i].itbis.toFixed(2)}</td>` : ""
+                    user.data.system_control.sale_with_ITBIS ? `<td>${listProducts[i].itbis.toFixed(2)}</td>` : ""
                 }
                 <td>${listProducts[i].category}</td>
                 <td>
-                    <button type="button" data-index="${i}" data-id="${listProducts[i]._id}" class="btn btn-danger delete">
+                    <a href="" type="button" data-index="${i}" data-id="${listProducts[i]._id}" class="text-danger delete">
                         Eliminar
-                    </button>
+                    </a>
                 </td>
             </tr>
         `
@@ -288,21 +290,21 @@ const totalITBIS = () =>{
 
 const totalValue = async() =>{
     const user = await getUser()
-    let acceptITBIS = user.data.system_control.acceptITBIS
-    let total_value = listProducts.reduce((acc, p) => acc = acc + (acceptITBIS? p.sum_price : p.price) ,0)
+    let sale_with_ITBIS = user.data.system_control.sale_with_ITBIS
+    let total_value = listProducts.reduce((acc, p) => acc = acc + (sale_with_ITBIS ? p.sum_price : p.price) ,0)
     document.getElementById('total').innerText = total_value.toFixed(2)
 }
 
 const create_sale = async(e) =>{
     const user = await getUser()
-    let acceptITBIS = user.data.system_control.acceptITBIS
+    let sale_with_ITBIS = user.data.system_control.sale_with_ITBIS
 
     const cambio = document.getElementById('cambio')
     const pago = document.getElementById('pago').value
     let subTotal = listProducts.reduce((acc, p) => acc = acc + p.price ,0)
     let total_itbis = listProducts.reduce((acc, p) => acc = acc + p.itbis ,0)
 
-    let totalPrice = subTotal + (acceptITBIS ? total_itbis : 0)
+    let totalPrice = subTotal + (sale_with_ITBIS ? total_itbis : 0)
     //
     if(!localStorage.getItem('id') && localStorage.getItem('admin') == 'false'){
         let e = 'Debes conectar tu usuario (cajero/a) antes de hacer una venta, por favor asegurece de estar conectado para realizar la venta'
@@ -327,6 +329,7 @@ const create_sale = async(e) =>{
     let cambioValue = pago - totalPrice
     cambio.innerText = cambioValue.toFixed(2)
     let cashier_id = localStorage.getItem('id') 
+    let client_id = localStorage.getItem('id_client')
     
     let data = {
         products:listProducts,
@@ -335,7 +338,8 @@ const create_sale = async(e) =>{
         pago: pago,
         cambio: cambioValue.toFixed(2),
         cashier_id: cashier_id,
-        itbis: total_itbis
+        itbis: total_itbis,
+        client_id: client_id
     }
 
     try {
@@ -354,8 +358,11 @@ const create_sale = async(e) =>{
         document.getElementById('cancel').disabled = true
         document.getElementById('codigo').disabled = true
         document.getElementById('textSearch').disabled = true
+        document.getElementById('pago').disabled = true
+        document.getElementById('clientSearch').disabled = true
         document.getElementById('cerrar').disabled = false
 
+        document.querySelector('.delete_client').classList.add('inactive')
         document.getElementById('clean_list').classList.add('inactive')
         const factura = document.getElementById('factura')
         
@@ -370,7 +377,8 @@ const create_sale = async(e) =>{
 
 showListProduct.addEventListener('click', e =>{
     if(e.target.classList.contains('delete')){
-        if(confirm('Seguro que deseas eliminar este producto en la lista de compra')){
+        e.preventDefault()
+        if(confirm('Seguro que deseas eliminar este producto en la lista?')){
             let index = e.target.dataset.index
             listProducts.splice(index, 1)
             showProducts()
@@ -386,6 +394,8 @@ const cancelSele = () =>{
     document.getElementById('itbis').innerText = '0.00'
     document.getElementById('codigo').value = ''
     document.getElementById('pago').value = ''
+
+    localStorage.removeItem('id_client')
 }
 
 const openSele = () => { 
@@ -426,10 +436,16 @@ const closeSales = () =>{
     document.getElementById('add').disabled = false
     document.getElementById('finich').disabled = false
     document.getElementById('cancel').disabled = false
+    document.getElementById('pago').disabled = false
+    document.getElementById('clientSearch').disabled = false
     document.getElementById('factura').classList.add('inactive')
     document.getElementById('mode_code').options[0].selected = true;
 
-    // showListSales()
+    localStorage.removeItem('id_client')
+    document.querySelector('.client_name').innerText = ""
+    document.querySelector('#add').style.display = 'none'
+    document.querySelector('.delete_client').style.display = 'none'
+    document.getElementById('clientSearch').style.display = 'block'
 }
 
 

@@ -154,7 +154,7 @@ const createProduct = async() => {
                 let data = {
                     idcode:idcode.value, 
                     name: name.value, 
-                    buy_price: price.value, 
+                    buy_price: buy_price.value, 
                     price: price.value, 
                     category: category.value, 
                     description: description.value,

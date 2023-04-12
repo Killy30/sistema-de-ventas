@@ -8,11 +8,17 @@ function admin(){
     let x = localStorage.getItem('admin')
 
     if(x === 'false'){
+        links[3].classList.add('display_enaible')
+        links[3].children[0].classList.add('display_enaible')
+
         links[4].classList.add('display_enaible')
         links[4].children[0].classList.add('display_enaible')
 
         links[5].classList.add('display_enaible')
         links[5].children[0].classList.add('display_enaible')
+
+        links[6].classList.add('display_enaible')
+        links[6].children[0].classList.add('display_enaible')
     }
 }
 admin()
@@ -29,7 +35,8 @@ document.addEventListener('DOMContentLoaded', e=>{
     if(document.querySelector('.sales')) links[2].classList.add('selected');
     if(document.querySelector('.clients')) links[3].classList.add('selected');
     if(document.querySelector('.analysis')) links[4].classList.add('selected');
-    if(document.querySelector('.config')) links[5].classList.add('selected');
+    if(document.querySelector('.users')) links[5].classList.add('selected');
+    if(document.querySelector('.config')) links[6].classList.add('selected');
 })
 
 const menu = () =>{
@@ -42,7 +49,6 @@ document.addEventListener('click', e =>{
         user_menu.classList.toggle('toggleMenuDesktop')
         menu()
     }
-    
 
     //mobile
     if(e.target.classList.contains('open_menu_mobile')){
@@ -51,6 +57,11 @@ document.addEventListener('click', e =>{
     if(e.target.classList.contains('close_menu_mobile')){
         user_menu.classList.remove('toggleMenu')
     }
+    
+    if(e.target.classList.contains('close_emergent_alert')){
+        document.querySelector('.card_emergent_alert').innerHTML = ""
+    }
+
 })
 
 const noElement = () =>{

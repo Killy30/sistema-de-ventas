@@ -24,5 +24,11 @@
     #code input{
         width: 150px;
     }
+    #btn_open_form{
+        font-size: 13px;
+    }
+    .btn_atla{
+        font-size: 15px;
+    }
     
 }

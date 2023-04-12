@@ -9,6 +9,9 @@
 </head>
 <body>
     <%-include ("./header")%>
+
+    <div class="card_emergent_alert"></div>
+
     <div class="my_container clients">
         <div class="main_container">
             <div class="card_container">
@@ -16,14 +19,14 @@
                     <h3>Clientes</h3>
                 </div>
                 <div class="card_head_c mt-5 mb-5">
-                    <div class="search">
+                    <!-- <div class="search">
                         <form action="">
                             <input type="text" id="" class="form-control" placeholder="Buscar clientes">
                         </form>
                     </div>
                     <div class="card_filter">
                         <button class="btn btn-light">Filtrar por</button>
-                    </div>
+                    </div> -->
                     <button type="button" class="btn_atla" data-bs-toggle="modal" data-bs-target="#exampleModal">
                         <span class="material-symbols-outlined">add</span>
                         Nuevo cliente
@@ -52,7 +55,7 @@
 
   
   <!-- Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="exampleModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -91,6 +94,94 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                     <button type="button" id="btn_create" class="btn btn-primary">Crear</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal_dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Informacion del cliente</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="client_info">
+                        <div class="_box">
+                            <div class="_box_">
+                                <p class="m-0 font_w me-2">Nombre: </p>
+                                <p class="m-0 _name"></p>
+                            </div>
+                            <div class="_box_">
+                                <p class="m-0 font_w me-2">Codigo: </p>
+                                <p class="m-0 _code"></p>
+                            </div>
+                        </div>
+                        <div class="_box">
+                            <div class="_box_">
+                                <p class="m-0 font_w me-2">Apellido: </p>
+                                <p class="m-0 _lastName"></p>
+                            </div>
+                            <div class="_box_">
+                                <p class="m-0 font_w me-2">Documento (ID): </p>
+                                <p class="m-0 _idDoc"></p>
+                            </div>
+                        </div>
+                        <div class="_box">
+                            <div class="_box_">
+                                <p class="m-0 font_w me-2">Correo: </p>
+                                <p class="m-0 _email"></p>
+                            </div>
+                            <div class="_box_">
+                                <p class="m-0 font_w me-2">Telefono: </p>
+                                <p class="m-0 _phone"></p>
+                            </div>
+                        </div>
+                        <div class="_box">
+                            <div class="_box_">
+                                <p class="m-0 font_w me-2">Compras: </p>
+                                <p class="m-0 _sales"></p>
+                            </div>
+                            <div class="_box_">
+                                <p class="m-0 font_w me-2">Total de compras: </p>
+                                <p class="m-0 _totalSales"></p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="tables">
+                        <div class="table_sales">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Codigo</th>
+                                        <th>Productos</th>
+                                        <th>Fecha</th>
+                                        <th>Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="show_sales"></tbody>
+                            </table>
+                        </div>
+                        <div class="table_Products">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Codigo</th>
+                                        <th>Nombre</th>
+                                        <th>Unidad</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="show_products"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <!-- <button type="button" class="btn btn-primary">Understood</button> --> 
                 </div>
             </div>
         </div>

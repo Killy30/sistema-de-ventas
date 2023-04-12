@@ -11,3 +11,86 @@
     justify-content: flex-end;
     gap: 20px;
 }
+
+.card_info{
+    width: 100%;
+    border-bottom: 1px solid #ddd;
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+}
+.card_info p{
+    margin: 0;
+}
+.card_info:last-child{
+    border-bottom: 0;
+}
+
+._box{
+    display: flex;
+}
+._box_{
+    display: flex;
+    width: 50%;
+    padding: 5px 10px;
+    margin-bottom: 10px;
+}
+.tables{
+    display: flex;
+    margin-top: 20px;
+}
+.table_sales{
+    width: 60%;
+    height: 350px;
+    border: 1px solid var(--gris);
+}
+.table_Products{
+    width: 38%;
+    margin-left: 2%;
+    height: 350px;
+    border: 1px solid var(--gris);
+}
+.font_w{
+    font-weight: 700;
+}
+
+
+@media(max-width: 950px) {
+    .modal_dialog{
+        max-width: 98%  !important ;
+    }
+}
+
+@media(max-width: 500px) {
+    .card_table{
+        overflow-y: auto;
+        margin-bottom: 30px;
+    }
+    .modal_dialog{
+        max-width: 99%  !important ;
+    }
+    .modal-body{
+        padding: 0.3rem !important;
+    }
+    ._box{
+        display: block;
+    }
+    ._box_{
+        width: 100%;
+        padding: 5px;
+        margin-bottom: 0px;
+    }
+    .tables{
+        display: block;
+        /* margin-top: 20px; */
+    }
+    .table_sales{
+        width: 100%;
+        overflow-y: auto;
+    }
+    .table_Products{
+        width: 100%;
+        margin-left: 0%;
+        margin-top: 20px;
+    }
+}

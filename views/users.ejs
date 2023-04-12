@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/users.css">
+    <title>Usuarios</title>
+</head>
+<body>
+    <%-include ("./header")%>
+
+    <div class="card_emergent_alert"></div>
+
+    <div class="my_container users">
+        <div class="main_container">
+            <div class="card_container">
+                <div class="the_title">
+                    <h3 class="mb-1">Usuarios</h3>
+                </div>
+
+                <div class="head_card mt-5 mb-5 d-flex justify-content-end">
+                    <button type="button" class="btn_atla" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                        <span class="material-symbols-outlined">add</span>
+                        Nuevo usuario
+                    </button>
+                </div>
+
+                <div class="user_table mb-5">
+                    <table class="table m-0">
+                        <thead>
+                        <tr>
+                            <th scope="col">Nombre</th>
+                            <th scope="col">Apellido</th>
+                            <th scope="col">Codigo</th>
+                            <th scope="col">Cedula/Pasapt</th>
+                            <th scope="col">Estado</th>
+                            <th scope="col">Accion</th>
+                        </tr>
+                        </thead>
+                        <tbody class="showListCashiers"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Nuevo Usuario</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form class="create_cashier_card">
+                        <!-- <p class="fs-4 text-center">Crear cajero/a</p> -->
+                        <div class="">
+                            <div class="mb-3">
+                                <input type="text" class="form-control" required placeholder="Nombre" id="name">
+                            </div>
+                            <div class="mb-3">
+                                <input type="text" class="form-control" required placeholder="Apellido" id="lastName">
+                            </div>
+                            <div class="mb-3">
+                                <input type="text" class="form-control" required placeholder="Cedula/Pasaporte" id="id_document">
+                            </div>
+                            <div class="mb-3">
+                                <input type="email" class="form-control" placeholder="Correo"  id="email" name="email">
+                            </div>
+                            <div class="mb-4">
+                                <input type="number" class="form-control" id="tel" placeholder="Telefono">
+                            </div>
+                            <div class="mb-4">
+                                <button type="button" class="btn btn-primary form-control" id="btn_add_user">Agragar Cajero</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <!-- <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" id="btn_create" class="btn btn-primary">Crear</button>
+                </div> -->
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="staticBackdrop" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
+        <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Cajero/a</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="show_detail_cashier" id="show_detail_cashier"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+        </div>
+    </div>
+
+    <script type="module" src="../js/users.js"></script>
+    <script src="../js/bootstrap.bundle.min.js" ></script>
+</body>
+</html>

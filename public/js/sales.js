@@ -56,7 +56,7 @@ const showListSales = async(sales) =>{
                 <td> 
                     ${fecha(time.getTime())} ${time.getDate()}/${time.getFullYear()} ${time.getHours()}:${time.getMinutes()}   
                 </td>
-                <td>${sales[i].totalPrice}</td>
+                <td>$${sales[i].totalPrice}</td>
                 <td>
                     <a href="javascript:window.open('/factura/${sales[i]._id}', '','width=1000,height=700,left=100,top=100,toolbar=yes');void 0" 
                     data-id="${sales[i]._id}" class="btn p-0 text-primary">

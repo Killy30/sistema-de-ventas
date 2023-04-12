@@ -46,12 +46,14 @@ const showInfo = async()=>{
                 Fecha: ${time.getDate()}/${(time.getMonth()+1)}/${time.getFullYear()} ${time.getHours()}:${time.getMinutes()}
             </p>
         </div>
-        ${  (cashier !== undefined)?
-                user.data.system_control.add_N_C_receipt?
-                `<p>Caja: ${cashier.name} ${cashier.lastName}</p>`
-                : ''
-            :'<p>ADMIN</p>'
-        }   
+        <div>
+            ${  (cashier !== undefined)?
+                    user.data.system_control.add_N_C_receipt?
+                    `<p>Le atendio: ${cashier.name} ${cashier.lastName}</p>`
+                    : ''
+                :'<p>Le atendio: ADMIN</p>'
+            }   
+        </div>
         <div class="ftable">
             <span style="display: none;">--------------------------------</span>
             <div class="fheader">
@@ -86,7 +88,7 @@ const showInfo = async()=>{
                 <p class=" m-0 text-end" style="width: 130px;">SUBTOTAL:---></p>
                 <p class=" m-0 text-end" style="width: 100px;">${venta.subTotal.toFixed(2)}</p>
             </div>
-            <div class="justify-content-end" style='display: ${venta.subTotal !== venta.totalPrice ? 'flex' : 'none'}'>
+            <div class="justify-content-end" style="display:  ${venta.useItbis ? 'flex' : 'none'};">
                 <p class=" m-0 text-end" style="width: 100px;">ITBIS:---></p>
                 <p class=" m-0 text-end" style="width: 100px;">${venta.itbis.toFixed(2)}</p>
             </div>
@@ -110,12 +112,12 @@ const showInfo = async()=>{
             <p>
                 ${user.data.footText ? user.data.footText.replace(/\n/g, '<br>') : ''}
             </p>
-            <p class='' >.</p>
-            <p class=''>.</p>
-            <p>************ Vann ************</p>
-            <p class=''>.</p>
-            <p class=''>.</p>
-            <p class=''>.</p>
+            <p class='show_only_ticket' >.</p>
+            <p class='show_only_ticket'>.</p>
+            <p>************ nelvann ************</p>
+            <p class='show_only_ticket'>.</p>
+            <p class='show_only_ticket'>.</p>
+            <p class='show_only_ticket'>.</p>
         </div>
     </div>    
     `

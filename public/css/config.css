@@ -3,23 +3,18 @@
     position: relative;
 }
 
-.box_one{
-    display: flex;
-    margin-top: 15px;
-    border-bottom: 1px solid rgb(187, 187, 187);
+.cards_body{
+    margin-left: 10%;
 }
 
-.box_open{
+.boxs{
     width: 100%;
-    height: 100px;
-    padding: 15px;
-    background-color: #fff;
-    margin-bottom: 15px;
-    border-radius: 7px;
-    overflow: hidden;
-    transition: all .2s ease-in-out;
-    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+    display: flex;
 }
+.boxs .names{
+    width: 400px;
+}
+
 
 .titles_config{
     width: 100%;
@@ -28,57 +23,19 @@
     align-items: center;
     justify-content: space-between;
 }
-.m_l{
-    width: 350px;
-}
+
 .create_cashier_card{
     margin-bottom: 20px;
     border: 1px solid #ddd;
     padding: 15px;
     border-radius: 7px;
 }
-.form_list{
-    width: 68%;
-    margin-left: 40px;
-}
-.card_xlx{
-    margin-left: 60px;
-}
-.card_contain{
-    padding: 10px;
-}
-.info_store{
-    border-bottom: 1px solid #ccc;
-}
-.ticket_info{
-    padding: 20px 0px;
-    border-bottom: 1px solid #ccc;
-}
-.type_ticket{
-    border-bottom: 1px solid #ccc;
-}
-.tfoot{
-    padding: 10px;
-    border-top: 2px solid #000;
-}
-.card_info{
-    width: 100%;
-    border-bottom: 1px solid #ddd;
-    display: flex;
-    justify-content: space-between;
-    padding: 10px;
-}
-.card_info p{
-    margin: 0;
-}
-.card_info:last-child{
-    border-bottom: 0;
-}
-.xss{
-    overflow-x: auto;
-}
 
-tbody{
+.f_foot{
+    display: flex;
+    gap: 15px;
+}
+/* tbody{
     height: 330px;
     display: block;
     overflow-y: auto;
@@ -88,35 +45,27 @@ thead tr, tbody tr {
     width: 100%;
     min-width: 750px;
     table-layout: fixed;
+} */
+
+
+.msg_err{
+    position: fixed;
+    top: 65px;
+    right: 15px;
+    max-width: 40%;
+    z-index: 2000;
 }
 
-.cardOpen{
-    display: flex;
-    margin-top: 16px;
+.contain{
+    width: 55%;
 }
-
-.open_the_card_one{
-    height: 560px;
-}
-.open_the_card_two{
-    height: 650px;
-}
-.open_the_card_three{
-    height: 360px;
-}
-
-.btn_open_card{
-    font-size: 30px;
-    cursor: pointer;
-}
-
-.card_emergent_alert{
-    top: 0px;
+#store_address{
+    width: calc(100% - 87px);
 }
 
 @media(max-width: 900px){
-    .form_list{
-        margin-left: 20px;
+    .boxs .names{
+        width: 40%;
     }
 }
 
@@ -125,22 +74,24 @@ thead tr, tbody tr {
     .container_config{
         padding: 20px 10px;
     }
-    .m_l{
-        display: none;
+    .cards_body{
+        margin-left: 3%;
+    }    
+    .contain{
+        width: 60%;
+        font-size: 15px;
     }
-    .form_list{
-        width: 100%;
-        margin-left: 0;
+    .boxs .names{
+        font-size: 15px;
     }
-    thead tr, tbody tr {
-        width: 700px;
-        display: table;
-        table-layout: fixed;
+    .btn{
+        font-size: 15px !important;
     }
-    .xss{
-        overflow-x: auto;
+    .f_foot{
+        display: block;
+        gap: 0px;
     }
-    .card_xlx{
-        margin-left: 30px;
+    .f_foot .btn{
+        margin-top: 10px;
     }
 }
