@@ -26,7 +26,7 @@
 .modal_dialog{
     margin: 0px auto !important;
     height: 100vh !important;
-    max-width: 80% !important;
+    width: 1000px !important;
 }
 .modal_content{
     height: 100%;
@@ -34,14 +34,8 @@
 .modal_dialog .modal-body{
     padding: 10px !important;
 }
-.modal_dialog .modal-footer{
-    padding: 5px !important;
-    background-color: #fff;
-    z-index: 2000;
-}
 .row_one{
-    display: grid;
-    grid-template-columns: 1fr 1fr 84px;
+    display: flex;
     margin-bottom: 10px;
     padding-bottom: 10px;
     gap: 15px;
@@ -50,36 +44,41 @@
     height: 100%;
 }
 
-.boxSearchProducts{
+/* table search */
+.boxSearchElements{
     position: absolute;
-    top: 50px;
+    top: 10px;
     right: 0px;
-    overflow-y: auto;
-    max-height: 300px;
+    height: 300px;
+    width: 450px;
     background-color: #fff;
-    padding: 15px;
+    padding: 10px;
     z-index: 100;
-    border-radius: 5px;
     border: 1px solid #cccc;
     -webkit-box-shadow: 0px 4px 17px -4px rgba(0,0,0,0.75);
     -moz-box-shadow: 0px 4px 17px -4px rgba(0,0,0,0.75);
     box-shadow: 0px 4px 17px -4px rgba(0,0,0,0.75);
 }
-.boxSearchClients{
-    position: absolute;
-    top: 50px;
-    right: 0px;
-    overflow-y: auto;
-    max-height: 300px;
-    background-color: #fff;
-    padding: 15px;
-    z-index: 100;
-    border-radius: 5px;
-    border: 1px solid #cccc;
-    -webkit-box-shadow: 0px 4px 17px -4px rgba(0,0,0,0.75);
-    -moz-box-shadow: 0px 4px 17px -4px rgba(0,0,0,0.75);
-    box-shadow: 0px 4px 17px -4px rgba(0,0,0,0.75);
+
+.tableSearch{
+    border: 1px solid #707070;
+    /* border-collapse: collapse; */
+    width: 100%;
+    height: 100%;
+
 }
+.tableSearch thead tr, tbody tr{
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}
+.tableSearch thead th, tbody td{
+    border: 1px solid #707070;
+}
+.tableSearch tbody{
+    overflow-y: auto;
+}
+
 
 .delete_client{
     cursor: pointer;
@@ -89,27 +88,44 @@
 #list_product{
     height: calc(100% - 105px) !important;
 }
+
 .table_xzs{
     height: 100%;
 }
-#showListProduct{
-    height: calc(100% - 45px);
+.table_xzs tbody{
+    height:100%;
     display: block;
     overflow-y: auto;
+    border: 1px solid #a0a0a0 ;
 }
-#showListProduct tr td{
+.table_xzs  tr td{
     height: 40px ;
 }
-#showListProduct tr{
+.thead_products{
+    background-color: var(--orange);
+    color: #ffffff;
+}
+.table_xzs thead tr, tbody tr {
     display: table;
     width: 100%;
     table-layout: fixed;
 }
-#thead tr{
-    display: table;
-    width: 100%;
-    table-layout: fixed;
+
+.thead_products tr th{
+    font-weight: 600;
+    padding: 7px;
 }
+
+.table_xzs tbody tr{
+    border-bottom: 1px solid #ccc;
+}
+
+.table_xzs tbody tr td{
+    padding: 7px;
+    border: none;
+}
+
+
 .card_error{
     width: 100%;
     padding: 10px;
@@ -120,30 +136,35 @@
 .success_color{
     background-color: rgba(50, 255, 23, 0.692);
 }
-.inactive{
-    pointer-events: none;
-}
+
 
 #listCashiers{
     height: 40px;
 }
-
-.footer_data{
+.content_footer{
+    display: flex;
     width: 100%;
-    border-bottom: 1px solid #ddd;
+    height: 100%;
+    justify-content: space-between;
+    gap: 13px;
+}
+.footer_data{
+    width: 75%;
+    height: 100%;
+    padding-right: 13px;
     display: flex;
     justify-content: space-between;
-    margin: 0px;
+    border-right: 1px solid #ccc;
 }
 .footer_btn{
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
+    width: 25%;
+    height: 100%;
 }
 .card_inset{
-    display: grid;
-    grid-template-columns: 2fr 1fr 82px; ;
-    gap: 20px;
+    display: flex;
+    justify-content: space-between;
+    /* grid-template-columns: 2fr 1fr 1fr;  */
+    
 }
 
 .form_control{

@@ -54,7 +54,28 @@
                         </div>
                         <div class="mb-2">
                             <label for="recipient-name" class="col-form-label">Categoria:</label>
-                            <input type="text" class="form-control" id="category" name="category">
+                            <div class="d-flex justify-content-between align-items-end">
+                                <select class="form-select select_category" id="category" style="width: 290px;">
+                                    <option value="">Selecciona categoria</option>
+                                </select>
+                                <!-- <span class="material-symbols-outlined">update</span> -->
+
+                                <!-- <input type="text" class="form-control" id="category" name="category" style="display: none;"> -->
+                                <a href="#" class="text-primary" id="open_create_ctg">Crear categoria</a>
+                            </div>
+                        </div>
+                        <div class="md-2 card_new_ctg display_none">
+                            <div class="d-flex justify-content-center">
+                                <div class="" style="width: 80%;">
+                                    <label for="recipient-name" class="col-form-label">Nueva categoria</label>
+                                    <form action="">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" id="text_new_ctg" placeholder="Escribe una categoria">
+                                            <button type="button" class="btn btn-primary ms-1" id="create_new_ctg">Crear</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
                         </div>
                         <div class="mb-2">
                             <div class="d-flex justify-content-md-between">
@@ -116,7 +137,11 @@
                         </div>
                         <div class="mb-2">
                             <label for="recipient-name" class="col-form-label">Categoria:</label>
-                            <input type="text" class="form-control" id="category_update" name="category">
+                            <select class="form-select select_category" id="category_update" style="width: 290px;">
+                                <option value="">Selecciona categoria</option>
+                            </select>
+
+                            <!-- <input type="text" class="form-control" id="category_update" name="category"> -->
                         </div>
                         <div class="mb-2">
                             <div class="d-flex justify-content-md-between">
@@ -139,9 +164,9 @@
     
     <div class="my_container product" id="container">
         <div class="main_container">
-            <div class="card_container">
+            <div class="card_container bg_color_white">
                 <div class="the_title">
-                    <h3 class="mb-1">Productos</h3>
+                    <h5 class="mb-1">Productos</h5>
                 </div>
                 <div class="box_table">
                     <div class="mbg">
@@ -149,7 +174,8 @@
                             <form class="d-flex">
                                 <div class="">
                                     <div class="d-flex" id="code">
-                                        <input class="form-control me-2" type="text" id="input_search" placeholder="Buscar productos" aria-label="Search">
+                                        <input class="form-control" type="text" id="input_search" placeholder="Buscar productos" aria-label="Search">
+                                        <button class="btn_atla ms-3" id="btn_search" type="button">Buscar</button>
                                     </div>
                                 </div>
                             </form>
@@ -161,8 +187,8 @@
                         </div>
                     </div>
                     <div class="card_table_body">
-                        <table>
-                            <thead>
+                        <table class="tableShowData">
+                            <thead class="thead">
                                 <tr>
                                     <th scope="col">Codigo</th>
                                     <th scope="col">Nombre</th>
@@ -176,7 +202,13 @@
                         </table>
                     </div>
                     <div class="card_table_fooder">
-                        <p class="mb-0" id="countProducts"></p>
+                        <p class="mb-0 me-3" id="countProducts"></p>
+                        <button type="button" id="btn_prev" class="btn btn-primary">
+                            <span class="material-symbols-outlined">chevron_left</span>
+                        </button>
+                        <button type="button" id="btn_next" class="btn btn-primary">
+                            <span class="material-symbols-outlined">chevron_right</span>
+                        </button>
                     </div>
                 </div> 
             </div>

@@ -42,6 +42,7 @@ module.exports = (app) =>{
     
     app.get('/ventas', isAuthenticated, (req, res)=>{
         const user = req.user
+        console.log(req.sessionID);
         res.render('sales', {user})
     })
 
@@ -53,6 +54,11 @@ module.exports = (app) =>{
     app.get('/usuarios-cajeros', isAuthenticated, (req, res) =>{
         const user = req.user;
         res.render('users', {user})
+    })
+
+    app.get('/cajas', isAuthenticated, (req, res) =>{
+        const user = req.user;
+        res.render('checkout', {user})
     })
 
     router.get('/configuracion', isAuthenticated, (req, res) =>{

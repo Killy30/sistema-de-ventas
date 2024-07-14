@@ -11,18 +11,20 @@
 <body>
     <%-include ("./header")%>
 
+    <div class="card_emergent_alert"></div>
+    
     <div class="my_container analysis container_at">
         <div class="main_container">
-            <div class="card_container">
-                <div class="the_title">
-                    <h3 class="mb-1">Analisis</h3>
+            <div class="card_">
+                <div class="the_title" style="display: none;">
+                    <h5 class="mb-1">Analisis</h5>
                 </div>
 
-                <div class="card_filter mt-5">
+                <div class="card_filter bg_color_white mt-2 p-3" style="display: none;">
                     <!-- <p class="ps-3 mb-0 fs-5">Filtrar</p> -->
                     <button class="btn btn-light">Filtrar por</button>
 
-                    <div class="container-fluid " style="display: none;">
+                    <div class="container-fluid " >
                         <form class="d-flex">
                             <select class="form-select" id="typeSearch">
                                 <option value="all">Todos</option>
@@ -47,8 +49,8 @@
                     </div>
                 </div>
 
-                <div class="cardx1 mt-5">
-                    <div class="box1 border_class">
+                <div class="cardx1 mt-4">
+                    <div class="box1">
                         <div class="tx">
                             <p class="px">Ingreso total</p>
                             <div class="t_i">
@@ -59,7 +61,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="box1 border_class">
+                    <div class="box1">
                         <div class="tx">
                             <p class="px">Gastos</p>
                             <div class="t_i">
@@ -70,7 +72,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="box1 border_class">
+                    <div class="box1">
                         <div class="tx">
                             <p class="px">Ganancias</p>
                             <div class="t_i">
@@ -82,7 +84,7 @@
                             
                         </div>
                     </div>
-                    <div class="card_valance border_class">
+                    <div class="card_valance bg_color_white">
                         <div class="valance_head">
                             <p class="vtitle">Valance de hoy</p>
                             <div id="vdate" class="vdate"></div>
@@ -94,18 +96,7 @@
                             <p id="vvalue" class="csxt"></p>
                         </div>
                     </div>
-                </div>
-    
-                <div class="box_chart">
-                    <div class="card_chart border_class">
-                        <p class="fs-5 ">Ingresos de ventas al mes</p>
-                        <canvas  id="productsGrafict"></canvas>
-                    </div>
-                    <div class="grow border_class"></div>
-                </div>
-
-                <div class="cardx2">
-                    <div class="box1 border_class">
+                    <div class="box1" style="display: none;">
                         <div class="tx">
                             <p class="px">Cantidad de ventas</p>
                             <div class="t_i">
@@ -116,7 +107,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="box1 border_class">
+                    <div class="box1" style="display: none;">
                         <div class="tx">
                             <p class="px">Productos vendidos</p>
                             <div class="t_i">
@@ -127,7 +118,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="box1 border_class">
+                    <div class="box1" style="display: none;">
                         <div class="tx">
                             <p class="px">Productos no vendidos</p>
                             <div class="t_i">
@@ -141,8 +132,16 @@
                     </div>
                 </div>
     
+                <div class="box_chart">
+                    <div class="card_chart bg_color_white">
+                        <p class="fs-5 ">Ingresos de ventas al mes</p>
+                        <canvas  id="productsGrafict"></canvas>
+                    </div>
+                    <!-- <div class="grow bg_color_white"></div> -->
+                </div>
+    
                 <div class="box_tables">
-                    <div class="card_table_p">
+                    <div class="card_table_p bg_color_white">
                         <p class="fs-5 mb-2 ">Productos</p>
                         <div class="tb">
                             <table class="table">
@@ -162,7 +161,7 @@
                         </div>
                     </div>
 
-                    <div class="card_table_s">
+                    <div class="card_table_s bg_color_white">
                         <p class="fs-5 mb-2 ">Ventas</p>
                         <div class="tb">
                             <table class="table">

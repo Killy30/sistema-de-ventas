@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../css/client.css">
+    <link rel="stylesheet" href="../css/clients_users.css">
     <title>Clientes</title>
 </head>
 <body>
@@ -12,25 +13,23 @@
 
     <div class="card_emergent_alert"></div>
 
-    <div class="my_container clients">
+    <div class="my_container clients" id="container">
         <div class="main_container">
-            <div class="card_container">
-                <div class="the_title">
-                    <h3>Clientes</h3>
-                </div>
-                <div class="card_head_c mt-5 mb-5">
-                    <!-- <div class="search">
-                        <form action="">
-                            <input type="text" id="" class="form-control" placeholder="Buscar clientes">
-                        </form>
-                    </div>
-                    <div class="card_filter">
-                        <button class="btn btn-light">Filtrar por</button>
-                    </div> -->
-                    <button type="button" class="btn_atla" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            <div class="card_container bg_color_white">
+                <div class="title_btn_create">
+                    <h5 class="d-flex align-items-end">Clientes</h5>
+                    <button type="button" class="btn_atla mb-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
                         <span class="material-symbols-outlined">add</span>
                         Nuevo cliente
                     </button>
+                </div>
+                <div class="card_head_uc">
+                    <div class="card_search">
+                        <form action="">
+                            <input type="text" id="input_search" class="form-control" placeholder="Buscar clientes">
+                        </form>
+                        <button class="btn_atla ms-3" id="btn_search" type="button">Buscar</button>
+                    </div>
                 </div>
                 <div class="card_table">
                     <table class="table">
@@ -45,8 +44,17 @@
                                 <th>Accion</th>
                             </tr>
                         </thead>
-                        <tbody id="tbody_clients"></tbody>
+                        <tbody id="tbody"></tbody>
                     </table>
+                    <div class="card_table_fooder">
+                        <p class="mb-0 me-3" id="countProducts"></p>
+                        <button type="button" id="btn_prev" class="btn btn-primary">
+                            <span class="material-symbols-outlined">chevron_left</span>
+                        </button>
+                        <button type="button" id="btn_next" class="btn btn-primary">
+                            <span class="material-symbols-outlined">chevron_right</span>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>

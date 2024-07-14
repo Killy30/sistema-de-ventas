@@ -1,0 +1,80 @@
+
+.title_btn_create{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.card_body{
+    width: 100%;
+    height: calc(100% - 61px);
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 15px;
+    border-top: 1px solid #ccc;
+    padding-top: 20px;
+}
+.card_checkouts{
+    width: 100%;
+}
+.card_checkout{
+    height: 70px;
+    width: 100%;
+    padding: 15px;
+    /* display: flex;
+    align-items: center; */
+    margin-bottom: 15px;
+    border-radius: 7px;
+    border: 1px solid #ccc;
+    /* box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px; */
+    /* box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px; */
+}
+
+.card_checkout_wxk{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.checkout_menu_box{
+    position: relative;
+}
+
+.more__vert{
+    cursor: pointer;
+    font-size: 36px;
+}
+
+.card_menu_checkout{
+    width: 150px;
+    position: absolute;
+    right: 0px;
+    border-radius: 7px;
+    padding: 10px 0px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    z-index: 100;
+}
+
+.link_card_checkout{
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.card_menu_checkout a{
+    text-decoration: none;
+    color: #545454;
+    padding: 5px 10px;
+    width: 100%;
+}
+.card_menu_checkout a:hover{
+    background-color: #eaeaea;
+    color: #545454;
+}
+
+.card_xcv{
+    width: 130px;
+}

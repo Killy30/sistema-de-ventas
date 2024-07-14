@@ -1,17 +1,21 @@
 const showListProduct = document.getElementById('showListProduct')
 const tbody = document.getElementById('tbody')
 const listCashiers = document.getElementById('listCashiers')
+const _checkouts = document.getElementById('checkouts')
 const countSales = document.querySelector('#countSales')
 const modalBoxLog = document.querySelector('#modalBoxLog')
-const codeToLog = document.querySelector('#codeToLog')
+const cardSearchProducts = document.getElementById('cardSearchProducts')
 
-import errorMessage from "./errorMSG.js"
 import loader from "./loader.js"
 import fecha from "./month_es.js"
 import data from "./data.js"
+import emergent_alert from "./emergentAlert.js"
+import handleElements from "./handleElements.js"
+
 
 let listProducts = []
 let dataCasheir;
+const APIBASE = '/data-apis'
 
 const getSales = async() =>{
     try {
@@ -55,7 +59,7 @@ const post_store_name = async(e)=>{
     try {
         let data = {name: p_store_name.value, typeStore: type_b.value}
 
-        let req = await fetch('/store-info', {
+        let req = await fetch(APIBASE + '/store-info', {
             method:'POST',
             body:JSON.stringify(data),
             headers: {
@@ -73,18 +77,27 @@ const post_store_name = async(e)=>{
 
 const allow = async() =>{
     let user = await getUser()
-
+    console.log(user);
+    console.log(new Date().getTime());
+    let x = [{a:'', b:''}]
+    x.push({a:'klk', b:''})
+    console.log(x);
     if(user.data.system_control.sale_with_ITBIS){
         document.querySelector('.itbis_Card').style.display = 'flex'
     }
 }
 allow()
 
+
+
+// setInterval(()=> x(), 1000)
+
 const showListSales = async() =>{
     let sale = await getSales()
     let sales = sale.sales_today
     countSales.innerText = `Ventas: ${sales.length}` 
 
+    // console.log(new Date(sales[0].date).getTime() > new Date().getTime());
     tbody.innerHTML = ""
     if(sales.length == 0){
         return noElement()
@@ -97,10 +110,10 @@ const showListSales = async() =>{
                 <td>${sales[i].products.length}</td>
                 <td>
                     <p>
-                        ${fecha(time.getTime())} ${time.getDate()}/${time.getFullYear()} ${time.getHours()}:${time.getMinutes()}
+                        ${time.getMonth() + 1}/${time.getDate()}/${time.getFullYear()} - ${time.getHours()}:${time.getMinutes()}
                     </p> 
                 </td>
-                <td>${sales[i].totalPrice}</td>
+                <td>$${sales[i].totalPrice}</td>
                 <td>
                     <a href="javascript:window.open('/factura/${sales[i]._id}', '','width=1000,height=700,left=100,top=100,toolbar=yes');void 0" 
                     data-id="${sales[i]._id}" class="btn p-0 text-primary">
@@ -113,80 +126,355 @@ const showListSales = async() =>{
 }
 showListSales()
 
-const showListCashiers_select = async() =>{
-    const user = await getUser()
-    let cashiers = user.data.cashiers
 
-    listCashiers.innerHTML = '<option data-code="404" data-act="-1" data-i="-1" value="null">Cajero/a</option>'
-    cashiers.forEach((cashier, i) =>{
-        if(cashier.status){
-            listCashiers.innerHTML += `
-            <option data-code="${cashier.id_code}" data-act="${cashier.status}" data-i="${i}" id="selectOption" value="${cashier._id}">
-                ${cashier.name} ${cashier.lastName}
+async function showListCheckouts(){
+    const checkouts = await data.getCheckouts()
+    
+    _checkouts.innerHTML = '<option value="null">Caja#</option>'
+
+    checkouts.checkout.forEach((item, i) => {
+        if(item.active){
+            _checkouts.innerHTML += `<option value="${item.checkout}" data-idConnection="${item.idConnection}" data-status="${item.connect}" data-id="${item._id}">
+                Caja#${item.checkout}
             </option>`
         }
     })
-    for(let i = 0; i < listCashiers.options.length; i++){
-        let code = listCashiers.options[i].getAttribute('data-code')
 
-        if(code == localStorage.getItem('code')){
-            listCashiers.options[i].selected = true;
+    let x = localStorage.getItem('idConnection_checkout')
+    let a = localStorage.getItem('caja')
+    document.getElementById('showCheckout').value = ''
+
+    for(let i = 0; i < _checkouts.options.length; i++){
+        const idConnection = _checkouts.options[i].dataset.idconnection
+        // const checkoutStatus = _checkouts.options[i].dataset.status
+        const v = _checkouts.options[i].value
+        
+        // console.log(idConnection);
+        // console.log(idConnection, x);
+
+        if(idConnection != undefined){
+
+            if(x == idConnection){
+                _checkouts.options[i].selected = true;
+                document.getElementById('showCheckout').value = `caja#${v}`
+                handleElements.enableElement(document.getElementById('btn_dsconnect_checkout'))
+                handleElements.disableElement(_checkouts)
+                handleElements.enableElement(document.getElementById('btn_open_card_casheir'))
+            }
+
+
+            // console.log(a, v);
+            // console.log(idConnection);
+            if(v == a && idConnection == ''){
+                disconnectCheckoutByAdmin()
+            }
         }
     }
+}
+showListCheckouts()
 
-    let x = cashiers.some(cashier => cashier._id == localStorage.getItem('id'))
+const disconnectCheckoutByAdmin = async() =>{
+    console.log('admin ha cerrado la sesion');
+    localStorage.removeItem('idConnection_checkout')
+    localStorage.removeItem('caja')
 
-    if(x == false){
-        localStorage.removeItem('id')
-        localStorage.removeItem('code')
+    handleElements.disableElement(document.getElementById('btn_dsconnect_checkout'))
+    handleElements.enableElement(_checkouts)
+    handleElements.disableElement(document.getElementById('btn_open_card_casheir'))
+
+    showListCheckouts()
+
+    disconnectCashierByAdmin()
+}
+
+//checkout connections
+const connectCheckout = async(e) =>{
+    const checkouts = await data.getCheckouts()
+
+    const num = _checkouts.options[_checkouts.options.selectedIndex].value
+    const id = _checkouts.options[_checkouts.options.selectedIndex].dataset.id
+
+    if(num == 'null') return false
+
+    const checkout_num = checkouts.checkout.find(item => item.checkout == num)
+    let msg1 = `La caja#${num} ya se encuentra conectado en otro dispositivo, por favor conectese en otra caja o contacte el administrador`
+    let msg2 = 'El codigo ingresado fue incorrecto por favor vuelva a intentarlo'
+    if(checkout_num.connect){
+        emergent_alert({msg: msg1, color:'alert alert-warning'})
+    }else{
+        const code = prompt('Por favor ingresar el codiga para porder realizar esta accion')
+
+        if(code != checkout_num.entryCode) return emergent_alert({msg: msg2, color:'alert alert-danger'})
+
+        try {
+            let datas = {checkout: num, id}
+            const req = await fetch(`${APIBASE}/connect-to-checkout/${datas.id}`)
+            const res = await req.json()
+
+            if(res.idConnection) {
+                localStorage.setItem('idConnection_checkout', res.idConnection)
+                localStorage.setItem('caja', num)
+            }
+            
+            emergent_alert({msg:res.msg, color:res.color})
+            handleElements.enableElement(document.getElementById('btn_dsconnect_checkout'))
+            handleElements.disableElement(_checkouts)
+            handleElements.enableElement(document.getElementById('btn_open_card_casheir'))
+
+            showListCheckouts()
+        } catch (error) {
+            console.error(error);
+        }
+    }
+}
+
+const disconnectCheckout = async () => {
+    const checkouts = await data.getCheckouts()
+
+    const num = _checkouts.options[_checkouts.options.selectedIndex].value
+    const id = _checkouts.options[_checkouts.options.selectedIndex].dataset.id
+
+    if(num == 'null') return false
+
+    const checkout_num = checkouts.checkout.find(item => item.checkout == num)
+
+    if(checkout_num.connect){
+        const code = prompt('Por favor ingresar el codiga para porder realizar esta accion')
+        let msg2 = 'El codigo ingresado fue incorrecto por favor vuelva a intentarlo'
+
+        if(code != checkout_num.entryCode) return emergent_alert({msg: msg2, color:'alert alert-danger'})
+
+        try {
+            let req = await fetch(`${APIBASE}/disconnect-checkout/${id}`)
+            let res = await req.json()
+
+            emergent_alert({msg:res.msg, color:res.color})
+            localStorage.removeItem('idConnection_checkout')
+
+            handleElements.disableElement(document.getElementById('btn_dsconnect_checkout'))
+            handleElements.enableElement(_checkouts)
+            handleElements.disableElement(document.getElementById('btn_open_card_casheir'))
+
+            showListCheckouts()
+
+            if(localStorage.getItem('idConnection_cashier')) disconnectCashierByAdmin()
+        } catch (error) {
+            console.error(error);
+        }
+    }
+}
+
+const showListCashiers_select = async() =>{
+    const cashiers = await data.getCashiers()
+
+    listCashiers.innerHTML = '<option value="null">Cajero/a</option>'
+
+    cashiers.forEach((cashier, i) =>{
+        if(cashier.status){
+            let fullName = `${cashier.name} ${cashier.lastName}`
+            listCashiers.innerHTML += `
+            <option data-code="${cashier.id_code}" data-id="${cashier._id}" data-connected="${cashier.connect}" data-idconnection="${cashier.idConnection}" value="${fullName}">
+                ${fullName}
+            </option>`
+        }
+    })
+    
+    let x = localStorage.getItem('idConnection_cashier');
+    let codex = localStorage.getItem('code');
+
+    document.getElementById('showCashier').value = ''
+
+    for(let i = 0; i < listCashiers.options.length; i++){
+        let idConnection = listCashiers.options[i].dataset.idconnection; 
+        let code = listCashiers.options[i].dataset.code; 
+
+        if(idConnection != undefined){
+
+            if(x == idConnection){
+                listCashiers.options[i].selected = true;
+                document.getElementById('showCashier').value = listCashiers.options[i].value
+                document.getElementById('code').classList.add('display_none')
+                handleElements.disableElement(listCashiers)
+                handleElements.enableElement(document.getElementById('logoutCasheir'))
+            }
+
+            if(code == codex && idConnection == ''){
+                disconnectCashierByAdmin()
+            }
+        }
     }
 } 
 showListCashiers_select()
 
+const disconnectCashierByAdmin = async() =>{
+    const x = localStorage.getItem('idConnection_cashier')
+    try {
+        const cashiers = await data.getCashiers()
+        const cashier = cashiers.find(item => item.idConnection == x)
+
+        if(cashier != undefined){
+            let cashier_id = cashier._id
+            console.log(cashier_id);
+            let req = await fetch(`${APIBASE}/cashier-disconnected/${cashier_id}`,{
+                method:'POST',
+                body: JSON.stringify({}),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            let res = await req.json()
+            
+            code.classList.remove('display_none')
+            handleElements.enableElement(listCashiers)
+            handleElements.disableElement(document.getElementById('logoutCasheir'))
+            localStorage.removeItem('idConnection_cashier')
+            localStorage.removeItem('code')
+            showListCashiers_select()
+        }
+    } catch (error) {
+        console.error(error);
+    }
+    
+}
+
+const connectCasheir = async() =>{
+    const casheirCode = listCashiers.options[listCashiers.options.selectedIndex].dataset.code; 
+    const casheir_id = listCashiers.options[listCashiers.options.selectedIndex].dataset.id;
+    const casheir_connected = listCashiers.options[listCashiers.options.selectedIndex].dataset.connected;
+    const checkout_id = _checkouts.options[_checkouts.options.selectedIndex].dataset.id;
+    const code = document.getElementById('code')
+
+    
+    let msg1 = 'El codigo colocado es incorrecto, vuelve a intentarlo o si se le olvido su codigo por favor contacte su Administrador';
+    let msg2 = 'Debes conectar con una caja primero antes de conectar tu usuario';
+    let msg3 = 'Este usuario ya se encuentra conectado en otro dispositivo, comunicate con tu ADMIN'
+
+    if(code.value.trim() == "") return false
+    if(code.value != casheirCode) return emergent_alert({msg: msg1, color:'alert alert-danger'})
+    if(casheir_connected == 'true') return emergent_alert({msg: msg3, color:'alert alert-danger'})
+
+    if(localStorage.getItem('idConnection_checkout') == undefined){
+        return emergent_alert({msg: msg2, color:'alert alert-danger'})
+    }
+
+    console.log(casheirCode);
+    try {
+        let req = await fetch(`${APIBASE}/cashier-connected/${casheir_id}`,{
+            method:'POST',
+            body: JSON.stringify({checkout_id}),
+            headers:{
+                'Content-Type': 'application/json'
+            }
+        })
+        let res = await req.json()
+
+        emergent_alert({msg:res.msg, color:res.color})
+
+        if(res.idConnection){
+            localStorage.setItem('idConnection_cashier', res.idConnection)
+            localStorage.setItem('code', res.code)
+            handleElements.disableElement(listCashiers)
+            handleElements.enableElement(document.getElementById('logoutCasheir'))
+            code.value = ''
+            code.classList.add('display_none')
+            showListCashiers_select()
+        }
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+const disconnectCasheir = async () =>{
+    const casheir_id = listCashiers.options[listCashiers.options.selectedIndex].dataset.id;
+    const casheir_connected = listCashiers.options[listCashiers.options.selectedIndex].dataset.connected;
+    const checkout_id = _checkouts.options[_checkouts.options.selectedIndex].dataset.id;
+    const x = localStorage.getItem('idConnection_cashier');
+
+    if(x != undefined && casheir_connected == 'true'){
+        try {
+            if(confirm('Seguro que quieres desconectar tu usuario?')){
+                let req = await fetch(`${APIBASE}/cashier-disconnected/${casheir_id}`,{
+                    method:'POST',
+                    body: JSON.stringify({checkout_id}),
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                let res = await req.json()
+
+                emergent_alert({msg:res.msg, color:res.color})
+
+                code.classList.remove('display_none')
+                handleElements.enableElement(listCashiers)
+                handleElements.disableElement(document.getElementById('logoutCasheir'))
+                localStorage.removeItem('idConnection_cashier')
+                localStorage.removeItem('code')
+                showListCashiers_select()
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    }
+}
+
 
 //this function displays the current user/cashier who is using the app
 const showCurrentUser = async() =>{
-    let box = document.getElementById('c_user')
-    const user = await getUser()
-    const cashiers = user.data.cashiers
+    const cashiers = await data.getCashiers()
 
-    box.innerText = (localStorage.getItem('admin') == 'true') ? 'ADMINISTRADOR' : 'NO USUARIO'
+    let cashier_card = document.getElementById('c_user')
+    let checkout_card = document.getElementById('num_checkout')
+    let num_checkout = localStorage.getItem('caja')
+
+    cashier_card.value = (localStorage.getItem('admin') == 'true') ? 'ADMINISTRADOR' : 'NO USUARIO'
+    checkout_card.value = (num_checkout != undefined) ? num_checkout : '' 
 
     cashiers.forEach(cashier =>{
-        if(cashier.id_code == localStorage.getItem('code')){
-            return box.innerText = ` ${cashier.name} ${cashier.lastName}`
+        if(cashier.idConnection == localStorage.getItem('idConnection_cashier')){
+            return cashier_card.value = `${cashier.name} ${cashier.lastName}`
         }
     })
 }
 
 const boxSearchClients = document.querySelector('.boxSearchClients')
+const cardSearchClients = document.querySelector('#cardSearchClients')
+
 const seachClients = async(text) =>{
     const clients = await data.getClients()
     boxSearchClients.style.display = 'block'
 
     let _text = text.toLowerCase()
 
-    boxSearchClients.innerHTML = ""
-    for(let client of clients.data){
+    const clientsFound = clients.data.filter(client => {
         let name = client.name.toLowerCase()
         let lastName = client.lastName.toLowerCase()
         let code = client.id_client.toLowerCase()
 
-        if(name.indexOf(_text) !== -1 || lastName.indexOf(_text) !== -1 || code.indexOf(_text) !== -1){
-            boxSearchClients.innerHTML +=`
-                <div class="d-flex border-bottom d_block">
-                    <div style="width: 100px;" class="d_block"> <p class="d_block mb-0 p-2">${client.id_client}</p> </div>
-                    <div style="width: 250px;" class="d_block"> <p class="d_block mb-0 p-2">${client.name} ${client.lastName}</p> </div>
-                    <div style="width: 100px;" class="d_block"> 
-                        <a href="#" class="add_c" data-id_client="${client._id}" data-name="${client.name} ${client.lastName}">Agregar</a> 
-                    </div>
-                </div>
-            `
+        if(_text == ''){
+            return false
+        }else{
+            return name.indexOf(_text) !== -1 || lastName.indexOf(_text) !== -1 || code.indexOf(_text) !== -1
         }
+    })
+
+    cardSearchClients.innerHTML = ""
+
+    clientsFound.forEach(client => {
+        cardSearchClients.innerHTML +=`
+            <tr>
+                <td>${client.id_client}</td>
+                <td>${client.name} ${client.lastName}</td>
+                <td>
+                    <a href="#" class="add_c" data-id_client="${client._id}" data-name="${client.name} ${client.lastName}">Agregar</a>
+                </td>
+            </tr>
+        `
+    })
+
+    if(cardSearchClients.innerHTML == ""){
+        cardSearchClients.innerHTML = `<p>Cliente no encontrado...</p>`
     }
-    if(boxSearchClients.innerHTML == ""){
-        boxSearchClients.innerHTML = `<p>Cliente no encontrado...</p>`
-    }
+    if(_text == '') boxSearchClients.style.display = 'none'
 }
 
 const boxSearchProducts = document.querySelector('.boxSearchProducts')
@@ -195,27 +483,36 @@ const seachProducts = async(text) =>{
     boxSearchProducts.style.display = 'block'
     
     let _text = text.toLowerCase()
-
-    boxSearchProducts.innerHTML = ""
-
-    for(let product of products.my_products){
+    const productsFound = products.my_products.filter(product => {
         let name = product.name.toLowerCase()
         let code = product.idcode.toString()
-
-        if(name.indexOf(_text) !== -1 || code.indexOf(_text) !== -1){
-            boxSearchProducts.innerHTML +=`
-                <div class="d-flex border-bottom d_block">
-                    <div style="width: 150px;" class="d_block"> <p class="d_block mb-0 p-2">${product.idcode}</p> </div>
-                    <div style="width: 200px;" class="d_block"> <p class="d_block mb-0 p-2">${product.name.toUpperCase()}</p> </div>
-                    <div style="width: 100px;" class="d_block"> <p class="d_block mb-0 p-2">$${product.sum_price}</p> </div>
-                    <div style="width: 100px;" class="d_block p-2"> <a href="#" class="add_p" data-id="${product.idcode}" >Agregar</a> </div>
-                </div>
-            `
+        let x =  _text == '';
+        if(_text == ''){
+            return false
+        }else{
+            return name.indexOf(_text) !== -1 || code.indexOf(_text) !== -1
         }
+    })
+
+    
+    cardSearchProducts.innerHTML = ""
+    productsFound.forEach(product =>{
+        cardSearchProducts.innerHTML += `
+            <tr>
+                <td>${product.idcode}</td>
+                <td>${product.name.toUpperCase()}</td>
+                <td>$${product.sum_price}</td>
+                <td>
+                    <a href="#" class="add_p" data-id="${product.idcode}" >Agregar</a>
+                </td>
+            </tr>
+        `
+    })
+  
+    if(cardSearchProducts.innerHTML == ""){
+        cardSearchProducts.innerHTML = `<p>No hay productos con este nombre</p>`
     }
-    if(boxSearchProducts.innerHTML == ""){
-        boxSearchProducts.innerHTML = `<p>No hay productos con este nombre</p>`
-    }
+    if(_text == '') boxSearchProducts.style.display = 'none'
 }
 
 const addProduct = async(e) =>{
@@ -233,38 +530,40 @@ const getCodeProduct = async() =>{
     
     if(code.value.trim() == "") return false
     try {        
-        let req = await fetch(`/get-product-by-code/${code.value.trim()}`)
+        let req = await fetch(`${APIBASE}/get-product-by-code/${code.value.trim()}`)
         let res = await req.json()
 
         if(res.status == false){
-            errorMessage(res.msg, 'alert alert-danger')
+            emergent_alert({msg: res.msg, color:'alert alert-danger'})
             showProducts()
         }else{
             listProducts.push(res.product)
             showProducts()
         }   
+        code.value = ""
+        code.focus()
     } catch (error) {
         console.log(error);
     }
-    code.value = ""
-    code.focus()
 }
 
 const showProducts = async() =>{
     const user = await getUser()
-    showListProduct.innerHTML = ''
-    for(let i = 0; i < listProducts.length; i++){
+    const productsGroup = Object.groupBy(listProducts, ({idcode}) => idcode)
+    
+    showListProduct.innerHTML = '';
+    for(const productGroup in productsGroup){
+        let products = productsGroup[productGroup]
         showListProduct.innerHTML += `
             <tr>
-                <td>${listProducts[i].idcode}</td>
-                <td>${listProducts[i].name.toUpperCase()}</td>
-                <td>${listProducts[i].price.toFixed(2)}</td>
+                <td>${products.length}</td>
+                <td>${products[0].name.toUpperCase()}</td>
+                <td>${products[0].price.toFixed(2)}</td>
                 ${
-                    user.data.system_control.sale_with_ITBIS ? `<td>${listProducts[i].itbis.toFixed(2)}</td>` : ""
+                    user.data.system_control.sale_with_ITBIS ? `<td>${products[0].itbis.toFixed(2)}</td>` : ""
                 }
-                <td>${listProducts[i].category}</td>
                 <td>
-                    <a href="" type="button" data-index="${i}" data-id="${listProducts[i]._id}" class="text-danger delete">
+                    <a href="" type="button" data-idcode="${products[0].idcode}" data-id="${products[0]._id}" class="text-danger delete remove_product">
                         Eliminar
                     </a>
                 </td>
@@ -297,6 +596,10 @@ const totalValue = async() =>{
 
 const create_sale = async(e) =>{
     const user = await getUser()
+    const cashiers = await data.getCashiers()
+    const checkouts = await data.getCheckouts()
+    
+
     let sale_with_ITBIS = user.data.system_control.sale_with_ITBIS
 
     const cambio = document.getElementById('cambio')
@@ -304,71 +607,92 @@ const create_sale = async(e) =>{
     let subTotal = listProducts.reduce((acc, p) => acc = acc + p.price ,0)
     let total_itbis = listProducts.reduce((acc, p) => acc = acc + p.itbis ,0)
 
+    let checkout_connected = localStorage.getItem('idConnection_checkout')
+    let cashier_connected = localStorage.getItem('idConnection_cashier') 
+    let client_id = localStorage.getItem('id_client')
+
+    const checkout = checkouts.checkout.find(item => item.idConnection == checkout_connected)
+    const cashier = cashiers.find(item => item.idConnection == cashier_connected)
+
+    console.log(cashier);
+    console.log(checkout);
+
     let totalPrice = subTotal + (sale_with_ITBIS ? total_itbis : 0)
+
     //
-    if(!localStorage.getItem('id') && localStorage.getItem('admin') == 'false'){
-        let e = 'Debes conectar tu usuario (cajero/a) antes de hacer una venta, por favor asegurece de estar conectado para realizar la venta'
-        return alert(e)
+    if(!cashier || !checkout){
+        // let msg = 'Debes conectar tu usuario (cajero/a) antes de hacer una venta, por favor asegurece de estar conectado para realizar la venta'
+        let msg = 'La caja y tu usuario (cajera/o) deben estar conectados antes de realizar cualquier venta, por favor conecta tu usuario '
+        return emergent_alert({msg: msg, color: 'alert alert-warning'})
     }
     //
     if(totalPrice == 0){
-        let error = 'Por favor agregue productos antes de realizar la venta...'
-        return errorMessage(error,'alert alert-danger')
+        let msg = 'Por favor agregue productos antes de realizar la venta...'
+        return emergent_alert({msg: msg, color:'alert alert-danger'})
     }
     //
     if(pago.length == 0){
-        let error = 'Por favor agregue el pago en efectivo que dio el cliente para hacer esta venta...'
-        return errorMessage(error,'alert alert-danger')
+        let msg = 'Por favor agregue el pago en efectivo que dio el cliente para realizar esta venta...'
+        return emergent_alert({msg: msg, color: 'alert alert-danger'})
     }
     //
     if(pago < totalPrice){
-        let error = 'Saldo insuficiente para hacer esta venta...'
-        return errorMessage(error,'alert alert-danger')
+        let msg = 'Saldo insuficiente para hacer esta venta...'
+        return emergent_alert({msg:msg, color:'alert alert-danger'})
     }
 
     let cambioValue = pago - totalPrice
     cambio.innerText = cambioValue.toFixed(2)
-    let cashier_id = localStorage.getItem('id') 
-    let client_id = localStorage.getItem('id_client')
     
-    let data = {
+    let datas = {
         products:listProducts,
         totalPrice: totalPrice.toFixed(2),
         subTotal: subTotal,
         pago: pago,
         cambio: cambioValue.toFixed(2),
-        cashier_id: cashier_id,
+        connection_checkout_id: checkout_connected,
+        connection_cashier_id: cashier_connected,
         itbis: total_itbis,
         client_id: client_id
     }
 
     try {
-        let req = await fetch('/new-sale', {
+        let req = await fetch(APIBASE + '/new-sale', {
             method: 'POST',
-            body: JSON.stringify(data),
+            body: JSON.stringify(datas),
             headers: {
                 'Content-Type': 'application/json'
             }
         })
         let res = await req.json()
+
+        if(!res.status){
+            return emergent_alert({msg:res.msg, color: res.color}) 
+        }
   
         document.querySelectorAll('.delete').forEach(element => element.disabled = true)
-        document.getElementById('add').disabled = true
-        document.getElementById('finich').disabled = true
-        document.getElementById('cancel').disabled = true
-        document.getElementById('codigo').disabled = true
-        document.getElementById('textSearch').disabled = true
-        document.getElementById('pago').disabled = true
-        document.getElementById('clientSearch').disabled = true
-        document.getElementById('cerrar').disabled = false
+        
+        handleElements.disableElement(document.getElementById('add'))
+        handleElements.disableElement(document.getElementById('finich'))
+        handleElements.disableElement(document.getElementById('cancel'))
+        handleElements.disableElement(document.getElementById('codigo'))
+        handleElements.disableElement(document.getElementById('textSearch'))
+        handleElements.disableElement(document.getElementById('pago'))
+        handleElements.disableElement(document.getElementById('clientSearch'))
+        handleElements.enableElement(document.getElementById('cerrar'))
+
+        document.querySelectorAll('.remove_product').forEach(btn_remove => {
+            handleElements.disableElement(btn_remove)
+        })
 
         document.querySelector('.delete_client').classList.add('inactive')
-        document.getElementById('clean_list').classList.add('inactive')
+        
+        handleElements.disableElement(document.getElementById('clean_list'))
         const factura = document.getElementById('factura')
         
-        factura.classList.remove('inactive')
+        handleElements.enableElement(factura)
         factura.href = `javascript:window.open('/factura/${res.id}', '','width=1000,height=700,left=100,top=100,toolbar=yes');void 0`
-        errorMessage(res.msg,'alert alert-success')
+        emergent_alert({msg:res.msg, color:'alert alert-success'})
         showListSales()
     } catch (error) {
         console.log(error);
@@ -378,8 +702,9 @@ const create_sale = async(e) =>{
 showListProduct.addEventListener('click', e =>{
     if(e.target.classList.contains('delete')){
         e.preventDefault()
-        if(confirm('Seguro que deseas eliminar este producto en la lista?')){
-            let index = e.target.dataset.index
+        if(confirm('Seguro que deseas eliminar uno de este producto en la lista?')){
+            let idcode = e.target.dataset.idcode
+            let index = listProducts.findIndex((product) => product.idcode == idcode)
             listProducts.splice(index, 1)
             showProducts()
         }
@@ -400,14 +725,13 @@ const cancelSele = () =>{
 
 const openSele = () => { 
     showCurrentUser()
-
     if(document.getElementById('pago').value === ''){
-        document.getElementById('cerrar').disabled = true
-        document.getElementById('codigo').disabled = false
-        document.getElementById('textSearch').disabled = false
-        document.getElementById('clean_list').classList.remove('inactive')
+        handleElements.disableElement(document.getElementById('cerrar'));
+        handleElements.enableElement(document.getElementById('codigo'));
+        handleElements.enableElement(document.getElementById('textSearch'));
+        handleElements.enableElement(document.getElementById('clean_list'));
     }else{
-        document.getElementById('clean_list').classList.add('inactive')
+        handleElements.disableElement(document.getElementById('clean_list'));
     }
     setTimeout(() =>{
         document.getElementById('codigo').focus()
@@ -433,16 +757,17 @@ const closeSales = () =>{
     document.getElementById('codigo').value = ''
     document.getElementById('pago').value = ''
 
-    document.getElementById('add').disabled = false
-    document.getElementById('finich').disabled = false
-    document.getElementById('cancel').disabled = false
-    document.getElementById('pago').disabled = false
-    document.getElementById('clientSearch').disabled = false
-    document.getElementById('factura').classList.add('inactive')
+    handleElements.enableElement(document.getElementById('add'))
+    handleElements.enableElement(document.getElementById('finich'))
+    handleElements.enableElement(document.getElementById('cancel'))
+    handleElements.enableElement(document.getElementById('pago'))
+    handleElements.enableElement(document.getElementById('clientSearch'))
+    handleElements.disableElement(document.getElementById('factura'))
+    
     document.getElementById('mode_code').options[0].selected = true;
 
     localStorage.removeItem('id_client')
-    document.querySelector('.client_name').innerText = ""
+    document.querySelector('.client_name').value = ""
     document.querySelector('#add').style.display = 'none'
     document.querySelector('.delete_client').style.display = 'none'
     document.getElementById('clientSearch').style.display = 'block'
@@ -479,55 +804,10 @@ document.getElementById('codigo').addEventListener('keydown', e =>{
         if(document.getElementById('pago').value === ''){
             getCodeProduct()
         }else{
-            let error = 'Cerrar esta venta para poder crear otra...'
-            return errorMessage(error,'alert alert-danger')
+            let msg = 'Cerrar esta venta para poder crear otra...'
+            return emergent_alert({msg: msg, color:'alert alert-warning'})
         }
     }
-})
-
-
-listCashiers.addEventListener('change', async(e) =>{
-
-    let id = e.target.value
-    let code = e.target.options[e.target.selectedIndex].dataset.code
-   
-    dataCasheir = {id, code}
-
-    if(code !== '404'){
-        modalBoxLog.style.display = "block"
-    }else{
-        if(confirm('Seguro que quieres salir?')){
-            return changeCasheir(dataCasheir)
-        }else{
-            return showListCashiers_select()
-        }
-    }
-})
-
-codeToLog.addEventListener('click', e =>{
-    e.preventDefault()
-    let code = document.getElementById('code')
-
-    if(code.value.trim() == "") return false
-    
-    if(dataCasheir.code == code.value){
-        changeCasheir(dataCasheir)
-        code.value = ''
-        modalBoxLog.style.display = "none"
-        document.getElementById('error_code').innerText = ""
-    }else{
-        document.getElementById('error_code').innerText = `El codigo ${code.value} es incorrecto`
-        code.value = ''
-    }
-})
-
-modalBoxLog.addEventListener('click', e =>{
-    if(e.target.classList.contains('close_modal') ){
-        e.preventDefault()
-        modalBoxLog.style.display = "none"
-        document.getElementById('error_code').innerText = ""
-        showListCashiers_select()
-    } 
 })
 
 document.getElementById('textSearch').addEventListener('keyup', e =>{
@@ -538,7 +818,7 @@ document.getElementById('clientSearch').addEventListener('keyup', e =>{
 })
 
 window.addEventListener('click', e =>{
-    let client_name = document.querySelector('.client_name')
+    let client_name = document.querySelector('#clientSearch')
     let delete_client = document.querySelector('.delete_client')
 
     if(e.target.classList.contains('add_p')){
@@ -548,18 +828,21 @@ window.addEventListener('click', e =>{
     if(e.target.classList.contains('add_c')){
         let id_client = e.target.dataset.id_client
         let name = e.target.dataset.name
-        document.getElementById('clientSearch').value = ""
-        document.getElementById('clientSearch').style.display = 'none'
+        // document.getElementById('clientSearch').value = ""
+        // document.getElementById('clientSearch').style.display = 'none'
 
-        client_name.innerText = name
+        client_name.value = ""
+        client_name.value = name
+        handleElements.disableElement(client_name)
         delete_client.style.display = 'block'
         localStorage.setItem('id_client', id_client)
     }
 
     if(e.target.classList.contains('delete_client')){
-        client_name.innerText = ""
+        handleElements.enableElement(client_name)
+        client_name.value = ""
         delete_client.style.display = 'none'
-        document.getElementById('clientSearch').style.display = 'block'
+        // document.getElementById('clientSearch').style.display = 'block'
         localStorage.removeItem('id_client')
     }
 
@@ -570,29 +853,68 @@ window.addEventListener('click', e =>{
     
 })
 
-
-const changeCasheir = async(data) =>{
-    try {
-        if(data.code === '404'){
-            localStorage.setItem('code', data.code)
-            localStorage.removeItem('id')
-            showListCashiers_select()
-        }else{
-            localStorage.setItem('code', data.code)
-            localStorage.setItem('id', data.id)
-            showListCashiers_select()
-        }
-        
-    } catch (error) {
-        console.log(error);
-    }
+function handleDate(){
+    let _date = document.querySelector('.date')
+    const time = new Date()
+    
+    _date.innerHTML = `<div class="d-flex">
+        <p class="m-0 me-2">${fecha(time.getTime())}  ${time.getDate()}-${time.getFullYear()}</p>
+        <p class="m-0">${time.getHours()}:${time.getMinutes()}</p>
+    </div>`
 }
+handleDate()
+setInterval(()=> handleDate(), 5000)
 
 document.getElementById('btn_store_name').addEventListener('click', post_store_name)
+document.getElementById('btn_connect_checkout').addEventListener('click', connectCheckout)
+document.getElementById('btn_dsconnect_checkout').addEventListener('click', disconnectCheckout)
+document.getElementById('btn_open_card_casheir').addEventListener('click', (e) => modalBoxLog.style.display = "block")
 
+document.getElementById('codeToLog').addEventListener('click', connectCasheir)
+document.getElementById('logoutCasheir').addEventListener('click', disconnectCasheir)
 
+modalBoxLog.addEventListener('click', e =>{
+    if(e.target.classList.contains('close_modal') ){
+        e.preventDefault()
+        modalBoxLog.style.display = "none"
+        document.getElementById('error_code').innerText = ""
+        showListCashiers_select()
+    } 
+})
 
+const btn_keys = {
+    esc: 27,
+    f2: 113,
+    f4: 115,
+    f8: 119,
+    f9: 120,
+    ctrl: 17,
+    left: 37,
+    right: 39
+}
 
+window.addEventListener('keydown', e =>{
+    
+    if(e.keyCode == btn_keys.f2 || e.which == btn_keys.f2){
+       
+        const btn_open = document.getElementById('btn_open_sele')
+        
+        const my_event = new Event('click')
 
+        btn_open.addEventListener('click', e => {
+            console.log(e.target);
+            openSele()
+        })
+        
+        btn_open.dispatchEvent(my_event)
+    }
+
+    if(e.keyCode == btn_keys.ctrl || e.which == btn_keys.ctrl){
+
+        const pago = document.getElementById('pago')
+        console.log('yesss');
+        pago.focus()
+    }
+})
 
 

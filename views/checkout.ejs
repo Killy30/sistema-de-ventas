@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/checkout.css">
+    <title>Cajas</title>
+</head>
+<body>
+    <%-include ("./header")%>
+    <div class="card_emergent_alert"></div>
+
+    <div class="my_container checkout" id="container">
+        <div class="main_container">
+            <div class="card_container bg_color_white">
+                <div class="title_btn_create">
+                    <h5 class="d-flex align-items-end">Cajas</h5>
+                    <button type="button" class="btn_atla mb-2 " data-bs-toggle="modal" data-bs-target="#exampleModal">
+                        <span class="material-symbols-outlined">add</span>
+                        Nueva caja
+                    </button>
+                </div>
+                <div class="card_body">
+                    <div class="card_checkouts"></div>
+                    <!-- <div class="card_checkout_config">
+                        <div class="details">
+                            <p class="fs-5 m-0">Detalles</p>
+                        </div>
+                        <div class="card_checkout_config_body">
+                            <div class="card_details"></div>
+                            <div class="card_config"></div>
+                        </div>
+                    </div> -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Nueva Caja</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Pa</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" id="btn_checkout" class="btn btn-primary">Crear</button>
+                </div>
+            </div>
+        </div>
+    </div>
+ 
+    <div class="modal fade" id="staticBackdrop" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
+        <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Cajero/a</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="show_detail_checkout" id="show_detail_checkout"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+        </div>
+    </div>
+
+    <script type="module" src="../js/checkout.js"></script>
+    <script src="../js/bootstrap.bundle.min.js" ></script>
+</body>
+</html>

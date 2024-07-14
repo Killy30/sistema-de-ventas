@@ -13,7 +13,9 @@
 <body>
     <%-include ("./header")%>
 
-    <div class="modalBoxLog home" id="modalBoxLog" style="display: none;">
+    <div class="card_emergent_alert"></div>
+
+    <div class="modalBoxLog home" id="modalBoxLog" style="display: none; z-index: 1000;">
         <div class="card" style="width: 400px; margin: auto; ">
             <div class="modal-header">
                 <p>Codigo del cajero/a</p>
@@ -25,12 +27,39 @@
                 <p class="text-danger" id="error_code"></p>
                 <form action="">
                     <div class="input-groupe">
+                        <button type="button" id="logoutCasheir" disabled class="btn btn-danger form-control mb-3">Desconectar</button>
+                        <select class="form-select mb-3" name="" id="listCashiers">
+                            <!-- <option value="no_data">Cajero/a</option> -->
+                        </select>
                         <input type="text" name="" class="form-control" id="code" placeholder="Introduce tu codigo">
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" id="codeToLog" >Entrar</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="exampleModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Conectar Caja</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="">
+                        <button type="button" id="btn_dsconnect_checkout" disabled class="btn btn-danger form-control mb-3">Desconectar caja</button>
+                        <select class="form-select me-2" id="checkouts">
+                            <!-- <option value="no_data">Caja#</option> -->
+                        </select>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button> -->
+                    <button type="button" id="btn_connect_checkout" class="btn btn-primary">Conectar</button>
+                </div>
             </div>
         </div>
     </div>
@@ -84,25 +113,46 @@
                     <div class="border-bottom  row_one">
                         <div class="user me-3 d-flex align-items-center">
                             <div class="d-flex">
-                                <p class="me-2 mb-0" style="font-weight: 500;">Le atiende: </p>
-                                <p class="mb-0 " style="font-weight: 500;" id="c_user"></p>
+                                <p class="me-2 mb-0" style="font-weight: 500;">Cajera: </p>
+                                <!-- <p class="mb-0 " style="font-weight: 500;" id="c_user"></p> -->
+                                <input type="text" id="c_user" class="form-control" disabled>
                             </div>
                         </div>
-                        <div class="d-flex align-items-center position-relative" style="min-width: 400px;">
-                            <div class="d-flex align-items-center">
-                                <label for="" class="me-2">Cliente:</label>
-                                <p class="client_name m-0"></p>
-                                <input type="text" class="form-control" id="clientSearch" autocomplete="off" placeholder="Buscar clientes">
-                                <span class="material-symbols-outlined delete_client text-danger ms-2" style="display: none;">close</span>
+                        <div class="d-flex align-items-center">
+                            <div class="d-flex">
+                                <p class="me-2 mb-0" style="font-weight: 500;">Caja: </p>
+                                <!-- <p class="mb-0 " style="font-weight: 500;" id="caja"></p> -->
+                                <input type="text" id="num_checkout" class="form-control" style="width: 60px;" disabled>
                             </div>
-                            <div class="boxSearchClients"></div>
                         </div>
                         <div>
-                            <a href="" id="factura" class="btn btn-primary inactive" >Factura</a>
+                            <div class="d-flex align-items-center">
+                                <label for="" class="me-2">Cliente:</label>
+                                <!-- <p class="client_name m-0"></p> -->
+                                <input type="text" class="form-control client_name" id="clientSearch" autocomplete="off" placeholder="Buscar clientes">
+                                <span class="material-symbols-outlined delete_client text-danger ms-2" style="display: none;">close</span>
+                            </div>
+                            <div class="position-relative">
+                                <div class="boxSearchClients boxSearchElements">
+                                    <table class="tableSearch">
+                                        <thead>
+                                            <tr>
+                                                <th>code</th>
+                                                <th>nombre</th>
+                                                <th>accion</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="cardSearchClients"></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <div class="date"></div>
                         </div>
                     </div>
                     <div class="mb-2 card_inset">
-                        <div class="d-flex">
+                        <div class="d-flex" style="width: 500px;">
                             <select id="mode_code" style="width: 120px;" >
                                 <option value="automatico">Automatico</option>
                                 <option value="manual">Manual</option>
@@ -110,28 +160,41 @@
                             <input type="number" class="form_control input_code" placeholder="Ingresa el codigo del producto aqui" id="codigo">
                             <button type="button" id="add" style="display:none;" class="btn btn-primary ms-3">Agregar</button>
                         </div>
-                        <div class="position-relative">
+                        <div class="" style="width: 250px;">
                             <div class="d-flex align-items-center">
-                                <!-- <label for="" class="me-2">Buscar productos: </label> -->
                                 <input type="text" class="form_control textSearch" id="textSearch" placeholder="Buscar productos (nombre o codigo)">
                             </div>
-                            <div class="boxSearchProducts"></div>
+                            <div class="position-relative">
+                                <div class="boxSearchProducts boxSearchElements">
+                                    <table class="tableSearch">
+                                        <thead>
+                                            <tr>
+                                                <th>code</th>
+                                                <th>descripcion</th>
+                                                <th>precio</th>
+                                                <th>accion</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="cardSearchProducts"></tbody>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
-                        <div class="">
+                        <div class="d-flex justify-content-between" style="width: 180px;">
                             <a href="" class="btn btn-warning " id="clean_list">Limpiar</a>
+                            <a href="" id="factura" class="btn btn-primary inactive" >Factura</a>
                         </div>
                     </div>
                     <div class="w-100" id="list_product">
-                        <table class="table table_xzs">
-                            <thead id="thead">
+                        <table class="table_xzs">
+                            <thead class="thead_products" id="thead">
                                 <tr>
-                                    <th scope="col">Codigo</th>
-                                    <th scope="col">Nombre</th>
+                                    <th scope="col">Unidad</th>
+                                    <th scope="col">Descripcion</th>
                                     <th scope="col">Precio</th>
                                     <% if(user.system_control.sale_with_ITBIS){%>
                                         <th scope="col">ITBIS</th>
                                     <%}%>
-                                    <th scope="col">Categoria</th>
                                     <th scope="col">Accion</th>
                                 </tr>
                             </thead>
@@ -140,35 +203,44 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <div class="footer_data">
-                        <div class="mr-5 d-flex">
-                            <p class="fs-4" style="font-weight: 500; margin: 0;">Subtotal = </p>
-                            <p class="fs-4" style="width: 130px; font-weight: 500; margin: 0 10px 0 10px;" id="subTotal">0.00</p>
-                        </div>
-                        <div class="mr-5 itbis_Card" style="display: none;">
-                            <p class="fs-4" style="font-weight: 500; margin: 0;">ITBIS = </p>
-                            <p class="fs-4" style="width: 115px; font-weight: 500; margin: 0 10px 0 10px;" id="itbis">0.00</p>
-                        </div>
-                        <div class="d-flex align-items-center">
-                            <label for="pago" class="col-form-label fs-4" style="font-weight: 500;">Pago:</label>
-                            <input type="number" class="form-control ml-3" style="width: 130px;  margin-left: 10px;" id="pago">
-                        </div>
-                    </div>
-                    <div class="footer_btn">
-                        <div class="total">
-                            <div class="mr-5 d-flex">
-                                <p class="fs-2" style="font-weight: 500; margin: 0;">Total = </p>
-                                <p class="fs-2" style="width: 150px; font-weight: 500; margin: 0 10px 0 10px;" id="total">0.00</p>
+                    <div class="content_footer">
+                        <div class="footer_data">
+                            <div>
+                                <div class="mr-5 d-flex">
+                                    <p class="fs-5" style="font-weight: 500; margin: 0; width: 120px;">Subtotal: </p>
+                                    <p class="fs-5" style="width: 130px; font-weight: 500; margin: 0 10px 0 10px;" id="subTotal">0.00</p>
+                                </div>
+                                <div class="mr-5 itbis_Card" style="display: none;">
+                                    <p class="fs-5" style="font-weight: 500; margin: 0; width: 120px;">ITBIS: </p>
+                                    <p class="fs-5" style="width: 115px; font-weight: 500; margin: 0 10px 0 10px;" id="itbis">0.00</p>
+                                </div>
+                                <div class="mr-5 d-flex">
+                                    <p class="fs-2" style="font-weight: 1000; margin: 0; width: 120px;">Total: </p>
+                                    <p class="fs-2" style="width: 150px; font-weight: 1000; margin: 0 10px 0 10px;" id="total">0.00</p>
+                                </div>
                             </div>
-                            <div class="mr-5 d-flex">
-                                <p class="fs-4" style="font-weight: 500; margin: 0;">Cambio: </p>
-                                <p class="fs-4" style="width: 115px; font-weight: 500; margin: 0 10px 0 10px;" id="cambio">0.00</p>
+    
+                            <div>
+                                <div class="d-flex align-items-center">
+                                    <label for="pago" class="col-form-label fs-5" style="font-weight: 500;  width: 110px;">Pago:</label>
+                                    <input type="number" class="form-control ml-3" style="width: 130px;" id="pago">
+                                </div>
+                                <div class="">
+                                    <div class="mr-5 d-flex">
+                                        <p class="fs-5" style="font-weight: 500; margin: 0;  width: 110px;">Cambio: </p>
+                                        <p class="fs-5" style="width: 115px; font-weight: 500; margin: 0;" id="cambio">0.00</p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="d-flex align-items-center">
-                            <button type="button" class="btn btn-secondary" id="cancel" data-bs-dismiss="modal">Cancelar</button>
-                            <button type="button" class="btn btn-primary" style="margin: 0px 15px;" id="finich" >Finalizar venta</button>
-                            <button type="button" class="btn btn-danger" id="cerrar" data-bs-dismiss="modal">Cerrar venta</button>
+                        <div class="footer_btn row pb-2">
+                            <div class="row g-2">
+                                <button type="button" class="col-sm btn btn-success btn-lg" style="margin: 0px" id="finich" >Finalizar venta</button>
+                            </div>
+                            <div class="row g-2 gap-3 " >
+                                <button type="button" class="col-sm btn btn-danger" id="cancel" data-bs-dismiss="modal">Cancelar</button>
+                                <button type="button" class="col-sm btn btn-primary" id="cerrar" data-bs-dismiss="modal">Cerrar</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -178,17 +250,31 @@
 
     <div class="my_container" id="container">
         <div class="main_container">
-            <div class="card_container">
+            <div class="card_container bg_color_white">
                 <div class="the_title">
-                    <h3 class="mb-1">Nuevas ventas</h3>
+                    <h5 class="mb-1">Punto de venta</h5>
                 </div>
                 <div class="box_table">
                     <div class="mbg">
                         <div class="head_mbg">
-                            <div>
-                                <select class="form-select" name="" id="listCashiers">
+                            <div class="d-flex ">
+                                <div class="input-group me-3" >
+                                    <button class="btn btn-outline-success" type="button" id="button-addon1"  data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                        Elegir
+                                    </button>
+                                    <input type="text" class="form-control" placeholder="Caja#" id="showCheckout" disabled>
+                                </div>
+                                
+                                <div class="input-group me-2" >
+                                    <button class="btn btn-outline-success" type="button" id="btn_open_card_casheir" disabled >
+                                        Elegir
+                                    </button>
+                                    <input type="text" class="form-control" placeholder="Cajera" id="showCashier" disabled>
+                                </div>
+
+                                <!-- <select class="form-select" name="" id="">
                                     <option value="no_data">Cajero/a</option>
-                                </select>
+                                </select> -->
                             </div>
             
                             <div>
@@ -200,8 +286,8 @@
                         </div>
                     </div>
                     <div class="card_table_body">
-                        <table class="tbs">
-                            <thead>
+                        <table class="tbs tableShowData">
+                            <thead class="thead">
                                 <tr>
                                     <th scope="col">Codigo</th>
                                     <th scope="col">Productos</th>
@@ -221,7 +307,7 @@
         </div>
     </div>
 
-    <script type="module" src="../js/app.js"></script>
     <script src="../js/bootstrap.bundle.min.js" ></script>
+    <script type="module" src="../js/app.js"></script>
 </body>
 </html>

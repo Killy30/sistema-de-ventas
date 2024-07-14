@@ -1,13 +1,54 @@
-const tbody_clients_list = document.getElementById('tbody_clients')
+const tbody_clients_list = document.getElementById('tbody')
+const countElement = document.getElementById('countProducts')
+let btn_next = document.getElementById('btn_next')
+let btn_prev = document.getElementById('btn_prev')
 
 import emergent_alert from "./emergentAlert.js"
 import data from './data.js'
+import loader from "./loader.js"
+import handleElements from './handleElements.js'
+import { elementsPagination } from "./elementsPagination.js"
 
-const show_clients = async()=>{
-    const clients = await data.getClients()
+const APIBASE = '/data-apis'
+let pageIndex = 1
+let allData = []
+
+const getAllClientsPagination = async() =>{
+    try {
+        tbody_clients_list.innerHTML = `${loader()}`
+        const clients = await data.getClientsPagination(pageIndex)
+        allData = clients
+        show_clients(clients)
+    } catch (error) {
+        console.log(error);
+    }
+}
+getAllClientsPagination()
+
+const searchClientsPagination = async() =>{
+    try {
+        const input_search = document.getElementById('input_search').value;
+    
+        if(input_search.trim() == '') return false
+
+        tbody_clients_list.innerHTML = `${loader()}`
+        const datas = {element: 'clients', text: input_search, index: pageIndex};
+        const clients = await data.searchElements(JSON.stringify(datas))
+
+        allData = clients
+        show_clients(clients)
+    } catch (error) {
+        console.log(error);
+    }
+    
+}
+
+const show_clients = async(clients)=>{
+
+    elementsPagination({datas: clients, countElement, handleElements, btn_prev, btn_next})
 
     tbody_clients_list.innerHTML = ''
-    clients.data.forEach(client => {
+    clients.outputArray.forEach(client => {
         tbody_clients_list.innerHTML += `
             <tr>
                 <td>${client.id_client}</td>
@@ -17,15 +58,15 @@ const show_clients = async()=>{
                 <td>${client.id_doc}</td>
                 <td>${client.tel? client.tel : ''}</td>
                 <td>
-                    <button class="btn btn-primary details" data-id="${client._id}" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                        Mostrar
+                    <button class="btn text-primary p-0 details" data-id="${client._id}" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                        Ver detalle
                     </button>
                 </td>
             </tr>
         `
     });
 }
-show_clients()
+
 
 const create_client = async() =>{
     const name = document.getElementById('name')
@@ -48,7 +89,7 @@ const create_client = async() =>{
     }
 
     try {
-        let req = await fetch('/create-client',{
+        let req = await fetch(APIBASE + '/create-client',{
             method: 'POST',
             body: JSON.stringify(data),
             headers: {
@@ -60,7 +101,7 @@ const create_client = async() =>{
         if(!res.status){
             return emergent_alert({msg:res.msg, color:'alert alert-success'})
         }
-        show_clients()
+        getAllClientsPagination()
         name.value = ""
         lastName.value = ""
         email.value = ""
@@ -163,4 +204,23 @@ tbody_clients_list.addEventListener('click', e =>{
 })
 
 const btn_create = document.getElementById('btn_create')
+const btn_search = document.getElementById('btn_search')
 btn_create.addEventListener('click', create_client)
+
+btn_search.addEventListener('click', e => {
+    pageIndex = 1
+    searchClientsPagination()
+})
+
+btn_next.addEventListener('click', (e) => {
+    pageIndex++
+    const input_search = document.getElementById('input_search').value;
+    input_search.length == 0 ? getAllClientsPagination() : searchClientsPagination()
+    // show_clients(allData)
+})
+btn_prev.addEventListener('click', (e) => {
+    pageIndex--
+    const input_search = document.getElementById('input_search').value;
+    input_search.length == 0 ? getAllClientsPagination() : searchClientsPagination()
+    // show_clients(allData)
+})

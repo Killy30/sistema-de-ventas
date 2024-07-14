@@ -6,24 +6,8 @@ const btn_code = document.getElementById('btn_code')
 import fecha from './month_es.js'
 import data from './data.js'
 
-let salesAnalysis;
-let productsAnalysis = []
 
 
-//request data
-const getData = async() =>{
-    try {
-        let allSales = await data.getSales()
-        let sales = allSales.sales
-
-        salesAnalysis = sales
-        getAnalysis()
-
-    } catch (error) {
-        console.log(error);
-    }
-}
-getData()
 
 
 const selectType = (data)=>{
@@ -39,27 +23,30 @@ const selectType = (data)=>{
         document.getElementById('day').style.display = 'none'
         document.getElementById('month').style.display = 'none'
         document.getElementById('code').style.display = 'none'
-        getData()
+        // getData()
     }else if(data === 'code'){
         document.getElementById('day').style.display = 'none'
         document.getElementById('month').style.display = 'none'
         document.getElementById('code').style.display = 'flex'
     }
 }
-selectType(typeSearch.value)
+// selectType(typeSearch.value)
 
 
 //config and process the data to make the analysis
-const getAnalysis = async()=>{
+async function getAnalysis(){
     let all_products = await data.getProducts()
-
-    let total = salesAnalysis.reduce((acc, t) => acc = acc + t.totalPrice ,0)
+    let all_sales = await data.getSales()
+  
+    let total = all_sales.sales.reduce((acc, t) => acc = acc + t.totalPrice ,0)
 
     let repete_object = {};
     let repete_array = []
+    let productsAnalysis = []
    
-    productsAnalysis.splice(0, productsAnalysis.length)
-    salesAnalysis.forEach( sale => {
+    // productsAnalysis.splice(0, productsAnalysis.length)
+
+    all_sales.sales.forEach( sale => {
         productsAnalysis.push(...sale.products)
     })
     
@@ -67,6 +54,7 @@ const getAnalysis = async()=>{
     productsAnalysis.forEach(product =>{
         repete_object[product] = (repete_object[product] || 0) + 1;
     });
+    // console.log(productsAnalysis);
     Object.entries(repete_object).forEach(([key, value]) => {
         let obt = {}
         obt[key] = value
@@ -80,7 +68,7 @@ const getAnalysis = async()=>{
         let value = Object.values(product_obj)
 
         let theProduct = all_products.my_products.find(product => product._id == key[0])
-        let productSold = salesAnalysis.filter(sale => {
+        let productSold = all_sales.sales.filter(sale => {
             let xc = sale.productsSold.some(pro => pro.productCode == theProduct.idcode)
             return xc == true
         })
@@ -117,14 +105,16 @@ const getAnalysis = async()=>{
 
     let more = products_info.length
     let less = all_products.my_products.length - products_info.length
-    let countSales = salesAnalysis.length
+    let countSales = all_sales.sales.length
 
     let cardx1Data = {total, countSales, total_spends, total_earnings, more, less}
 
+    console.log(products_info);
     cardsDataViwe(cardx1Data)
     tableProductsView(products_info)
-    tableSalesView(salesAnalysis)
+    tableSalesView(all_sales.sales)
 }
+getAnalysis()
 
 const numberFormat = (number) =>{
     return new Intl.NumberFormat().format(number)
@@ -200,75 +190,52 @@ const tableSalesView = (data) =>{
     })
 }
 
-const grafictAnalysis = async() =>{
-    let allSales = await data.getSales()
+async function grafictAnalysis(){
 
-    let date = new Date()
-    let cmt = `${date.getMonth()}/${date.getFullYear()}`
-    let cm_v = date.getTime()
+    const sales = await data.getSales();
+    const allSales = sales.sales;
+    const num_months = 11
+    const date = new Date()
+    const data_object = {}
 
-    let sm = new Date(date.setMonth(date.getMonth()-1))
-    let smt = `${sm.getMonth()}/${sm.getFullYear()}`
-    let sm_v = sm.getTime()
+    let n = 0;
+    while (n <= num_months) {
+        data_object[n] = 0
+        n++
+    };
 
-    let tm = new Date(date.setMonth(date.getMonth()-1))
-    let tmt = `${tm.getMonth()}/${tm.getFullYear()}`
-    let tm_v = tm.getTime()
+    for(let i = 0; i < allSales.length; i++){
+        let time = new Date(allSales[i].date)
+        let month = time.getMonth()
+        let year = date.getFullYear()
+        
+        if(time.getFullYear() == year){
+            
+            for(let [key, value] of Object.entries(data_object)){
+                if(key == month){
+                    data_object[key] = parseInt(value) + allSales[i].totalPrice
+                }
+            };
+        }
+    }
+    console.log(data_object);
 
-    let fm = new Date(date.setMonth(date.getMonth()-1))
-    let fmt = `${fm.getMonth()}/${fm.getFullYear()}`
-    let fm_v = fm.getTime()
-
-
-    let cm_data = allSales.sales.filter(sale =>{
-        let t = new Date(sale.date)
-        let d = `${t.getMonth()}/${t.getFullYear()}`
-        return d == cmt
-    })
-
-    let sm_data = allSales.sales.filter(sale =>{
-        let t = new Date(sale.date)
-        let d = `${t.getMonth()}/${t.getFullYear()}`
-        return d == smt
-    })
-
-    let tm_data = allSales.sales.filter(sale =>{
-        let t = new Date(sale.date)
-        let d = `${t.getMonth()}/${t.getFullYear()}`
-        return d == tmt
-    })
-
-    let fm_data = allSales.sales.filter(sale =>{
-        let t = new Date(sale.date)
-        let d = `${t.getMonth()}/${t.getFullYear()}`
-        return d == fmt
-    })
-
-    let t_cm = cm_data.reduce((acc, t) => acc = acc + t.totalPrice ,0)
-    let t_sm = sm_data.reduce((acc, t) => acc = acc + t.totalPrice ,0)
-    let t_tm = tm_data.reduce((acc, t) => acc = acc + t.totalPrice ,0)
-    let t_fm = fm_data.reduce((acc, t) => acc = acc + t.totalPrice ,0)
-
-
-    let labels_data = [fecha(fm_v),fecha(tm_v),fecha(sm_v),fecha(cm_v)]
-    let data_value = [t_fm.toFixed(2), t_tm.toFixed(2),t_sm.toFixed(2),t_cm.toFixed(2)]
-
-    getGrafict(labels_data, data_value)
-    compare_values(labels_data, data_value)
+    getGrafict(data_object)
 }
 grafictAnalysis()
 
 //grafica
 let chart;
-const getGrafict = async(labels_data, data_value) =>{
-    
+const getGrafict = async(data_object) =>{
+
+    const labels_array = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre']
     const productsGrafict = document.getElementById('productsGrafict').getContext('2d')
     
     if (chart) {
         chart.destroy();
     }
 
-    const labels = labels_data;
+    const labels = labels_array;
     const data = {
         labels: labels,
         datasets: [{
@@ -276,7 +243,7 @@ const getGrafict = async(labels_data, data_value) =>{
             backgroundColor: [
                 'rgb(0, 149, 255)',
             ],
-            data: data_value,
+            data: Object.values(data_object),
         }]
     };
     

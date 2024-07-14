@@ -1,7 +1,9 @@
 
 import errorMessage from "./errorMSG.js"
-// import emergent_alert from "./emergentAlert.js"
+import emergent_alert from "./emergentAlert.js"
 import data from './data.js'
+
+const APIBASE = '/data-apis'
 
 const store_name = document.getElementById('store_name')
 const store_address = document.getElementById('store_address')
@@ -40,7 +42,7 @@ active_checkbox()
 
 const postDataStore = async(_data) =>{
     try {
-        let req = await fetch('/store-info', {
+        let req = await fetch(APIBASE + '/store-info', {
             method: 'POST',
             body: JSON.stringify(_data),
             headers: {
@@ -59,7 +61,7 @@ const postDataStore = async(_data) =>{
 }
 
 const controlAll = async(x) =>{
-    const req = await fetch('/accept-itbis', {
+    const req = await fetch(APIBASE + '/accept-itbis', {
         method: 'POST',
         body: JSON.stringify(x),
         headers:{

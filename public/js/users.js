@@ -1,24 +1,69 @@
 const showListCashiers = document.querySelector('.showListCashiers')
 const _tfoot = document.querySelector('.tfoot')
+const countElement = document.getElementById('countProducts')
+let btn_next = document.getElementById('btn_next')
+let btn_prev = document.getElementById('btn_prev')
+
+const APIBASE = '/data-apis'
+let pageIndex = 1
 
 import errorMessage from "./errorMSG.js"
 import data from './data.js'
 import emergent_alert from "./emergentAlert.js"
+import loader from "./loader.js"
+import handleElements from './handleElements.js'
+import { elementsPagination } from "./elementsPagination.js"
 
-const showMyTeam = async() =>{
-    let user = await data.getUser()
-    let cashiers = user.data.cashiers.reverse()
+const getAllUsersPagination = async() =>{
+    try {
+        showListCashiers.innerHTML = `${loader()}`
+        let cashiers = await data.getUsersPagination(pageIndex)
+        
+        showUsers(cashiers)
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+getAllUsersPagination()
+
+const searchUsersPagination = async() =>{
+    try {
+        const input_search = document.getElementById('input_search').value;
+        if(input_search.trim() == '') return false
+
+        showListCashiers.innerHTML = `${loader()}`
+
+        const datas = {element: 'users', text: input_search, index: pageIndex};
+
+        const cashiers = await data.searchElements(JSON.stringify(datas))
+
+        showUsers(cashiers)
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+
+const showUsers = async(cashiers ) =>{
+    let cashiersArray = cashiers.outputArray.reverse()
+
+    elementsPagination({datas: cashiers, countElement, handleElements, btn_prev, btn_next})
 
     showListCashiers.innerHTML = ''
-    cashiers.forEach((cashier, i) => {
+    cashiersArray.forEach((cashier, i) => {
         showListCashiers.innerHTML += `<tr>
             <td>${cashier.name}</td>
             <td>${cashier.lastName}</td>
             <td>${cashier.id_code}</td>
-            <td>${cashier.id_document}</td>
             <td>
                 <a href="" data-id_status="${cashier._id}" class="btn p-0 ${cashier.status ? 'text-success' :'text-danger' } status">
                     ${(cashier.status) ? 'Activo' : 'Inactivo' }
+                </a>
+            </td>
+            <td>
+                <a href="" data-id_connected="${cashier._id}" class="btn p-0 ${cashier.connect ? 'text-success' :'text-warning inactive' } connect">
+                    ${(cashier.connect) ? 'Conectado' : 'Desconectado' }
                 </a>
             </td>
             <td>
@@ -28,9 +73,8 @@ const showMyTeam = async() =>{
             </td>
         </tr>`
     });
-    // _tfoot.innerHTML = `<p class="text-end m-0">Cajeros: ${cashiers.length}</p>`
 }
-showMyTeam()
+
 
 const createUser = async() =>{
     const name = document.getElementById('name')
@@ -41,7 +85,7 @@ const createUser = async() =>{
 
     if(name.value.trim() == "" && lastName.value.trim() == "") return false
 
-    let data = {
+    let datas = {
         name: name.value,
         lastName: lastName.value, 
         id_document: id_document.value,
@@ -50,9 +94,9 @@ const createUser = async() =>{
     }
 
     try {
-        let req = await fetch('/new-cashier', {
+        let req = await fetch(APIBASE + '/new-cashier', {
             method: 'POST',
-            body: JSON.stringify(data),
+            body: JSON.stringify(datas),
             headers: {
                 'Content-Type': 'application/json'
             }
@@ -62,7 +106,7 @@ const createUser = async() =>{
         if(!res.conFirm){
             return alert(res.msg)
         }
-        showMyTeam()
+        getAllUsersPagination()
         name.value = ""
         lastName.value = ""
         id_document.value = ""
@@ -75,18 +119,36 @@ const createUser = async() =>{
 
 //change the status of user 
 const changeStatus = async(id) =>{
-    let data = {id}
+    let datas = {id}
     try {
-        let req = await fetch('/status-cashier',{
+        let req = await fetch(APIBASE + '/status-cashier',{
             method: "POST", 
-            body: JSON.stringify(data),
+            body: JSON.stringify(datas),
             headers: {
                 'Content-Type': 'application/json'
             }
         })
         let res = await req.json()
         emergent_alert({msg:res.msg, color:'alert alert-success'})
-        showMyTeam()
+        getAllUsersPagination()
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+const disconnectCashier = async(id) =>{
+    let datas = {id}
+    try {
+        let req = await fetch(`${APIBASE}/cashier-disconnected/${id}`,{
+            method: "POST", 
+            body: JSON.stringify(datas),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        let res = await req.json()
+        emergent_alert({msg:res.msg, color: res.color})
+        getAllUsersPagination()
     } catch (error) {
         console.log(error);
     }
@@ -98,7 +160,7 @@ const showCashierDetail = async(id)=>{
     box_detail.innerHTML = ''
 
     try {
-        let req = await fetch(`/cashier-detail/${id}`)
+        let req = await fetch(`${APIBASE}/cashier-detail/${id}`)
         let res = await req.json()
         const cashier = res.cashier
 
@@ -151,6 +213,15 @@ window.addEventListener('click', e =>{
             changeStatus(id)
         }
     } 
+
+    if(e.target.classList.contains('connect')){
+        e.preventDefault()
+        if(confirm('Deseas desconectar este usuario?')){
+            let id = e.target.dataset.id_connected
+            disconnectCashier(id)
+        }
+    } 
+
     if(e.target.classList.contains('detail')){
         e.preventDefault()
         let id = e.target.dataset.id_detail
@@ -158,6 +229,21 @@ window.addEventListener('click', e =>{
     }
 })
 
+const btn_search = document.getElementById('btn_search')
 
+btn_search.addEventListener('click', e => {
+    pageIndex = 1
+    searchUsersPagination()
+})
+btn_next.addEventListener('click', (e) => {
+    pageIndex++
+    const input_search = document.getElementById('input_search').value;
+    input_search.length == 0 ? getAllUsersPagination() : searchUsersPagination()
+})
+btn_prev.addEventListener('click', (e) => {
+    pageIndex--
+    const input_search = document.getElementById('input_search').value;
+    input_search.length == 0 ? getAllUsersPagination() : searchUsersPagination()
+})
 
 document.getElementById('btn_add_user').addEventListener('click', createUser)

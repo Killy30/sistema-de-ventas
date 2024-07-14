@@ -6,21 +6,22 @@
     margin-bottom: 60px;
 }
 .card_center{
-    width: 70%;
+    width: 80%;
     display: flex;
     gap: 20px;
 }
 .card_includes{
+    width: 55%;
     padding: 30px;
     border: 1px solid #ddd;
     border-radius: 7px;
 }
 .include{
-    padding: 0px 200px;
+    padding: 0px calc(100% - 210px);
 }
 
 .card_type_plans{
-    width: 50%;
+    width: 45%;
     display: flex;
     flex-wrap: wrap;
 }
@@ -30,6 +31,7 @@
     border: 1px solid #ddd;
     margin-bottom: 20px;
     border-radius: 7px;
+    padding: 30px;
 }
 .card_pro{
     width: 100%;
@@ -37,11 +39,69 @@
     border: 1px solid #ddd;
     border-radius: 7px;
     align-self: flex-end;
+    padding: 30px;
 }   
 
+
+table{
+    width: 100%;
+}
 th{
     padding: 10px;
 }
 td{
-    padding: 10px;
+    padding: 15px 10px;
+    font-weight: 600;
+}
+thead{
+    border-bottom: 3px solid #fe4818;
+}
+/* tr:nth-child(even) {
+    background-color: #ebebeb;
+} */
+td span{
+    font-size: 20px !important;
+    /* background-color: #fe4818; */
+    background-color: #0060e7;
+    color: #fff;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    margin: auto;
+    margin-right: 6px;
+}
+
+
+.plan_head{
+    width: 100%;
+    height: 55px;
+    border-bottom: 2px solid #fe4818;
+}
+.plan_body{
+    width: 100%;
+    height: calc(100% - 55px);
+    display: flex;
+    justify-content: space-between;
+    padding-top: 10px;
+}
+
+.plan_cost{
+    font-weight: 600;
+    font-size: 25px;
+}
+
+
+.card_btn_choose_plan{
+    display: flex;
+    align-items: center;
+    margin-left: 10px;
+}
+.card_btn_choose_plan a{
+    padding: 15px 30px;
+    text-decoration: none;
+    color: rgb(255, 255, 255);
+    border-radius: 5px;
+    font-size: 20px;
+    font-weight: 500;
+    background-color: #fe4818;
 }

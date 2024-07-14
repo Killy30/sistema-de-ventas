@@ -1,14 +1,14 @@
-
+import data from './data.js'
 
 const print_factura = document.getElementById('print_factura')
 const fbody = document.getElementById('fbody')
 
-import data from './data.js'
+const APIBASE = '/data-apis'
 
 let id = window.location.href.split('a/')[1]
 
 const getSale = async() =>{
-    let req = await fetch('/get-sale/'+id)
+    let req = await fetch(APIBASE + '/get-sale/'+id)
     let res = await req.json()
     return res
 }

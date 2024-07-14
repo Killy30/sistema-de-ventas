@@ -1,13 +1,16 @@
 const tbody = document.getElementById('tbody')
-const countSales = document.getElementById('countSales')
+const countElement = document.getElementById('countSales')
+const btn_prev = document.getElementById('btn_prev')
+const btn_next = document.getElementById('btn_next')
+
 import loader from "./loader.js"
 import fecha from './month_es.js'
 import data from './data.js'
+import handleElements from './handleElements.js'
+import { elementsPagination } from "./elementsPagination.js"
 
-
-let allsales;
-let paginationLimit = 30;
-let currentPage = 0
+let pageIndex = 1
+let salesAllData;
 let cashier_id ;
 
 const getUser = async() =>{
@@ -18,57 +21,68 @@ const getUser = async() =>{
     }
 }
 
-const getAllSales = () =>{
+async function getAllsalesPagination(){
     try {
         tbody.innerHTML = `${loader()}`
-        return data.getSales()
+        const salesData = await data.getsalesPagination(pageIndex)
+        salesAllData = salesData
+        showListSales(salesData)
     } catch (error) {
         console.log(error);
     }
 }
+getAllsalesPagination()
 
-const getData = async() =>{
+async function getDateSalesPagination(textDate, searchType){
     try {
-        let theSales = await getAllSales()
-        let sales = theSales.sales
-        allsales = sales
-        limit_item()
+        tbody.innerHTML = `${loader()}`
+        let msg_err = `Debes colocar el dia de las ventas`
+        if(textDate.trim() === '') return alert(msg_err)
+        console.log(textDate);
+        let dataDate = { cashier_id, textDate, searchType, pageIndex }
+
+        const salesData = await data.getsalesDatePagination(JSON.stringify(dataDate))
+        salesAllData = salesData
+        showListSales(salesData)
     } catch (error) {
         console.log(error);
     }
 }
-getData()
 
-const showListSales = async(sales) =>{
-    countSales.innerText = `Ventas: ${allsales.length}`
+const showListSales = async(salesData) =>{
+    let sales = salesData.outputArray
+     console.log(sales);
+    elementsPagination({datas: salesData, countElement, handleElements, btn_prev, btn_next})
 
     tbody.innerHTML = ""
     if(sales.length == 0){
         return noElement()
     }
-    
-    for(let i = sales.length - 1; i >= 0; i--){
-        let time = new Date(sales[i].date)
+
+    sales.forEach(sale =>{
+        let time = new Date(sale.date)
         tbody.innerHTML += `
             <tr>
-                <td>${sales[i].code}</td>
-                <td>${sales[i].products.length}</td>
+                <td>${sale.code}</td>
+                <td>${sale.products.length}</td>
                 <td> 
-                    ${fecha(time.getTime())} ${time.getDate()}/${time.getFullYear()} ${time.getHours()}:${time.getMinutes()}   
+                    ${time.getMonth() + 1}/${time.getDate()}/${time.getFullYear()} - ${time.getHours()}:${time.getMinutes()}   
                 </td>
-                <td>$${sales[i].totalPrice}</td>
+                <td>$${sale.totalPrice}</td>
                 <td>
-                    <a href="javascript:window.open('/factura/${sales[i]._id}', '','width=1000,height=700,left=100,top=100,toolbar=yes');void 0" 
-                    data-id="${sales[i]._id}" class="btn p-0 text-primary">
+                    <a href="javascript:window.open('/factura/${sales._id}', '','width=1000,height=700,left=100,top=100,toolbar=yes');void 0" 
+                    data-id="${sales._id}" class="btn p-0 text-primary">
                         Ver detalle
                     </a>
                 </td>
             </tr>
         `
+    })
+    
+    for(let i = sales.length - 1; i >= 0; i--){
+       
     }
 }
-
-let pages;
 
 const showListCashiers_select = async() =>{
     const user = await getUser()
@@ -86,34 +100,6 @@ const showListCashiers_select = async() =>{
     })
 } 
 showListCashiers_select()
-
-const limit_item = async() =>{
-    let start = paginationLimit * currentPage
-    let end = start + paginationLimit
-    let piece = allsales.slice(start, end)
-    
-    pages = Math.ceil(allsales.length / paginationLimit);
-
-    pages--
-
-    if(currentPage == 0){
-        disableButton(btn_prev)
-    }else{
-        enableButton(btn_prev)
-    }
-    
-    if(currentPage == pages){
-        disableButton(btn_next)
-    }else{
-        enableButton(btn_next)
-    }
-
-    if(pages < 0){
-        disableButton(btn_prev)
-        disableButton(btn_next)
-    }
-    showListSales(piece)
-}
 
 const typeSearch = document.getElementById('typeSearch')
 const cashiers_select = document.getElementById('cashiers')
@@ -148,151 +134,40 @@ const selectType = (data)=>{
 }
 selectType(typeSearch.value)
 
-//
-const getDateToSearch = async(e) =>{
-    const dayDate = document.getElementById('input_day').value
-
-    try {
-        if(dayDate.trim() === ''){
-            return alert('Debes colocar el dia de las ventas')
-        }
-
-        let allSales = await getAllSales()
-
-        if(cashier_id == undefined || cashier_id == '404'){
-            const sales_day = allSales.sales.filter( sale => {
-                let date = new Date(sale.date)
-                let fulldate = `${date.getFullYear()}-${(date.getMonth()+1) > 9?(date.getMonth()+1):`${0}${(date.getMonth()+1)}`}-${date.getDate() > 9?date.getDate():`${0}${date.getDate()}`}`
-                return fulldate ==  dayDate
-            })
-
-            allsales = sales_day
-            limit_item()
-        }else{
-            const sales_day = allSales.sales.filter( sale => {
-                let date = new Date(sale.date)
-                let fulldate = `${date.getFullYear()}-${(date.getMonth()+1) > 9?(date.getMonth()+1):`${0}${(date.getMonth()+1)}`}-${date.getDate() > 9?date.getDate():`${0}${date.getDate()}`}`
-                return fulldate ==  dayDate && sale.cashier == cashier_id
-            })
-
-            allsales = sales_day
-            limit_item()
-        }
-    } catch (error) {
-        console.log(error);
-    }    
-}
-
-//
-const getMonthToSearch = async(e) =>{
-    const month = document.getElementById('input_month').value
-
-    try {
-        if(month.trim() === ''){
-            return alert('Debes colocar el mes de las ventas')
-        }
-
-        let allSales = await getAllSales()
-
-        if(cashier_id == undefined || cashier_id == '404'){
-            let sales_month = allSales.sales.filter(sale =>{
-                let date = new Date(sale.date)
-                let fulldate = `${date.getFullYear()}-${(date.getMonth()+1)>9?(date.getMonth()+1):`${0}${(date.getMonth()+1)}`}`
-                return fulldate == month
-            })
-
-            allsales = sales_month
-            limit_item()
-        }else{
-            let sales_month = allSales.sales.filter(sale =>{
-                let date = new Date(sale.date)
-                let fulldate = `${date.getFullYear()}-${(date.getMonth()+1)>9?(date.getMonth()+1):`${0}${(date.getMonth()+1)}`}`
-                return fulldate == month && sale.cashier == cashier_id
-            })
-
-            allsales = sales_month
-            limit_item()
-        }
-
-    } catch (error) {
-        console.log(error);
-    }
-}
-
-// 
-const getCodeToSearch = async(e) => {
-    const code_id = document.getElementById('input_code').value
-    
-    try {
-        if(code_id.trim() === ''){
-            return alert('Debes colocar el codigo de la venta')
-        }
-
-        let allSales = await getAllSales()
-    
-        let sale_code = allSales.sales.filter(sale => {
-            return sale.code == code_id
-        })
-        allsales = sale_code
-        
-        limit_item()
-    } catch (error) {
-        console.log(error);
-    }
-}
-
-const search_all_sales = async(e)=>{
-    try {
-        if(cashier_id == undefined || cashier_id == '404'){
-            getData()
-            limit_item()
-        }else{
-            let sales = await getAllSales()
-            let salesOfCashier = sales.sales.filter(sale => sale.cashier == cashier_id)
-           
-            allsales = salesOfCashier
-            limit_item()
-        }
-    } catch (error) {
-        console.log(error);
-    }
-}
-
 //-----------------------------------------------------------------------------
 
-const btn_prev = document.getElementById('btn_prev')
-const btn_next = document.getElementById('btn_next')
 
-const disableButton = (button) => {
-    button.classList.add("disabled");
-    button.setAttribute("disabled", true);
-};
-  
-const enableButton = (button) => {
-    button.classList.remove("disabled");
-    button.removeAttribute("disabled");
-};
+btn_prev.addEventListener('click', (e) =>{
+    pageIndex--
+    // showListSales(salesAllData)
+    getAllsalesPagination()
+})
+btn_next.addEventListener('click', (e) => {
+    pageIndex++
+    // showListSales(salesAllData)
+    getAllsalesPagination()
+})
 
-const nextpage = () =>{
-    if(currentPage < pages){
-        currentPage++
-        limit_item()
+btn_day.addEventListener('click', ()=>{
+    const dayDate = document.getElementById('input_day').value
+    getDateSalesPagination(dayDate, 'day')
+})
+btn_month.addEventListener('click', ()=>{
+    const month = document.getElementById('input_month').value
+    getDateSalesPagination(month, 'month')
+})
+
+btn_code.addEventListener('click', ()=>{
+    const code_id = document.getElementById('input_code').value
+    getDateSalesPagination(code_id, 'code')
+})
+search_all.addEventListener('click', ()=>{
+    if(cashier_id == undefined || cashier_id == '404'){
+        getAllsalesPagination()
+    }else{
+        getDateSalesPagination('all','all')
     }
-}
-const previouspage = () =>{
-    if(currentPage !== 0){
-        currentPage--
-        limit_item()
-    }
-}
-
-btn_prev.addEventListener('click', previouspage)
-btn_next.addEventListener('click', nextpage)
-
-btn_day.addEventListener('click', getDateToSearch)
-btn_month.addEventListener('click', getMonthToSearch)
-btn_code.addEventListener('click', getCodeToSearch)
-search_all.addEventListener('click', search_all_sales)
+})
 
 typeSearch.addEventListener('change', e =>{
     selectType(typeSearch.value)

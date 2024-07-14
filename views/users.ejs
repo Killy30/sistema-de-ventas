@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../css/users.css">
+    <link rel="stylesheet" href="../css/clients_users.css">
     <title>Usuarios</title>
 </head>
 <body>
@@ -12,34 +13,50 @@
 
     <div class="card_emergent_alert"></div>
 
-    <div class="my_container users">
+    <div class="my_container users" id="container">
         <div class="main_container">
-            <div class="card_container">
-                <div class="the_title">
-                    <h3 class="mb-1">Usuarios</h3>
-                </div>
-
-                <div class="head_card mt-5 mb-5 d-flex justify-content-end">
+            <div class="card_container bg_color_white">
+                <div class="title_btn_create">
+                    <h5 class="d-flex align-items-end">Usuarios/Cajeros</h5>
                     <button type="button" class="btn_atla" data-bs-toggle="modal" data-bs-target="#exampleModal">
                         <span class="material-symbols-outlined">add</span>
                         Nuevo usuario
                     </button>
                 </div>
 
-                <div class="user_table mb-5">
+                <div class="card_head_uc">
+                    <div class="card_search">
+                        <form action="">
+                            <input type="text" id="input_search" class="form-control" placeholder="Buscar clientes">
+                        </form>
+                        <button class="btn_atla ms-3" id="btn_search" type="button">Buscar</button>
+                    </div>
+                </div>
+
+                <div class="card_table">
                     <table class="table m-0">
                         <thead>
-                        <tr>
-                            <th scope="col">Nombre</th>
-                            <th scope="col">Apellido</th>
-                            <th scope="col">Codigo</th>
-                            <th scope="col">Cedula/Pasapt</th>
-                            <th scope="col">Estado</th>
-                            <th scope="col">Accion</th>
-                        </tr>
+                            <tr>
+                                <th scope="col">Nombre</th>
+                                <th scope="col">Apellido</th>
+                                <th scope="col">Codigo</th>
+                                <th scope="col">Estado</th>
+                                <th scope="col">Coneccion</th>
+                                <th scope="col">Accion</th>
+                            </tr>
                         </thead>
-                        <tbody class="showListCashiers"></tbody>
+                        <tbody id="tbody" class="showListCashiers"></tbody>
                     </table>
+                    
+                    <div class="card_table_fooder">
+                        <p class="mb-0 me-3" id="countProducts"></p>
+                        <button type="button" id="btn_prev" class="btn btn-primary">
+                            <span class="material-symbols-outlined">chevron_left</span>
+                        </button>
+                        <button type="button" id="btn_next" class="btn btn-primary">
+                            <span class="material-symbols-outlined">chevron_right</span>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>

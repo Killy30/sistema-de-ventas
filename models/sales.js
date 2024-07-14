@@ -18,6 +18,7 @@ const salesSchema = new Schema({
     date: {type: Date, default:Date.now},
     user: { type: Schema.Types.ObjectId, ref: 'User'},
     cashier: { type: Schema.Types.ObjectId, ref: 'cashier'},
+    checkout: { type: Schema.Types.ObjectId, ref: 'checkout'},
     client: {type: Schema.Types.ObjectId, ref:'client'},
 })
 
